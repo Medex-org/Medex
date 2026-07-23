@@ -1,0 +1,147 @@
+07/06/2026, 2:09 am - Sangeen Khan (Director Of Chapter Quality) created group "MEDX Website Development"
+14/06/2026, 11:09 pm - Sangeen Khan (Director Of Chapter Quality): @⁨~Monisha Pathi⁩  kindly share
+19/06/2026, 3:08 am - Sangeen Khan (Director Of Chapter Quality): @⁨all⁩  Any updates
+19/06/2026, 3:17 am - +1 (404) 408-1204: I still have not been given the Github link
+19/06/2026, 3:19 am - Sangeen Khan (Director Of Chapter Quality): I think she got busy
+19/06/2026, 3:19 am - Sangeen Khan (Director Of Chapter Quality): You may try to get yours own
+19/06/2026, 3:19 am - Sangeen Khan (Director Of Chapter Quality): I have dropped you a voice message before
+01/07/2026, 11:08 am - +1 (206) 679-0913: Hey guys sorry for the delay
+01/07/2026, 11:09 am - +1 (206) 679-0913: I have got the code on GitHub and given access to uall
+01/07/2026, 11:10 am - +1 (206) 679-0913: And u need to accept the invite
+01/07/2026, 11:10 am - Sangeen Khan (Director Of Chapter Quality): No worries it is fine
+01/07/2026, 11:10 am - Sangeen Khan (Director Of Chapter Quality): Shan will contact you for further changes
+01/07/2026, 11:10 am - Sangeen Khan (Director Of Chapter Quality): N i will suggest too
+01/07/2026, 11:10 am - +1 (206) 679-0913: It's just the UI like frontend we can make changes to it first as we want and then get the backend coded
+13/07/2026, 10:53 pm - Sangeen Khan (Director Of Chapter Quality) added you
+13/07/2026, 10:53 pm - Sangeen Khan (Director Of Chapter Quality): 
+13/07/2026, 10:53 pm - Sangeen Khan (Director Of Chapter Quality): 
+13/07/2026, 10:54 pm - Sangeen Khan (Director Of Chapter Quality): This is the official group where we will discuss about our website. Thanks
+13/07/2026, 10:55 pm - Sangeen Khan (Director Of Chapter Quality): Here's the website that we have so far, it's pretty basic but be sure to give us some suggestions about it: https://medx-bay.vercel.app/
+13/07/2026, 10:55 pm - Sangeen Khan (Director Of Chapter Quality): This is the recent UI. Kindly suggest more
+13/07/2026, 10:56 pm - Sangeen Khan (Director Of Chapter Quality): However, i clearly mentioned that we need separate page for MEDX Minds
+13/07/2026, 10:56 pm - Sangeen Khan (Director Of Chapter Quality): & @⁨Aruzhan Maratova⁩  can you please modify team ui as of nsri ?
+13/07/2026, 11:06 pm - Aruzhan Maratova: Sure! Which NSRI site exactly? I've made a few
+13/07/2026, 11:06 pm - Aruzhan Maratova: A link or screenshot would be awesome
+13/07/2026, 11:06 pm - Aruzhan Maratova: Heading to bed now, but will check it tomorrow :)
+13/07/2026, 11:10 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260713-WA0036.jpg (file attached)
+13/07/2026, 11:10 pm - Sangeen Khan (Director Of Chapter Quality): This one
+13/07/2026, 11:25 pm - Aruzhan Maratova: Kk, no problem
+13/07/2026, 11:26 pm - Aruzhan Maratova: Do you have github repo for this website? Add me pls
+13/07/2026, 11:27 pm - Aruzhan Maratova: @herachxx
+13/07/2026, 11:28 pm - +1 (404) 408-1204: https://github.com/Monisha-Pathi/MEDEX
+13/07/2026, 11:28 pm - +1 (404) 408-1204: Also please make sure that when you make changes you add it into a new branch so that we can look over them and then we can commit to main
+13/07/2026, 11:33 pm - Aruzhan Maratova: I always push my updates to a separate branch. No worries with this! :)
+13/07/2026, 11:39 pm - Aruzhan Maratova: Btw, it looks like I haven't been added to the repo yet
+Can you guys send me invite to join as a contributor? I don't have access to edit files
+13/07/2026, 11:53 pm - +1 (404) 408-1204: Perfect, thank you!
+14/07/2026, 2:25 pm - Sangeen Khan (Director Of Chapter Quality): PTT-20260714-WA0006.opus (file attached)
+15/07/2026, 11:24 am - Sangeen Khan (Director Of Chapter Quality): @⁨all⁩  Have you listened to my Voicemail
+15/07/2026, 11:25 am - Sangeen Khan (Director Of Chapter Quality): Secondly, Is website still in basic UI?
+15/07/2026, 3:40 pm - +92 332 2104386: yes
+15/07/2026, 3:41 pm - Sangeen Khan (Director Of Chapter Quality): Asking Web team especially @⁨Aruzhan Maratova⁩  @⁨~Monisha Pathi⁩  @⁨~Shanmuka G.⁩  @⁨~Soham⁩
+15/07/2026, 3:42 pm - +91 90993 06962: Yes
+15/07/2026, 7:56 pm - +1 (404) 408-1204: Yes it is
+15/07/2026, 7:57 pm - Sangeen Khan (Director Of Chapter Quality): Kindly work
+15/07/2026, 8:02 pm - +1 (404) 408-1204: It’s possible but it will require a bit of work to get it done but yeah I think we can do it I will plan for it
+15/07/2026, 8:03 pm - Sangeen Khan (Director Of Chapter Quality): Sure please Mr.CTO
+16/07/2026, 1:06 am - Aruzhan Maratova: Ofc, it's totally possible!
+16/07/2026, 1:06 am - Aruzhan Maratova: If we decide to go this route, in theory we will basically need:
+1) A simple login so people have their own accounts (requires a database).
+2) A payment system. Once they pay, their account automatically unlocks the videos.
+3) Uploading videos to a private host like Vimeo (the most popular way btw). That way, we can lock the videos so they ONLY play on our MedX website.
+16/07/2026, 1:06 am - Aruzhan Maratova: Just sharing the concept! I haven't built this specific flow myself before, so I just know the theory of how it works. It would take quite a bit of time and setup, so we’d need to discuss it as a team if we actually want to build this)
+16/07/2026, 1:07 am - Sangeen Khan (Director Of Chapter Quality): Before building this, i want you to create our team UI with some good quality
+16/07/2026, 1:07 am - Aruzhan Maratova: Np
+16/07/2026, 1:08 am - Sangeen Khan (Director Of Chapter Quality): Thankooo
+16/07/2026, 1:09 am - Aruzhan Maratova: Before redoing the UI, i want you to add me to the repo bc I can't edit files without this 😁
+16/07/2026, 1:56 am - +1 (404) 408-1204: @⁨~Monisha Pathi⁩ Could you please take care of this? Thank you!
+16/07/2026, 1:59 am - +1 (206) 679-0913: Yes I will look at it
+16/07/2026, 1:59 am - +1 (206) 679-0913: I will add you in an hour and lyk
+16/07/2026, 4:19 pm - Sangeen Khan (Director Of Chapter Quality): Have you??
+16/07/2026, 4:36 pm - +1 (206) 679-0913: Yeahh can I get your github username please
+16/07/2026, 4:36 pm - +1 (206) 679-0913: Yeah I will add her after I get her GitHub acc
+16/07/2026, 4:36 pm - Sangeen Khan (Director Of Chapter Quality): Okay
+16/07/2026, 4:50 pm - Aruzhan Maratova: My gh username
+17/07/2026, 2:06 am - +1 (206) 679-0913: Ok gotcha
+18/07/2026, 8:58 pm - Aruzhan Maratova: Evening, everyone. I just finished updating our website. You can see the new version here: https://medex-org.github.io/Medex/
+
+Let me know your thoughts! It’s currently a clean canvas waiting for our content. To move forward with the visuals, I need some media assets (a transparent version of our logo and some event photos or previews if there is any would be perfect). Feel free to share your ideas! @⁨all⁩
+18/07/2026, 9:00 pm - +1 (404) 408-1204: Amazing job, this is really nice as it is brining in a more modern feel to the website. Nice!
+18/07/2026, 9:01 pm - Aruzhan Maratova: Thanks! Tbh, I actually have no idea what to put into website :)
+Will be good if someone help me with this
+18/07/2026, 9:02 pm - Sangeen Khan (Director Of Chapter Quality): You have worked incredibly
+18/07/2026, 9:03 pm - Sangeen Khan (Director Of Chapter Quality): I am so so so much impressed. However, Team portfolio looks bit unprofessional
+18/07/2026, 9:03 pm - Sangeen Khan (Director Of Chapter Quality): Sharing posters isn't a good option
+18/07/2026, 9:03 pm - Sangeen Khan (Director Of Chapter Quality): We should go for picture and detail
+18/07/2026, 9:07 pm - +92 332 2104386: loved your efforts @⁨Aruzhan Maratova⁩.
+18/07/2026, 9:07 pm - +92 332 2104386: yes
+18/07/2026, 9:09 pm - Aruzhan Maratova: Okay, can you gimme more details on this?
+18/07/2026, 9:09 pm - Aruzhan Maratova: Like what content goes where?
+18/07/2026, 9:10 pm - Sangeen Khan (Director Of Chapter Quality): Yeah sure
+18/07/2026, 9:10 pm - +91 90993 06962: I think for SRMA Projects we can add similar dashboard like NSRI
+18/07/2026, 9:10 pm - +1 (404) 408-1204: @⁨Sangeen Khan (Director Of Chapter Quality)⁩, do you have a list of all the workshops and opportunities at MedX with the dates so that we can add it to the site?
+18/07/2026, 9:11 pm - +91 90993 06962: Also look over to the NSRI website there we can apply for leads we can do the same and also people can join the different projects
+18/07/2026, 9:11 pm - +91 90993 06962: Me & Sangeen have Planned for next opportunities which is for ASH & SVIN Conferences
+18/07/2026, 9:12 pm - +1 (404) 408-1204: Perfect sounds good
+18/07/2026, 9:13 pm - +1 (404) 408-1204: We should plan to add them in ASAP once everything is ready so that we have a functional site that students can use to join our workshops and events
+18/07/2026, 9:13 pm - +91 90993 06962: Yes 🙌🏻🙌🏻🙌🏻🙌🏻🙌🏻
+18/07/2026, 9:13 pm - +91 90993 06962: We'll provide you the whole list of upcoming opportunities & workshops <This message was edited>
+18/07/2026, 9:14 pm - Aruzhan Maratova: <Media omitted>
+Hmm, you mean this one?
+18/07/2026, 9:15 pm - +91 90993 06962: Login with NSRI account and you can view the lead name with the participant's details
+18/07/2026, 9:15 pm - +91 90993 06962: Let me share you screenshot
+18/07/2026, 9:15 pm - +91 90993 06962: This is the Journal part i didn't mean this
+18/07/2026, 9:16 pm - +91 90993 06962: I'll be sharing you in a while I'm traveling right now
+18/07/2026, 9:16 pm - +92 332 2104386: much needed!
+18/07/2026, 9:46 pm - Aruzhan Maratova: Yepp
+18/07/2026, 9:47 pm - Aruzhan Maratova: Kk, it'll be helpful
+19/07/2026, 4:56 pm - Sangeen Khan (Director Of Chapter Quality): PTT-20260719-WA0059.opus (file attached)
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): 
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0018.jpg (file attached)
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0016.jpg (file attached)
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0017.jpg (file attached)
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0019.jpg (file attached)
+21/07/2026, 3:48 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0020.jpg (file attached)
+21/07/2026, 3:49 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0021.jpg (file attached)
+21/07/2026, 3:49 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0023.jpg (file attached)
+21/07/2026, 3:49 pm - Sangeen Khan (Director Of Chapter Quality): IMG-20260721-WA0022.jpg (file attached)
+21/07/2026, 3:51 pm - Sangeen Khan (Director Of Chapter Quality): PTT-20260721-WA0014.opus (file attached)
+21/07/2026, 4:37 pm - Aruzhan Maratova: Niceee
+21/07/2026, 4:37 pm - Aruzhan Maratova: Working on it)
+21/07/2026, 5:19 pm - Sangeen Khan (Director Of Chapter Quality): Thank you so much
+21/07/2026, 6:35 pm - Sangeen Khan (Director Of Chapter Quality): From today onward for 5 more days we will be just working on Web Development. This gonna be tough for you 3. But, once web is designed well everything will be so organized then
+21/07/2026, 6:35 pm - Sangeen Khan (Director Of Chapter Quality): @⁨all⁩
+21/07/2026, 6:36 pm - Sangeen Khan (Director Of Chapter Quality): On monday we will launch our website by making it live in a session
+21/07/2026, 6:36 pm - Sangeen Khan (Director Of Chapter Quality): I will try to call a good speaker as a guest too
+21/07/2026, 6:36 pm - +1 (404) 408-1204: Sound good
+21/07/2026, 6:37 pm - +1 (404) 408-1204: We should plan to put all our schedules events to the website first asap
+21/07/2026, 6:37 pm - +1 (404) 408-1204: And getting the descriptions of everyone onto the team page of the website
+21/07/2026, 6:38 pm - +1 (404) 408-1204: And then I think we should be good to go.
+21/07/2026, 7:01 pm - Sangeen Khan (Director Of Chapter Quality): Yep 😊
+22/07/2026, 12:28 am - Sangeen Khan (Director Of Chapter Quality): https://forms.gle/yJzGnk4DwmWysygv9
+22/07/2026, 5:06 pm - Sangeen Khan (Director Of Chapter Quality): Hello everyone
+22/07/2026, 5:06 pm - Sangeen Khan (Director Of Chapter Quality): Kindly let me know, how about website
+22/07/2026, 6:07 pm - Sangeen Khan (Director Of Chapter Quality): @⁨all⁩  @⁨Aruzhan Maratova⁩  
+@⁨~Shanmuka G.⁩ 
+@⁨~Monisha Pathi⁩
+22/07/2026, 6:09 pm - Sangeen Khan (Director Of Chapter Quality): For the next 4 days kindly prioritize this acrivity
+22/07/2026, 9:19 pm - Aruzhan Maratova: Np
+22/07/2026, 9:19 pm - Aruzhan Maratova: I am alr working on it
+23/07/2026, 12:30 am - Sangeen Khan (Director Of Chapter Quality): Best best
+23/07/2026, 1:45 am - Sangeen Khan (Director Of Chapter Quality): I know, @⁨Aruzhan Maratova⁩ but i want that we may continuously do changes
+23/07/2026, 1:45 am - Sangeen Khan (Director Of Chapter Quality): Each series of changes daily
+23/07/2026, 1:45 am - Sangeen Khan (Director Of Chapter Quality): Before launching
+23/07/2026, 7:03 am - Aruzhan Maratova: Oh, gotcha
+23/07/2026, 7:04 am - Aruzhan Maratova: Makes sense actually
+23/07/2026, 7:22 am - Aruzhan Maratova: I tried playing around with the formats, colors, and sizes on the main/team pages of our website, but it wasn't looking quite right, so I just rolled it back(
+23/07/2026, 7:22 am - Aruzhan Maratova: Tbh, I'm not entirely sure what exact changes are expected yet
+23/07/2026, 7:22 am - Aruzhan Maratova: I always need clear explanations to work with
+23/07/2026, 7:22 am - Aruzhan Maratova: I think for our daily changes, it would be better if we stick to this flow: discuss -> do it -> discuss again -> fix it -> push it
+23/07/2026, 7:22 am - Aruzhan Maratova: Okay, so can you guys just spill all your thoughts about the website? We need honesty to make it "delicious"! Like, tell us EVERYTHING you see
+23/07/2026, 7:25 am - Aruzhan Maratova: @⁨all⁩ This goes for everyone
+23/07/2026, 7:39 am - Sangeen Khan (Director Of Chapter Quality): @⁨Aruzhan Maratova⁩ i am so excited to hear about the flow
+23/07/2026, 7:39 am - Sangeen Khan (Director Of Chapter Quality): Yep, i have suggested some changes above
+23/07/2026, 7:39 am - Sangeen Khan (Director Of Chapter Quality): Can you do it ?
+23/07/2026, 7:40 am - Sangeen Khan (Director Of Chapter Quality): I will be onboard telling everything and kindly add me as super admin of website
+23/07/2026, 7:44 am - Sangeen Khan (Director Of Chapter Quality): I am suggesting, just do it and let me give feedback
+23/07/2026, 8:55 am - Aruzhan Maratova: Got it 👌🏻
