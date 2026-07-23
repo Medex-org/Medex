@@ -8,7 +8,7 @@ const modules = [
   {
     icon: Brain,
     label: "Scholar's Toolkit",
-    desc: "Research methodology, SPSS basics, manuscript writing fundamentals, and systematic review essentials — structured learning for every level.",
+    desc: "Research methodology, SPSS basics, manuscript writing fundamentals, and systematic review essentials - structured learning for every level.",
   },
   {
     icon: Heart,
@@ -18,7 +18,7 @@ const modules = [
   {
     icon: BookOpen,
     label: "Recorded Workshops",
-    desc: "On-demand access to all past MEDX workshops — watch, rewatch, and learn at your own pace.",
+    desc: "On-demand access to all past MEDX workshops - watch, rewatch, and learn at your own pace.",
   },
   {
     icon: Users,
@@ -32,7 +32,7 @@ export default function MedxMinds() {
     <Layout>
       <PageMeta
         title="MEDX Minds"
-        description="MEDX Minds is a curated member platform for medical education, academic growth, and mental wellness — designed by students, for students."
+        description="MEDX Minds is a curated member platform for medical education, academic growth, and mental wellness - designed by students, for students."
       />
 
       {/* Header */}
@@ -48,7 +48,7 @@ export default function MedxMinds() {
             <div className="section-rule mx-auto mb-6" />
             <p className="font-serif text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
               A curated platform for medical education, academic growth, and
-              mental wellness — designed by students, for students.
+              mental wellness - designed by students, for students.
             </p>
           </FadeIn>
         </div>
@@ -63,13 +63,13 @@ export default function MedxMinds() {
               invest equally in their intellectual rigour and their personal wellbeing.
             </p>
             <p>
-              The platform is divided into two dimensions — a scholarly toolkit for
+              The platform is divided into two dimensions - a scholarly toolkit for
               research and education, and a wellness corner for mental health and peer
               support. Members gain access to on-demand workshops, a structured learning
               library, and a supportive peer community.
             </p>
             <p>
-              Stories shared here are not just testimonials. They are beacons — because
+              Stories shared here are not just testimonials. They are beacons - because
               in MEDX Minds, <em>"Share Your Stories, Become a Reason for Others."</em>
             </p>
           </FadeIn>
@@ -104,7 +104,7 @@ export default function MedxMinds() {
 
           <div className="h-[1px] w-full bg-border mb-20" />
 
-          {/* Access CTA — polished with a subtle background pattern */}
+          {/* Access CTA - polished with a subtle background pattern */}
           <FadeIn>
             <div className="p-10 border-[1px] border-border bg-card flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div className="border-l-2 border-accent pl-6">

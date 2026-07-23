@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <Layout>
       <PageMeta
-        title="404 — Page Not Found"
+        title="404 - Page Not Found"
         description="The page you are looking for does not exist in the MEDX R&Ed archives."
       />
 

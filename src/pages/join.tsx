@@ -68,7 +68,7 @@ export default function Join() {
     <Layout>
       <PageMeta
         title="Join MEDX"
-        description="Become part of MEDX R&Ed — apply as a City Representative, Campus Ambassador, Workshop Participant, or MEDX Minds Associate. Open to all medical and health-science students."
+        description="Become part of MEDX R&Ed - apply as a City Representative, Campus Ambassador, Workshop Participant, or MEDX Minds Associate. Open to all medical and health-science students."
       />
 
       {/* Header */}
@@ -84,7 +84,7 @@ export default function Join() {
             <p className="font-serif text-xl text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
               MEDX R&amp;Ed is building the next generation of physician-scientists.
               Whether you're a medical student, health-science researcher, or
-              passionate advocate for evidence-based medicine — there is a place
+              passionate advocate for evidence-based medicine - there is a place
               for you here.
             </p>
           </FadeIn>
@@ -126,7 +126,7 @@ export default function Join() {
                   <ul className="space-y-1">
                     {track.requirements.map((r, j) => (
                       <li key={j} className="text-sm text-muted-foreground font-serif flex gap-2">
-                        <span className="text-accent flex-shrink-0" aria-hidden="true">—</span> {r}
+                        <span className="text-accent flex-shrink-0" aria-hidden="true">-</span> {r}
                       </li>
                     ))}
                   </ul>
@@ -163,7 +163,7 @@ export default function Join() {
               </h2>
               <p className="font-serif text-secondary mb-8 leading-relaxed">
                 MEDX membership unlocks a world of opportunities. Become a member
-                today and gain access to 12 exclusive benefits — from research tools
+                today and gain access to 12 exclusive benefits - from research tools
                 to global recognition.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
@@ -204,7 +204,7 @@ export default function Join() {
                 <div className="absolute -top-4 -right-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                 <img
                   src={memberBenefitsImg}
-                  alt="Become a MEDX Member — Benefits & Global Community"
+                  alt="Become a MEDX Member - Benefits & Global Community"
                   className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
                 />
               </div>
@@ -222,7 +222,7 @@ export default function Join() {
                 <div className="absolute -top-4 -left-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                 <img
                   src={campusAmbImg}
-                  alt="Join MEDX as Campus Ambassador — Be the Voice. Be the Change."
+                  alt="Join MEDX as Campus Ambassador - Be the Voice. Be the Change."
                   className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
                 />
               </div>
@@ -286,7 +286,7 @@ export default function Join() {
             "Your Journey. Our Support. A Better Future."
           </h2>
           <p className="font-mono text-xs uppercase tracking-widest text-accent-foreground/50 mt-6">
-            MEDX R&amp;Ed — Together We Research. We Educate. We Create Impact.
+            MEDX R&amp;Ed - Together We Research. We Educate. We Create Impact.
           </p>
         </FadeIn>
       </section>

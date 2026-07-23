@@ -11,8 +11,8 @@ const events = [
     name: "ASH Annual Meeting",
     type: "Conference",
     status: "Upcoming",
-    date: "TBA — Dec 2026",
-    desc: "MEDX R&Ed is preparing participants for the American Society of Hematology Annual Meeting — one of the premier global conferences in blood disorders research. Apply for mentorship and abstract preparation support.",
+    date: "TBA - Dec 2026",
+    desc: "MEDX R&Ed is preparing participants for the American Society of Hematology Annual Meeting - one of the premier global conferences in blood disorders research. Apply for mentorship and abstract preparation support.",
     image: null,
     link: "https://forms.gle/yJzGnk4DwmWysygv9",
     linkLabel: "Apply for Mentorship",
@@ -38,11 +38,11 @@ const events = [
     linkLabel: "View Program",
   },
   {
-    name: "LTE Free Workshop — Letter to the Editor",
+    name: "LTE Free Workshop - Letter to the Editor",
     type: "Workshop",
     status: "Completed",
     date: "July 18, 2026 · 10PM PKT",
-    desc: "Free session on Letter to the Editor writing — what it is, structure, journal selection, and submission process. Speaker: Imad Khan (North West School of Medicine, Peshawar, 5+ Publications).",
+    desc: "Free session on Letter to the Editor writing - what it is, structure, journal selection, and submission process. Speaker: Imad Khan (North West School of Medicine, Peshawar, 5+ Publications).",
     image: lteFlyer,
     link: null,
     linkLabel: null,
@@ -52,7 +52,7 @@ const events = [
     type: "Workshop",
     status: "Ongoing",
     date: "Recurring · 8PM PKT",
-    desc: "Free introductory lectures on systematic review and meta-analysis methodology. Open to all. Sessions held regularly — check MEDX channels for the next scheduled session.",
+    desc: "Free introductory lectures on systematic review and meta-analysis methodology. Open to all. Sessions held regularly - check MEDX channels for the next scheduled session.",
     image: null,
     link: "https://forms.gle/yJzGnk4DwmWysygv9",
     linkLabel: "Register",
@@ -62,7 +62,7 @@ const events = [
     type: "Community",
     status: "Upcoming",
     date: "Monday (Announced)",
-    desc: "Official MEDX website launch — a live session with the global team and a guest speaker. Registration open.",
+    desc: "Official MEDX website launch - a live session with the global team and a guest speaker. Registration open.",
     image: null,
     link: "https://forms.gle/yJzGnk4DwmWysygv9",
     linkLabel: "RSVP",
@@ -72,7 +72,7 @@ const events = [
     type: "Recruitment",
     status: "Open",
     date: "Ongoing",
-    desc: "MEDX is recruiting Campus Ambassadors across institutions worldwide. Be the voice of MEDX in your institution — expand the global network, lead initiatives, and develop leadership skills.",
+    desc: "MEDX is recruiting Campus Ambassadors across institutions worldwide. Be the voice of MEDX in your institution - expand the global network, lead initiatives, and develop leadership skills.",
     image: campusAmbFlyer,
     link: "https://forms.gle/yJzGnk4DwmWysygv9",
     linkLabel: "Apply Now",
@@ -91,7 +91,7 @@ export default function Events() {
     <Layout>
       <PageMeta
         title="Events & Opportunities"
-        description="Conferences, workshops, and recruitment opportunities for the MEDX R&Ed community — ASH, SVIN, Research Week, LTE workshops, and more."
+        description="Conferences, workshops, and recruitment opportunities for the MEDX R&Ed community - ASH, SVIN, Research Week, LTE workshops, and more."
       />
 
       {/* Header */}
@@ -122,7 +122,7 @@ export default function Events() {
                 className="border-[1px] border-border bg-background hover:bg-card transition-colors group overflow-hidden"
               >
                 <div className="flex flex-col md:flex-row">
-                  {/* Fixed-width image slot — present or absent, layout stays consistent */}
+                  {/* Fixed-width image slot - present or absent, layout stays consistent */}
                   <div className="md:w-52 flex-shrink-0 overflow-hidden bg-muted">
                     {event.image ? (
                       <img

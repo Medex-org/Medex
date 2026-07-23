@@ -13,13 +13,13 @@ export default function Home() {
   return (
     <Layout>
       <PageMeta
-        title="MEDX R&Ed — Medical Exchange, Research & Education"
+        title="MEDX R&Ed - Medical Exchange, Research & Education"
         description="A global community of medical and health-science students united by rigorous methodology, cross-border mentorship, and the pursuit of evidence-based medicine."
       />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="relative pt-32 pb-24 px-4 sm:px-6 overflow-hidden flex flex-col items-center text-center">
-        {/* Fine grid — uses CSS vars so it adapts to dark mode */}
+        {/* Fine grid - uses CSS vars so it adapts to dark mode */}
         <div
           className="absolute inset-0 z-0 opacity-[0.035] pointer-events-none"
           aria-hidden="true"
@@ -158,7 +158,7 @@ export default function Home() {
                 Icon: Activity,
                 title: "MEDX Research",
                 sub: "SRMA Workshop Series",
-                desc: "Structured methodology for systematic review and meta-analysis — from beginner to published author.",
+                desc: "Structured methodology for systematic review and meta-analysis - from beginner to published author.",
                 href: "/programs",
                 cta: "Explore Research",
               },
@@ -174,7 +174,7 @@ export default function Home() {
                 Icon: Brain,
                 title: "MEDX Minds",
                 sub: "Member Platform",
-                desc: "Curated medical education content — workshops, expert lectures, and structured learning modules.",
+                desc: "Curated medical education content - workshops, expert lectures, and structured learning modules.",
                 href: "/medx-minds",
                 cta: "Access Platform",
               },
@@ -249,7 +249,7 @@ export default function Home() {
               and publication.
             </p>
             <p className="font-serif text-sm text-muted-foreground mb-8">
-              Mentored by Dr. Rida Noor and Abdul Moiz —{" "}
+              Mentored by Dr. Rida Noor and Abdul Moiz -{" "}
               <em>Research Today, Impact Tomorrow.</em>
             </p>
             <Link
@@ -270,7 +270,7 @@ export default function Home() {
               <div className="absolute -top-4 -right-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
               <img
                 src={researchWeekImg}
-                alt="MEDX × NSRI Cross Sectional Studies — Research Week session in progress"
+                alt="MEDX × NSRI Cross Sectional Studies - Research Week session in progress"
                 className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
               />
             </div>
@@ -301,12 +301,12 @@ export default function Home() {
             </h2>
             <p className="font-serif text-lg text-secondary leading-relaxed mb-4">
               MEDX R&amp;Ed is proud to announce a strategic partnership with
-              GradMeta — empowering students through AI-powered research tools,
+              GradMeta - empowering students through AI-powered research tools,
               education, mentorship, and global academic opportunities.
             </p>
             <p className="font-serif text-sm text-muted-foreground mb-8">
               Members receive exclusive free access to GradMeta's professional
-              systematic review tool (worth $50) — validated against R metafor
+              systematic review tool (worth $50) - validated against R metafor
               across core statistical methods.
             </p>
             <Link
@@ -373,13 +373,13 @@ export default function Home() {
                 name: "MEDX × NSRI Research Week",
                 type: "Workshop",
                 status: "Ongoing",
-                desc: "Collaborative 6-day research program — Cross-Sectional Studies, SPSS, Manuscript Writing.",
+                desc: "Collaborative 6-day research program - Cross-Sectional Studies, SPSS, Manuscript Writing.",
               },
               {
-                name: "LTE Free Workshop — Letter to Editor",
+                name: "LTE Free Workshop - Letter to Editor",
                 type: "Workshop",
                 status: "Completed",
-                desc: "Free session on Letter to the Editor writing, journal selection, and submission — Speaker: Imad Khan.",
+                desc: "Free session on Letter to the Editor writing, journal selection, and submission - Speaker: Imad Khan.",
               },
             ].map((event, i) => (
               <StaggerItem
@@ -443,7 +443,7 @@ export default function Home() {
           </h2>
           <p className="font-serif text-lg text-primary-foreground/70 max-w-xl mx-auto mb-10">
             Whether you're a medical student, researcher, or passionate advocate
-            for evidence-based medicine — there is a place for you here.
+            for evidence-based medicine - there is a place for you here.
           </p>
           <a
             href="https://forms.gle/yJzGnk4DwmWysygv9"

@@ -79,7 +79,7 @@ const ambassadors = [
   { name: "Zeenat Bibi", location: "University of Health Sciences, Pakistan" },
 ];
 
-/** ISO 3166-1 alpha-2 country code labels — no emoji, purely typographic */
+/** ISO 3166-1 alpha-2 country code labels - no emoji, purely typographic */
 const countryLabel: Record<string, string> = {
   PK: "PAK",
   LK: "LKA",
@@ -93,7 +93,7 @@ export default function CityReps() {
     <Layout>
       <PageMeta
         title="City Representatives"
-        description="Meet the global network of MEDX City Representatives and Campus Ambassadors — student leaders building local research communities across 8+ countries."
+        description="Meet the global network of MEDX City Representatives and Campus Ambassadors - student leaders building local research communities across 8+ countries."
       />
 
       {/* Header */}
@@ -162,7 +162,7 @@ export default function CityReps() {
                       {rep.location}
                     </span>
                   </div>
-                  {/* Country code label — styled monospacedly, no emoji */}
+                  {/* Country code label - styled monospacedly, no emoji */}
                   {rep.country && countryLabel[rep.country] && (
                     <span
                       className="font-mono text-[10px] font-semibold tracking-widest text-secondary/60 bg-muted px-1.5 py-0.5 border-[1px] border-border"

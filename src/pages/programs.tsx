@@ -11,7 +11,7 @@ export default function Programs() {
     <Layout>
       <PageMeta
         title="Scholarly Programs"
-        description="Explore MEDX R&Ed's programs — SRMA Workshop Series, LTE Mentorship, Research Week, Higher Pathways Guidance, MEDX Minds, and our global City Representatives network."
+        description="Explore MEDX R&Ed's programs - SRMA Workshop Series, LTE Mentorship, Research Week, Higher Pathways Guidance, MEDX Minds, and our global City Representatives network."
       />
 
       {/* Header */}
@@ -53,7 +53,7 @@ export default function Programs() {
               </div>
               <div className="md:col-span-9 prose prose-lg prose-slate font-serif text-muted-foreground">
                 <p className="lead text-xl text-foreground mb-6 not-prose font-serif">
-                  MEDX R&amp;Ed's flagship educational program — a structured workshop
+                  MEDX R&amp;Ed's flagship educational program - a structured workshop
                   series on systematic review and meta-analysis methodology,
                   delivered by experienced mentors.
                 </p>
@@ -63,7 +63,7 @@ export default function Programs() {
                       Session Log
                     </h4>
                     <p className="font-semibold text-sm">
-                      2nd FREE Lecture — Introduction to SRMA Basics
+                      2nd FREE Lecture - Introduction to SRMA Basics
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       July 8, 2026 · 8PM PKT · Google Meet
@@ -74,10 +74,10 @@ export default function Programs() {
                       What You Learn
                     </h4>
                     <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>— Why SRMA mentorship is essential</li>
-                      <li>— Systematic review methodology</li>
-                      <li>— Meta-analysis fundamentals</li>
-                      <li>— Publication pathways</li>
+                      <li>- Why SRMA mentorship is essential</li>
+                      <li>- Systematic review methodology</li>
+                      <li>- Meta-analysis fundamentals</li>
+                      <li>- Publication pathways</li>
                     </ul>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default function Programs() {
                       landscape.
                     </p>
                     <p>
-                      Featured Workshop: <strong>Free Letter to the Editor Learning Opportunity</strong> —{" "}
+                      Featured Workshop: <strong>Free Letter to the Editor Learning Opportunity</strong> -{" "}
                       Speaker: Imad Khan (5+ international publications), held July 18, 2026.
                     </p>
                     <a
@@ -145,7 +145,7 @@ export default function Programs() {
                     <div className="absolute -top-3 -right-3 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                     <img
                       src={lteFlyer}
-                      alt="MEDX LTE Free Workshop — Letter to the Editor, Speaker: Imad Khan"
+                      alt="MEDX LTE Free Workshop - Letter to the Editor, Speaker: Imad Khan"
                       className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
                     />
                   </div>
@@ -172,7 +172,7 @@ export default function Programs() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                   <div className="prose prose-lg prose-slate font-serif text-muted-foreground">
                     <p className="lead text-xl text-foreground mb-6 not-prose font-serif">
-                      MEDX R&amp;Ed &times; NSRI BUMHS-LC — Complete Research Week
+                      MEDX R&amp;Ed &times; NSRI BUMHS-LC - Complete Research Week
                     </p>
                     <p>
                       A 6-day intensive online research program covering everything from
@@ -207,7 +207,7 @@ export default function Programs() {
                     <div className="absolute -top-3 -right-3 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                     <img
                       src={researchWeekSchedule}
-                      alt="MEDX × NSRI BUMHS-LC Complete Research Week — Full 6-day schedule"
+                      alt="MEDX × NSRI BUMHS-LC Complete Research Week - Full 6-day schedule"
                       className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
                     />
                   </div>
@@ -268,7 +268,7 @@ export default function Programs() {
                   MEDX Minds addresses two dimensions of student development:
                   scholarly excellence through recorded workshops and learning modules,
                   and mental wellness through peer stories, coping strategies, and
-                  community support — because the best researchers take care of both
+                  community support - because the best researchers take care of both
                   their intellect and their wellbeing.
                 </p>
               </div>
@@ -285,7 +285,7 @@ export default function Programs() {
                   MEDX City Representatives
                 </h2>
                 <p className="font-serif text-muted-foreground">
-                  Our global network of student leaders — building local research
+                  Our global network of student leaders - building local research
                   communities in cities across 8+ countries.
                 </p>
               </div>

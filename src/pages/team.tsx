@@ -3,7 +3,7 @@ import { PageMeta } from "@/components/ui/page-meta";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { User } from "lucide-react";
 
-// Global Main Officers — using real .webp assets
+// Global Main Officers - using real .webp assets
 import sangeenImg from "@assets/sangeen-khan.webp";
 import smyanImg from "@assets/smyan-reddy.webp";
 import sohamImg from "@assets/soham-biren.webp";
@@ -208,7 +208,7 @@ export default function Team() {
     <Layout>
       <PageMeta
         title="Our Team"
-        description="Meet the global main officers, team members, and contributors who power MEDX R&Ed — united by a shared mission to advance medical research and education."
+        description="Meet the global main officers, team members, and contributors who power MEDX R&Ed - united by a shared mission to advance medical research and education."
       />
 
       {/* Header */}
@@ -223,7 +223,7 @@ export default function Team() {
             </h1>
             <div className="section-rule mx-auto mb-6" />
             <p className="font-serif text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
-              A team united for a purpose — working together to build, learn,
+              A team united for a purpose - working together to build, learn,
               research, and create impact through MEDX R&amp;Ed.
             </p>
           </FadeIn>

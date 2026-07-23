@@ -149,7 +149,7 @@
     border-radius: 1px;
   }
 
-  /* Scholarly image treatment — greyscale by default, colour on hover */
+  /* Scholarly image treatment - greyscale by default, colour on hover */
   .img-scholarly {
     @apply grayscale contrast-[1.05] brightness-[0.98];
     transition: filter 0.5s ease;
@@ -164,19 +164,19 @@
   }
 
   /* ── Event / Status Badges ─────────────────────────────────────────── */
-  /* Open for applications — accent maroon */
+  /* Open for applications - accent maroon */
   .badge-open {
     @apply bg-accent/10 text-accent border-accent/25;
   }
-  /* Upcoming — neutral slate */
+  /* Upcoming - neutral slate */
   .badge-upcoming {
     @apply bg-border text-secondary border-border;
   }
-  /* Ongoing — teal/blue-slate to differentiate from "Open" */
+  /* Ongoing - teal/blue-slate to differentiate from "Open" */
   .badge-ongoing {
     @apply bg-blue-50 text-blue-700 border-blue-200;
   }
-  /* Completed / closed — muted grey */
+  /* Completed / closed - muted grey */
   .badge-closed {
     @apply bg-muted text-muted-foreground border-muted;
   }

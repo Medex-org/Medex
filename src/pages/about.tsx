@@ -9,7 +9,7 @@ export default function About() {
     <Layout>
       <PageMeta
         title="About MEDX"
-        description="Learn about the history, mission, and partnerships of MEDX R&Ed — a global student-led platform democratizing access to medical research and education."
+        description="Learn about the history, mission, and partnerships of MEDX R&Ed - a global student-led platform democratizing access to medical research and education."
       />
 
       {/* Header */}
@@ -25,7 +25,7 @@ export default function About() {
             <div className="section-rule mb-8" />
             <p className="font-serif text-xl md:text-2xl text-secondary leading-relaxed max-w-3xl">
               MEDX R&amp;Ed exists to democratize access to medical research and
-              education — connecting students across borders, institutions, and
+              education - connecting students across borders, institutions, and
               disciplines to collaborate, learn, and publish.
             </p>
           </FadeIn>
@@ -45,20 +45,20 @@ export default function About() {
                 MEDX was founded by Sangeen Khan, a medical student whose experience
                 navigating the barriers of clinical research as a student inspired him
                 to build something different. It quickly became clear that the challenges
-                he faced — lack of structured guidance, no access to methodology training,
-                and an absence of global peer networks — were universal.
+                he faced - lack of structured guidance, no access to methodology training,
+                and an absence of global peer networks - were universal.
               </p>
               <p>
                 What began as a small cohort of passionate students evolved into a
                 global organization running systematic review workshops, long-term
-                mentorship programs, and international conference preparation —
+                mentorship programs, and international conference preparation -
                 guided by a singular principle: rigorous, evidence-based medicine
                 should be accessible to all who wish to learn.
               </p>
               <p>
                 Today, MEDX R&amp;Ed spans 8+ countries, with City Representatives
                 building local chapters from Pakistan and Sri Lanka to Colombia and
-                the United States — united under one mission:{" "}
+                the United States - united under one mission:{" "}
                 <em>Together, We Turn Curiosity into Discovery.</em>
               </p>
             </div>
@@ -157,7 +157,7 @@ export default function About() {
               </div>
               <div>
                 <p className="font-semibold text-lg mb-1">
-                  NSRI — National Student Research Institution
+                  NSRI - National Student Research Institution
                 </p>
                 <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-3">
                   BUMHS-LC Chapter · Research Collaboration
@@ -171,7 +171,7 @@ export default function About() {
             </div>
           </FadeIn>
 
-          {/* GradMeta — with image */}
+          {/* GradMeta - with image */}
           <FadeIn>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 border-[1px] border-border bg-card">
               <div>
@@ -191,7 +191,7 @@ export default function About() {
                 <p className="font-serif text-muted-foreground text-sm leading-relaxed mb-4">
                   <strong>Exclusive Member Benefit:</strong> MEDX members receive free
                   access to GradMeta's professional systematic review tool (valued at $50)
-                  — validated against R metafor across core statistical methods.
+                  - validated against R metafor across core statistical methods.
                 </p>
                 <a
                   href="https://forms.gle/yJzGnk4DwmWysygv9"
@@ -211,7 +211,7 @@ export default function About() {
                 <div className="absolute -top-3 -right-3 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                 <img
                   src={partnershipImg}
-                  alt="MEDX R&Ed × GradMeta Partnership — A New Era of Research Collaboration"
+                  alt="MEDX R&Ed × GradMeta Partnership - A New Era of Research Collaboration"
                   className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
                 />
               </div>
@@ -230,7 +230,7 @@ export default function About() {
             "Together, We Turn Curiosity into Discovery"
           </h2>
           <p className="font-mono text-xs uppercase tracking-widest text-primary-foreground/40 mt-8">
-            MEDX R&amp;Ed — Research · Education · Development
+            MEDX R&amp;Ed - Research · Education · Development
           </p>
         </FadeIn>
       </section>
