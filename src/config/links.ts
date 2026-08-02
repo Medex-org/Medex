@@ -35,10 +35,8 @@ export const LINKS = {
     linkedin:
       "https://www.linkedin.com/company/medx-medical-exchange-research-and-education",
     instagram: "https://www.instagram.com/medxresearch_education",
-    // NEEDS REAL LINK - MEDX WhatsApp community invite not yet supplied.
-    whatsappCommunity: MEMBERSHIP_FORM,
-    // NEEDS REAL LINK - MEDX WhatsApp broadcast channel not yet supplied.
-    whatsappChannel: MEMBERSHIP_FORM,
+    whatsappCommunity: "https://chat.whatsapp.com/Gxqcdg1itm1La2Yt2d1EdO",
+    whatsappChannel: "https://whatsapp.com/channel/0029VbAYOnk7DAWpfVCs8V1Y",
   },
 
   email: "connect@medx.org",
