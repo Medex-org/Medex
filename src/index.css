@@ -1,0 +1,323 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+/* Self-hosted fonts (variable, latin + latin-ext subsets only) - avoids the
+   extra DNS/TLS round trip to fonts.googleapis.com + fonts.gstatic.com that
+   a Google Fonts <link> would add as a second render-blocking origin. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-normal-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-normal-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-ongoing: hsl(var(--ongoing));
+
+  /* Brand navy footer - intentionally does not flip with the theme toggle */
+  --color-footer: hsl(var(--footer-background));
+  --color-footer-foreground: hsl(var(--footer-foreground));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+}
+
+:root {
+  /* Cream background */
+  --background: 43 33% 95%;
+  /* Navy foreground */
+  --foreground: 215 56% 12%;
+
+  /* Thin dividers */
+  --border: 215 16% 84%;
+  --input: 215 16% 84%;
+  --ring: 215 56% 12%;
+
+  /* Slightly lighter cream for cards */
+  --card: 43 33% 97%;
+  --card-foreground: 215 56% 12%;
+  --card-border: 215 16% 84%;
+
+  --popover: 43 33% 97%;
+  --popover-foreground: 215 56% 12%;
+  --popover-border: 215 16% 84%;
+
+  /* Navy primary */
+  --primary: 215 56% 12%;
+  --primary-foreground: 43 33% 95%;
+
+  /* Slate secondary */
+  --secondary: 215 16% 44%;
+  --secondary-foreground: 43 33% 95%;
+
+  /* Muted slate/charcoal */
+  --muted: 215 16% 90%;
+  --muted-foreground: 215 16% 44%;
+
+  /* Maroon accent */
+  --accent: 0 70% 30%;
+  --accent-foreground: 43 33% 95%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Ongoing status - blue, distinct from accent maroon */
+  --ongoing: 210 65% 42%;
+
+  /* Brand navy footer - fixed across both themes, see .dark below */
+  --footer-background: 215 56% 10%;
+  --footer-foreground: 43 33% 95%;
+
+  /* Card elevation - soft drop shadow reads fine against the light cream bg */
+  --card-shadow: 0 1px 2px rgba(30, 27, 20, 0.05), 0 3px 10px rgba(30, 27, 20, 0.06);
+  --card-shadow-hover: 0 4px 10px rgba(30, 27, 20, 0.07), 0 12px 28px rgba(30, 27, 20, 0.1);
+
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-serif: 'Lora', serif;
+  --app-font-mono: 'JetBrains Mono', monospace;
+}
+
+.dark {
+  --background: 215 56% 10%;
+  --foreground: 43 33% 95%;
+  --border: 217 33% 22%;
+  --input: 217 33% 22%;
+  --ring: 43 33% 95%;
+  --card: 217 33% 15%;
+  --card-foreground: 43 33% 95%;
+  --card-border: 217 33% 22%;
+  --popover: 217 33% 15%;
+  --popover-foreground: 43 33% 95%;
+  --popover-border: 217 33% 22%;
+  --primary: 43 33% 95%;
+  --primary-foreground: 215 56% 12%;
+  --secondary: 215 16% 47%;
+  --secondary-foreground: 43 33% 95%;
+  --muted: 217 33% 20%;
+  --muted-foreground: 215 16% 65%;
+  --accent: 0 68% 32%;
+  --accent-foreground: 43 33% 95%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --ongoing: 210 80% 65%;
+  /* --footer-background / --footer-foreground intentionally not overridden -
+     the footer stays brand navy in both themes. */
+
+  /* Dark mode: a soft rgba shadow all but disappears against a near-black
+     page background, so elevation reads mainly through a lighter border
+     here, with a tighter, darker shadow underneath for a little depth. */
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --card-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Seamless theme toggle - scoped to a class stamped briefly on <html> by
+     ThemeToggle, so every element eases between light/dark CSS vars without
+     putting a 300ms transition on ordinary hovers/interactions site-wide. */
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-medium tracking-tight;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  hr {
+    @apply border-t-[1px] border-border my-8;
+  }
+
+  /* Focus-visible ring for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Photo treatment - full colour always; a gentle zoom signals depth on hover */
+  .img-scholarly {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .img-scholarly:hover {
+    transform: scale(1.04);
+  }
+
+  /* Thin accent line decoration */
+  .section-rule {
+    @apply w-12 h-[1px] bg-accent;
+  }
+
+  /* Card elevation - applies wherever the shared `bg-card` surface is used,
+     so it reaches every card on the site from one place. Also rounds the
+     corners a touch, since a hard 0px radius under a shadow reads harsh. */
+  .bg-card {
+    box-shadow: var(--card-shadow);
+    border-radius: 0.375rem;
+    transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Gentle lift + shadow expansion on hover, on every card surface. */
+  .bg-card:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Low-opacity molecular-node texture - a subtle nod to the medical/
+     research aesthetic, layered behind hero/header sections at very low
+     opacity (apply via a low-opacity wrapper, same pattern as the hero). */
+  .bg-texture-molecular {
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.5) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  /* ── Event / Status Badges ─────────────────────────────────────────── */
+  /* Open for applications - accent maroon */
+  .badge-open {
+    @apply bg-accent/10 text-accent border-accent/25;
+  }
+  /* Upcoming - neutral slate */
+  .badge-upcoming {
+    @apply bg-border text-secondary border-border;
+  }
+  /* Ongoing - blue, differentiated from "Open" maroon, dark-mode aware */
+  .badge-ongoing {
+    @apply bg-ongoing/10 text-ongoing border-ongoing/25;
+  }
+  /* Completed / closed - muted grey */
+  .badge-closed {
+    @apply bg-muted text-muted-foreground border-muted;
+  }
+}
