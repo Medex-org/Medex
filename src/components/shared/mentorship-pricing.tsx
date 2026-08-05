@@ -58,7 +58,7 @@ export function MentorshipPricing() {
               href={LINKS.menteeForm}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors w-fit"
+              className="inline-flex w-full items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors"
             >
               Apply for This Tier <ArrowRight size={13} aria-hidden="true" />
             </a>

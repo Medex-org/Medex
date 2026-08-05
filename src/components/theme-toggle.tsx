@@ -25,7 +25,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
-      className={`relative flex items-center justify-center h-10 w-10 rounded-sm text-foreground hover:bg-muted transition-colors ${className}`}
+      className={`relative flex items-center justify-center h-11 w-11 rounded-sm text-foreground hover:bg-muted transition-colors ${className}`}
     >
       <Sun
         size={18}

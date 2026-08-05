@@ -112,7 +112,7 @@ export default function About() {
             <div className="section-rule mb-8" />
           </FadeIn>
           <FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-20">
               {[
                 "Official MEDX E-Card with your photo",
                 "Global Recognition on MEDX website",
@@ -129,12 +129,12 @@ export default function About() {
               ].map((benefit, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 p-4 border-[1px] border-border bg-card text-sm"
+                  className="flex items-center gap-3 p-3 border-[1px] border-border bg-card text-sm"
                 >
                   <span className="font-mono text-xs text-accent flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="font-sans text-muted-foreground">{benefit}</span>
+                  <span className="font-sans text-muted-foreground text-xs leading-snug">{benefit}</span>
                 </div>
               ))}
             </div>
@@ -153,7 +153,7 @@ export default function About() {
             </div>
             <Link
               href="/partnerships"
-              className="whitespace-nowrap px-6 py-3 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest hover:bg-primary/90 transition-colors flex-shrink-0"
+              className="w-full sm:w-fit px-6 py-3 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest hover:bg-primary/90 transition-colors text-center flex-shrink-0"
             >
               View Partnerships
             </Link>

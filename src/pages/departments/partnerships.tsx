@@ -18,8 +18,8 @@ export default function DepartmentPartnerships() {
         <div className="max-w-4xl mx-auto">
           <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Departments" }, { label: "Partnerships" }]} />
           <FadeIn>
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex items-center justify-center gap-2">
-              <Handshake size={14} aria-hidden="true" /> Department of Partnerships &amp; External Affairs
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <Handshake size={14} className="flex-shrink-0" aria-hidden="true" /> Department of Partnerships &amp; External Affairs
             </p>
             <h1 className="text-4xl md:text-6xl font-semibold mb-4 text-primary">
               Strategic Collaborations
@@ -69,7 +69,7 @@ export default function DepartmentPartnerships() {
             </p>
             <SimpleApplicationModal
               trigger={
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-sm hover:bg-accent/90 transition-colors">
+                <button className="inline-flex w-full sm:w-auto items-center justify-center gap-2 whitespace-normal px-6 py-3 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors">
                   Submit a Partnership Proposal <ArrowRight size={16} aria-hidden="true" />
                 </button>
               }

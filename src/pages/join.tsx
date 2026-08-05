@@ -168,9 +168,9 @@ export default function Join() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 px-4 sm:px-6 bg-card border-y-[1px] border-border">
+      <section className="py-24 px-4 sm:px-6 bg-card border-y-[1px] border-border overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <FadeIn>
               <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">
                 Why Join?
@@ -233,9 +233,9 @@ export default function Join() {
       </section>
 
       {/* Campus Ambassador Feature */}
-      <section className="py-24 px-4 sm:px-6">
+      <section className="py-24 px-4 sm:px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <FadeIn direction="right">
               <div className="relative">
                 <div className="absolute -top-4 -left-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />

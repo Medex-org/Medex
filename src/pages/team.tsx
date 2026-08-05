@@ -118,7 +118,7 @@ export default function Team() {
                 href={LINKS.membershipForm}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-auto inline-flex items-center gap-1.5 px-5 py-3 border-[1px] border-primary text-primary text-xs font-semibold uppercase tracking-widest hover:bg-primary/5 transition-colors"
+                className="mt-auto inline-flex items-center gap-1.5 px-5 py-3.5 border-[1px] border-primary text-primary text-xs font-semibold uppercase tracking-widest hover:bg-primary/5 transition-colors"
               >
                 Apply to Volunteer <ArrowRight size={12} aria-hidden="true" />
               </a>
@@ -131,7 +131,7 @@ export default function Team() {
               </p>
               <Link
                 href="/city-reps"
-                className="mt-auto inline-flex items-center gap-1.5 px-5 py-3 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors"
+                className="mt-auto inline-flex items-center gap-1.5 px-5 py-3.5 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors"
               >
                 View Regional Dashboard <ArrowRight size={12} aria-hidden="true" />
               </Link>

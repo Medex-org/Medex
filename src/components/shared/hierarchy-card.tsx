@@ -41,7 +41,7 @@ export function HierarchyCard({ person, featured = false }: { person: HierarchyP
           href={LINKS.membershipForm}
           target="_blank"
           rel="noreferrer"
-          className="mt-auto inline-flex items-center gap-1.5 px-4 py-3 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors"
+          className="mt-auto inline-flex items-center gap-1.5 px-4 py-3.5 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors"
         >
           Apply Now <ArrowRight size={12} aria-hidden="true" />
         </a>
@@ -83,7 +83,7 @@ export function HierarchyCard({ person, featured = false }: { person: HierarchyP
               target="_blank"
               rel="noreferrer"
               aria-label={`${person.name} on LinkedIn`}
-              className="text-secondary hover:text-accent transition-colors"
+              className="p-2 -m-2 text-secondary hover:text-accent transition-colors"
             >
               <FaLinkedin size={16} />
             </a>
@@ -94,7 +94,7 @@ export function HierarchyCard({ person, featured = false }: { person: HierarchyP
               target="_blank"
               rel="noreferrer"
               aria-label={`${person.name} on Instagram`}
-              className="text-secondary hover:text-accent transition-colors"
+              className="p-2 -m-2 text-secondary hover:text-accent transition-colors"
             >
               <FaInstagram size={16} />
             </a>

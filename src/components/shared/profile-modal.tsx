@@ -52,8 +52,8 @@ export function ProfileModal({ mentor, trigger, footer }: ProfileModalProps) {
                 </div>
               )}
             </div>
-            <div>
-              <DialogTitle className="text-xl text-foreground">{mentor.name}</DialogTitle>
+            <div className="min-w-0 flex-1">
+              <DialogTitle className="text-xl text-foreground break-words">{mentor.name}</DialogTitle>
               <p className="font-mono text-xs uppercase tracking-widest text-accent mt-1">
                 {mentor.role}
               </p>

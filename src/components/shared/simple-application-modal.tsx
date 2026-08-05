@@ -152,7 +152,7 @@ export function SimpleApplicationModal({
             <DialogFooter>
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors"
               >
                 {submitLabel} <ArrowRight size={13} aria-hidden="true" />
               </button>

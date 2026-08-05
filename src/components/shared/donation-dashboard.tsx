@@ -5,7 +5,7 @@ import { HeartHandshake, Trophy, FlaskConical, Users } from "lucide-react";
 export function DonationDashboard() {
   return (
     <Tabs defaultValue="donor" className="w-full">
-      <TabsList className="mb-8">
+      <TabsList className="mb-8 h-11">
         <TabsTrigger value="donor">Donor View</TabsTrigger>
         <TabsTrigger value="member">Member View</TabsTrigger>
       </TabsList>
@@ -13,7 +13,7 @@ export function DonationDashboard() {
       {/* ── Donor View: public transparency board ──────────────────────── */}
       <TabsContent value="donor" className="mt-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="p-8 border-[1px] border-border bg-card">
+          <div className="p-6 md:p-8 border-[1px] border-border bg-card">
             <div className="flex items-center gap-2 mb-6">
               <Trophy size={18} className="text-accent" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-mono text-xs uppercase tracking-widest text-secondary">
@@ -27,7 +27,7 @@ export function DonationDashboard() {
             </div>
           </div>
 
-          <div className="p-8 border-[1px] border-border bg-card flex flex-col">
+          <div className="p-6 md:p-8 border-[1px] border-border bg-card flex flex-col">
             <div className="flex items-center gap-2 mb-6">
               <HeartHandshake size={18} className="text-accent" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-mono text-xs uppercase tracking-widest text-secondary">
@@ -41,7 +41,7 @@ export function DonationDashboard() {
             </p>
             <SimpleApplicationModal
               trigger={
-                <button className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors w-fit">
+                <button className="inline-flex w-full items-center justify-center gap-2 whitespace-normal px-6 py-3 text-center bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors">
                   Donate to Support Student Research
                 </button>
               }

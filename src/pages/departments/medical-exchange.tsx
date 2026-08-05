@@ -31,8 +31,8 @@ export default function DepartmentMedicalExchange() {
         <div className="max-w-4xl mx-auto">
           <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Departments" }, { label: "Medical Exchange" }]} />
           <FadeIn>
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex items-center justify-center gap-2">
-              <Globe2 size={14} aria-hidden="true" /> Department of Medical Exchange
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <Globe2 size={14} className="flex-shrink-0" aria-hidden="true" /> Department of Medical Exchange
             </p>
             <h1 className="text-4xl md:text-6xl font-semibold mb-4 text-primary">Medical Exchange</h1>
             <div className="section-rule mx-auto mb-6" />

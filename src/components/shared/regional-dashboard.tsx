@@ -57,27 +57,27 @@ export function RegionalDashboard({ entries }: { entries: RepEntry[] }) {
               </span>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="pl-6 space-y-5 border-l-[1px] border-border ml-2">
+              <div className="pl-2 sm:pl-6 space-y-5 border-l-[1px] border-border ml-0 sm:ml-2">
                 {states.map((state) => (
                   <div key={state}>
                     <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-3">
                       {state}
                     </p>
-                    <div className="space-y-4 pl-4">
+                    <div className="space-y-4 pl-2 sm:pl-4">
                       {Object.keys(tree[country][state])
                         .sort()
                         .map((city) => (
                           <div key={city}>
                             <p className="text-sm font-semibold mb-2">{city}</p>
-                            <div className="space-y-3 pl-4">
+                            <div className="space-y-3 pl-2 sm:pl-4">
                               {Object.keys(tree[country][state][city])
                                 .sort()
                                 .map((campus) => (
-                                  <div key={campus} className="border-l-2 border-accent/20 pl-4">
+                                  <div key={campus} className="border-l-2 border-accent/20 pl-2 sm:pl-4">
                                     <p className="text-xs text-muted-foreground font-mono mb-2">{campus}</p>
                                     <ul className="space-y-1.5">
                                       {tree[country][state][city][campus].map((entry, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm">
+                                        <li key={i} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
                                           <User size={12} className="text-accent flex-shrink-0" aria-hidden="true" />
                                           <span className="font-medium">{entry.name}</span>
                                           <span className="text-xs text-muted-foreground font-mono uppercase tracking-widest">

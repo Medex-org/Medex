@@ -36,7 +36,7 @@ export function ResearchTracker({ projects }: { projects: ResearchProject[] }) {
               </span>
             </div>
             <Progress value={pct} className="h-1.5" aria-label={`${p.title} progress`} />
-            <div className="flex justify-between mt-2 text-xs font-mono text-muted-foreground">
+            <div className="flex flex-wrap gap-x-2 gap-y-1 justify-between mt-2 text-xs font-mono text-muted-foreground">
               <span>Started {format(new Date(p.startDate), "MMM d")}</span>
               <span>Expected {format(new Date(p.endDate), "MMM d")}</span>
             </div>

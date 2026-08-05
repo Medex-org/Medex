@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import medxLogo from "@assets/medx-logo.png";
 import medxLogoWebp from "@assets/medx-logo.webp";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SearchButton } from "@/components/search-button";
+import { CommandPalette } from "@/components/command-palette";
 import { DEPARTMENTS } from "@/data/departments";
 import { LINKS, BRAND } from "@/config/links";
 import {
@@ -17,6 +19,7 @@ import {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [location] = useLocation();
 
@@ -153,6 +156,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
 
+            <SearchButton onClick={() => setPaletteOpen(true)} />
+
             <ThemeToggle />
 
             <Link
@@ -165,8 +170,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-1 md:hidden">
             <ThemeToggle />
+            <SearchButton compact onClick={() => setPaletteOpen(true)} />
             <button
-              className="p-2 -mr-2 text-foreground rounded-sm hover:bg-muted transition-colors"
+              className="p-2.5 -mr-2 text-foreground rounded-sm hover:bg-muted transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
@@ -366,6 +372,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
     </div>
   );
 }

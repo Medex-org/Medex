@@ -78,7 +78,7 @@ export default function DepartmentMedxMinds() {
             <div className="section-rule" />
           </FadeIn>
 
-          <FadeIn className="p-10 border-[1px] border-border bg-background mb-10">
+          <FadeIn className="p-6 sm:p-10 border-[1px] border-border bg-background mb-10">
             <BookHeart size={22} className="text-accent mb-5" strokeWidth={1.5} aria-hidden="true" />
             <h3 className="text-2xl font-semibold mb-2">"Still Becoming: From the Mountains to Medicine"</h3>
             <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-5">By Dr. Faria Ali</p>

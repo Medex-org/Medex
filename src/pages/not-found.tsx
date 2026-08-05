@@ -16,7 +16,7 @@ export default function NotFound() {
         <p className="font-mono text-xs uppercase tracking-[0.25em] text-secondary mb-6">
           Error 404
         </p>
-        <h1 className="font-mono text-[8rem] md:text-[12rem] leading-none font-semibold text-muted/60 tracking-tighter mb-0 select-none" aria-hidden="true">
+        <h1 className="font-mono text-[6rem] sm:text-[8rem] md:text-[12rem] leading-none font-semibold text-muted/60 tracking-tighter mb-0 select-none" aria-hidden="true">
           404
         </h1>
         <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6 -mt-4">

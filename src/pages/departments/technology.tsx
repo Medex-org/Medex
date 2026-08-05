@@ -22,8 +22,8 @@ export default function DepartmentTechnology() {
         <div className="max-w-4xl mx-auto">
           <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Departments" }, { label: "Technology & Innovation" }]} />
           <FadeIn>
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex items-center justify-center gap-2">
-              <Cpu size={14} aria-hidden="true" /> Department of Technology &amp; Innovation
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <Cpu size={14} className="flex-shrink-0" aria-hidden="true" /> Department of Technology &amp; Innovation
             </p>
             <h1 className="text-4xl md:text-6xl font-semibold mb-4 text-primary">
               Tech &amp; LMS Hub
@@ -54,7 +54,7 @@ export default function DepartmentTechnology() {
           <StaggerContainer className="space-y-4">
             {COURSES.map((c) => (
               <StaggerItem key={c.title} className="p-6 border-[1px] border-border bg-card">
-                <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between mb-3 gap-x-4">
+                <div className="flex flex-col items-start gap-y-2 sm:flex-row sm:items-center sm:justify-between mb-3 gap-x-4">
                   <div className="flex items-center gap-3">
                     <BookOpen size={16} className="text-accent flex-shrink-0" strokeWidth={1.5} aria-hidden="true" />
                     <h3 className="font-semibold text-sm">{c.title}</h3>
@@ -88,21 +88,21 @@ export default function DepartmentTechnology() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StaggerItem className="p-8 border-[1px] border-border bg-background">
+            <StaggerItem className="p-6 sm:p-8 border-[1px] border-border bg-background">
               <BookOpen size={24} className="text-accent mb-5" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-3">Course Tracking</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Progress tracking across every MEDX workshop and cohort, in one place.
               </p>
             </StaggerItem>
-            <StaggerItem className="p-8 border-[1px] border-border bg-background">
+            <StaggerItem className="p-6 sm:p-8 border-[1px] border-border bg-background">
               <Award size={24} className="text-accent mb-5" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-3">Certificate Generation</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Automatic, verifiable certificates issued the moment a course is completed.
               </p>
             </StaggerItem>
-            <StaggerItem className="p-8 border-[1px] border-border bg-background">
+            <StaggerItem className="p-6 sm:p-8 border-[1px] border-border bg-background">
               <Bot size={24} className="text-accent mb-5" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-3">AI-Assisted Study Companion</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
@@ -117,7 +117,7 @@ export default function DepartmentTechnology() {
       {/* AI Companion Preview Card */}
       <section className="py-24 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <FadeIn className="p-10 border-[1px] border-dashed border-border bg-card flex flex-col items-center text-center">
+          <FadeIn className="p-6 sm:p-10 border-[1px] border-dashed border-border bg-card flex flex-col items-center text-center">
             <Lock size={22} className="text-muted-foreground mb-5" strokeWidth={1.5} aria-hidden="true" />
             <h3 className="text-xl font-semibold mb-3">AI Study Companion</h3>
             <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-sm mb-6">

@@ -2,6 +2,8 @@ import { Layout } from "@/components/layout";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
+import { CountUp } from "@/components/ui/count-up";
+import { useReducedMotion } from "framer-motion";
 import { ArrowRight, Mic } from "lucide-react";
 import { Link } from "wouter";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
@@ -9,6 +11,7 @@ import { PartnerCard } from "@/components/shared/partner-card";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
 import { PARTNERS } from "@/data/partners";
 import { DEPARTMENTS } from "@/data/departments";
+import { IMPACT_STATS } from "@/data/stats";
 import { LINKS, BRAND } from "@/config/links";
 
 import srmaImg from "@assets/medx-systematic-review-and-meta-analysis-project.webp";
@@ -91,47 +94,75 @@ const JOIN_ROLES = [
 ];
 
 export default function Home() {
+  const reduceMotion = useReducedMotion() ?? false;
+
   return (
     <Layout>
       <PageMeta {...SEO.home} />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-24 px-4 sm:px-6 overflow-hidden flex flex-col items-center text-center">
+      <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 overflow-hidden flex flex-col items-center text-center">
         <div className="absolute inset-0 z-0 opacity-[0.06] pointer-events-none bg-texture-molecular" aria-hidden="true" />
         <div className="absolute inset-0 z-0 pointer-events-none bg-radial-[at_50%_0%] from-accent/5 to-transparent" aria-hidden="true" />
 
-        <FadeIn className="relative z-10 max-w-4xl mx-auto">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-secondary mb-6">
-            Medical Exchange · Research · Education
-          </p>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.05] text-primary mb-8">
-            Where Curiosity<br />
-            <em className="font-serif font-light not-italic text-accent">Becomes Discovery</em>
-          </h1>
-          <p className="font-sans text-xl md:text-2xl text-secondary max-w-2xl mx-auto leading-relaxed mb-4">
-            A global community of medical and health-science students united by
-            rigorous methodology, cross-border mentorship, and the pursuit of
-            evidence-based medicine.
-          </p>
-          <p className="font-sans italic text-lg text-accent mb-10">&ldquo;{BRAND.motto}&rdquo;</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={LINKS.membershipForm}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-sm hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 group"
-            >
-              Join MEDX{" "}
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </a>
-            <Link
-              href="/research"
-              className="w-full sm:w-auto px-8 py-4 border-[1px] border-primary text-primary font-semibold tracking-widest uppercase text-sm hover:bg-primary/5 transition-colors text-center"
-            >
-              Explore Departments
-            </Link>
-          </div>
-        </FadeIn>
+        <StaggerContainer reduceMotion={reduceMotion} className="relative z-10 max-w-4xl mx-auto w-full">
+          <StaggerItem reduceMotion={reduceMotion}>
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-secondary mb-5">
+              Medical Exchange · Research · Education
+            </p>
+          </StaggerItem>
+          <StaggerItem reduceMotion={reduceMotion}>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.05] text-primary mb-6 text-balance">
+              Where Curiosity<br />
+              <em className="font-serif font-light not-italic text-accent">Becomes Discovery</em>
+            </h1>
+          </StaggerItem>
+          <StaggerItem reduceMotion={reduceMotion}>
+            <p className="font-sans text-xl md:text-2xl text-secondary max-w-2xl mx-auto leading-relaxed mb-4 text-pretty">
+              A global community of medical and health-science students united by
+              rigorous methodology, cross-border mentorship, and the pursuit of
+              evidence-based medicine.
+            </p>
+          </StaggerItem>
+          <StaggerItem reduceMotion={reduceMotion}>
+            <p className="font-sans italic text-lg text-accent mb-8">&ldquo;{BRAND.motto}&rdquo;</p>
+          </StaggerItem>
+          <StaggerItem reduceMotion={reduceMotion}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href={LINKS.membershipForm}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto px-8 py-4 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-sm hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Join MEDX{" "}
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              </a>
+              <Link
+                href="/research"
+                className="w-full sm:w-auto px-8 py-4 border-[1px] border-primary text-primary font-semibold tracking-widest uppercase text-sm hover:bg-primary/5 transition-colors text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                Explore Departments
+              </Link>
+            </div>
+          </StaggerItem>
+          <StaggerItem reduceMotion={reduceMotion}>
+            <div className="mt-12 w-full max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-y-8 border-t-[1px] border-border pt-8">
+              {IMPACT_STATS.map((s) => (
+                <div key={s.label} className="text-center">
+                  <CountUp
+                    value={s.value}
+                    suffix={s.suffix}
+                    className="font-mono text-2xl sm:text-3xl text-accent font-semibold tracking-tight"
+                  />
+                  <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mt-1">
+                    {s.short}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </StaggerItem>
+        </StaggerContainer>
       </section>
 
       {/* ── MEDX at a Glance ─────────────────────────────────────────── */}
@@ -167,15 +198,11 @@ export default function Home() {
           </StaggerContainer>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t-[1px] border-border">
-            {[
-              { num: "10+", label: "Countries" },
-              { num: "20+", label: "Cities" },
-              { num: "700+", label: "Students Reached" },
-              { num: "5", label: "Active Programs" },
-            ].map((s, i) => (
-              <StaggerItem key={i} className="text-center">
+            {IMPACT_STATS.map((s) => (
+              <StaggerItem key={s.label} className="text-center">
                 <div className="font-mono text-3xl md:text-4xl text-accent mb-2 font-semibold tracking-tight">
-                  {s.num}
+                  {s.value}
+                  {s.suffix}
                 </div>
                 <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                   {s.label}

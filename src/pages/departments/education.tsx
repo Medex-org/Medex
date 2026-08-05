@@ -43,8 +43,8 @@ export default function DepartmentEducation() {
         <div className="max-w-4xl mx-auto">
           <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Departments" }, { label: "Education" }]} />
           <FadeIn>
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex items-center justify-center gap-2">
-              <GraduationCap size={14} aria-hidden="true" /> Department of Education
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <GraduationCap size={14} className="flex-shrink-0" aria-hidden="true" /> Department of Education
             </p>
             <h1 className="text-4xl md:text-6xl font-semibold mb-4 text-primary">
               Education &amp; Higher Pathways
@@ -117,7 +117,7 @@ export default function DepartmentEducation() {
       <section className="py-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
-            <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 text-center">
               <Sparkles size={22} className="text-accent" strokeWidth={1.5} aria-hidden="true" />
               <span className="font-mono text-xs uppercase tracking-widest text-secondary">
                 AI-Assisted Learning &amp; Teaching
@@ -132,7 +132,7 @@ export default function DepartmentEducation() {
             </p>
             <SimpleApplicationModal
               trigger={
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-sm hover:bg-accent/90 transition-colors">
+                <button className="inline-flex w-full sm:w-auto items-center justify-center gap-2 whitespace-normal px-6 py-3 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors">
                   Apply to Become an Educationist <ArrowRight size={16} aria-hidden="true" />
                 </button>
               }

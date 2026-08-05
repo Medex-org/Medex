@@ -82,7 +82,7 @@ export function SectionNav({ items }: { items: SectionNavItem[] }) {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className={`inline-block px-4 py-3 text-xs font-mono uppercase tracking-widest border-b-2 transition-colors ${
+              className={`inline-block px-4 py-3.5 text-xs font-mono uppercase tracking-widest border-b-2 transition-colors ${
                 active === item.id
                   ? "border-accent text-accent"
                   : "border-transparent text-muted-foreground hover:text-foreground"

@@ -17,7 +17,7 @@ export interface Partner {
  */
 export function PartnerCard({ partner }: { partner: Partner }) {
   return (
-    <div className="h-full p-8 border-[1px] border-border bg-card flex flex-col items-center text-center hover:border-accent/25 transition-colors">
+    <div className="h-full p-6 md:p-8 border-[1px] border-border bg-card flex flex-col items-center text-center hover:border-accent/25 transition-colors">
       <div className="w-16 h-16 rounded-full border-[1px] border-border bg-background flex items-center justify-center mb-5" aria-hidden={!!partner.logo}>
         {partner.logo ? (
           <img src={partner.logo} alt={`${partner.name} logo`} className="w-full h-full object-contain rounded-full" loading="lazy" decoding="async" />
@@ -36,7 +36,7 @@ export function PartnerCard({ partner }: { partner: Partner }) {
             target="_blank"
             rel="noreferrer"
             aria-label={`${partner.name} on LinkedIn`}
-            className="p-2 -m-2 text-secondary hover:text-accent transition-colors"
+            className="p-3 -m-3 text-secondary hover:text-accent transition-colors"
           >
             <FaLinkedin size={18} />
           </a>
@@ -47,7 +47,7 @@ export function PartnerCard({ partner }: { partner: Partner }) {
             target="_blank"
             rel="noreferrer"
             aria-label={`${partner.name} on Instagram`}
-            className="p-2 -m-2 text-secondary hover:text-accent transition-colors"
+            className="p-3 -m-3 text-secondary hover:text-accent transition-colors"
           >
             <FaInstagram size={18} />
           </a>

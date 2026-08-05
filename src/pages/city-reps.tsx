@@ -5,12 +5,12 @@ import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { ArrowRight } from "lucide-react";
 import { RegionalDashboard } from "@/components/shared/regional-dashboard";
+import { GlobalPresenceMap } from "@/components/shared/global-presence-map";
 import { REGIONAL_LEADERSHIP } from "@/data/regional-leadership";
+import { computePresenceStats } from "@/data/presence";
 import { LINKS } from "@/config/links";
 
-const countryCount = new Set(REGIONAL_LEADERSHIP.map((r) => r.country)).size;
-const repCount = REGIONAL_LEADERSHIP.filter((r) => r.role === "City Representative").length;
-const ambassadorCount = REGIONAL_LEADERSHIP.filter((r) => r.role === "Campus Ambassador").length;
+const stats = computePresenceStats(REGIONAL_LEADERSHIP);
 
 export default function CityReps() {
   return (
@@ -38,15 +38,15 @@ export default function CityReps() {
       </section>
 
       {/* Stats Bar */}
-      <section className="bg-primary text-primary-foreground border-b-[1px] border-border">
-        <StaggerContainer className="max-w-7xl mx-auto grid grid-cols-3 divide-x divide-primary-foreground/10">
+      <section className="bg-primary text-primary-foreground border-b-[1px] border-border px-4 sm:px-6">
+        <StaggerContainer className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-primary-foreground/10">
           {[
-            { num: `${countryCount}`, label: "Countries Represented Below" },
-            { num: `${repCount}`, label: "City Representatives" },
-            { num: `${ambassadorCount}`, label: "Campus Ambassadors" },
+            { num: `${stats.countries}`, label: "Countries Represented Below" },
+            { num: `${stats.cityReps}`, label: "City Representatives" },
+            { num: `${stats.ambassadors}`, label: "Campus Ambassadors" },
           ].map((s, i) => (
             <StaggerItem key={i} className="py-8 text-center">
-              <div className="font-mono text-3xl text-accent mb-1 font-semibold tracking-tight">
+              <div className="font-mono text-2xl sm:text-3xl text-accent mb-1 font-semibold tracking-tight">
                 {s.num}
               </div>
               <div className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/50">
@@ -92,6 +92,9 @@ export default function CityReps() {
           </FadeIn>
         </div>
       </section>
+
+      {/* MEDX Around the World */}
+      <GlobalPresenceMap entries={REGIONAL_LEADERSHIP} />
 
       {/* Regional Dashboard */}
       <section className="py-24 px-4 sm:px-6">

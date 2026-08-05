@@ -31,7 +31,7 @@ export function LteEnrollment() {
   }
 
   return (
-    <div className="p-8 border-[1px] border-border bg-card">
+    <div className="p-6 md:p-8 border-[1px] border-border bg-card">
       <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-1">Cohort Leads</p>
       <p className="font-sans text-sm text-muted-foreground mb-6">Sasha Zaki &amp; Bisma Bashir</p>
 
@@ -87,7 +87,7 @@ export function LteEnrollment() {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-xs hover:bg-accent/90 transition-colors"
             >
               <Mail size={13} aria-hidden="true" /> Request Enrollment
             </button>
@@ -95,7 +95,7 @@ export function LteEnrollment() {
               href={LINKS.menteeForm}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 border-[1px] border-border font-semibold tracking-widest uppercase text-xs hover:bg-muted transition-colors"
+              className="inline-flex w-full items-center justify-center gap-2 whitespace-normal px-6 py-3.5 border-[1px] border-border font-semibold tracking-widest uppercase text-xs hover:bg-muted transition-colors"
             >
               Or Apply via Mentee Form <ArrowRight size={13} aria-hidden="true" />
             </a>

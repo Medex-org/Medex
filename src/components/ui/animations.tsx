@@ -35,7 +35,15 @@ export function FadeIn({
   );
 }
 
-export function StaggerContainer({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+export function StaggerContainer({
+  children,
+  className = "",
+  reduceMotion = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  reduceMotion?: boolean;
+}) {
   return (
     <motion.div
       initial="hidden"
@@ -45,9 +53,9 @@ export function StaggerContainer({ children, className = "" }: { children: React
         hidden: {},
         show: {
           transition: {
-            staggerChildren: 0.15
-          }
-        }
+            staggerChildren: reduceMotion ? 0 : 0.15,
+          },
+        },
       }}
       className={className}
     >
@@ -56,12 +64,26 @@ export function StaggerContainer({ children, className = "" }: { children: React
   );
 }
 
-export function StaggerItem({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+export function StaggerItem({
+  children,
+  className = "",
+  reduceMotion = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  reduceMotion?: boolean;
+}) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] } }
+        hidden: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
+        show: {
+          opacity: 1,
+          y: 0,
+          transition: reduceMotion
+            ? { duration: 0.4, ease: "easeOut" }
+            : { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+        },
       }}
       className={className}
     >
