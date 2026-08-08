@@ -25,11 +25,22 @@ jobs:
         with:
           node-version: 22
 
+      - name: Fix package manager conflicts
+        run: |
+          rm -f package-lock.json
+          npm pkg delete packageManager || true
+          npm pkg delete scripts.preinstall || true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build website
-        run: npm run build --workspace=apps/website
+        run: pnpm --filter ./apps/website build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
