@@ -2,7 +2,7 @@ name: Deploy Website to GitHub Pages
 
 on:
   push:
-    branches: ["main", "shanmuka"]
+    branches: ["shanmuka"]
 
 permissions:
   contents: read
@@ -28,11 +28,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'pnpm'
+          node-version: 22
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile # Fixed!
 
       - name: Build website
         run: pnpm --filter website build
