@@ -2,7 +2,7 @@ name: Deploy Website to GitHub Pages
 
 on:
   push:
-    branches: ["main", "shanmuka"] # Included your working branch!
+  branches: ["main", "shanmuka", "medx-color-theme"]
 
 permissions:
   contents: read
