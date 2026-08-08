@@ -23,7 +23,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,6 +35,9 @@ jobs:
         run: pnpm install
 
       - name: Build website
+        env:
+          PORT: 19761
+          BASE_PATH: /
         run: pnpm --filter website build
 
       - name: Upload artifact
