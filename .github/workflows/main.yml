@@ -40,18 +40,18 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build website
-        # Using the exact path filter format for pnpm
-        run: pnpm --filter "./apps/website" build
+        # Removed the filter since you are at the root!
+        run: pnpm run build
 
       - name: Debug Output Directory
-        # This will print the contents of your website folder to the logs!
-        run: ls -la apps/website
+        # Listing the root directory to make sure dist is there
+        run: ls -la
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # If your app builds to a folder named "build" instead of "dist", change this line!
-          path: './apps/website/dist'
+          # Now it just looks for dist in the main folder!
+          path: './dist' 
 
   deploy:
     environment:
