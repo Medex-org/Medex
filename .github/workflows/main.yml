@@ -36,7 +36,8 @@ jobs:
 
       - name: Build website
         env:
-         PORT: 5173
+         PORT: 3000
+         BASE_PATH: /MEDEX/
         run: pnpm --filter website build
 
       - name: Upload artifact
