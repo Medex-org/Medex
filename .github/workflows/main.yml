@@ -40,18 +40,13 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build website
-        # Removed the filter since you are at the root!
-        run: pnpm run build
-
-      - name: Debug Output Directory
-        # Listing the root directory to make sure dist is there
-        run: ls -la
+        run: pnpm --filter "./apps/website" build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Now it just looks for dist in the main folder!
-          path: './dist' 
+          # This ensures ONLY the built, browser-ready code is deployed!
+          path: './apps/website/dist' 
 
   deploy:
     environment:
