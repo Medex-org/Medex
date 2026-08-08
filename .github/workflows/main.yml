@@ -34,12 +34,15 @@ jobs:
         run: pnpm install
 
       - name: Build website
-        run: pnpm --filter website build
+        run: pnpm --filter @workspace/website build
+        env:
+          PORT: 4173
+          BASE_PATH: /
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './apps/website/dist'
+          path: './apps/website/dist/public'
 
   deploy:
     environment:
