@@ -154,43 +154,54 @@
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
 
-  --background: 0 71% 8%;
-  --foreground: 40 33% 98%;
-  --border: 0 71% 18%;
-  --card: 0 71% 12%;
-  --card-foreground: 40 33% 98%;
-  --card-border: 0 71% 18%;
-  
-  --sidebar: 0 71% 12%;
-  --sidebar-foreground: 40 33% 98%;
-  --sidebar-border: 0 71% 18%;
-  --sidebar-primary: 46 65% 52%;
-  --sidebar-primary-foreground: 0 71% 14%;
-  --sidebar-accent: 0 71% 24%;
-  --sidebar-accent-foreground: 40 33% 98%;
-  --sidebar-ring: 46 65% 52%;
-  
-  --popover: 0 71% 12%;
-  --popover-foreground: 40 33% 98%;
-  --popover-border: 0 71% 18%;
-  
-  --primary: 40 33% 98%;
-  --primary-foreground: 0 71% 14%;
-  --secondary: 46 65% 52%;
-  --secondary-foreground: 0 71% 14%;
-  --muted: 0 71% 18%;
-  --muted-foreground: 40 20% 70%;
-  --accent: 46 65% 52%;
-  --accent-foreground: 0 71% 14%;
+  /* MEDX Premium Dark Theme */
+  --background: 0 0% 5%;
+  --foreground: 0 0% 98%;
+
+  --border: 0 0% 18%;
+
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 0 0% 18%;
+
+  --sidebar: 0 0% 7%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-border: 0 0% 18%;
+  --sidebar-primary: 0 72% 32%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 72% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 0 72% 32%;
+
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 98%;
+  --popover-border: 0 0% 18%;
+
+  /* MEDX Maroon */
+  --primary: 0 72% 32%;
+  --primary-foreground: 0 0% 100%;
+
+  /* HD Black */
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 0 0% 14%;
+  --muted-foreground: 0 0% 70%;
+
+  --accent: 0 72% 32%;
+  --accent-foreground: 0 0% 100%;
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --input: 0 71% 18%;
-  --ring: 46 65% 52%;
-  --chart-1: 46 65% 52%;
-  --chart-2: 40 33% 98%;
-  --chart-3: 15 60% 60%;
-  --chart-4: 0 40% 70%;
-  --chart-5: 45 40% 80%;
+
+  --input: 0 0% 18%;
+  --ring: 0 72% 32%;
+
+  --chart-1: 0 72% 40%;
+  --chart-2: 0 72% 55%;
+  --chart-3: 0 0% 70%;
+  --chart-4: 0 0% 45%;
+  --chart-5: 0 0% 85%;
 
   --shadow-2xs: 0px 2px 0px 0px rgba(0, 0, 0, 0.5);
   --shadow-xs: 0px 2px 0px 0px rgba(0, 0, 0, 0.5);
@@ -201,6 +212,7 @@
   --shadow-xl: 0px 2px 0px 0px rgba(0, 0, 0, 0.5), 0px 8px 10px -1px rgba(0, 0, 0, 0.5);
   --shadow-2xl: 0px 2px 0px 0px rgba(0, 0, 0, 0.5);
 }
+ 
 
 @layer base {
   * {
