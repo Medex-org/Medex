@@ -46,41 +46,42 @@
 }
 
 :root {
-  /* Cream background */
-  --background: 43 33% 95%;
-  /* Navy foreground */
-  --foreground: 215 56% 12%;
+  /* Clean premium background */
+  --background: 0 0% 97%;
 
-  /* Thin dividers */
-  --border: 215 16% 84%;
-  --input: 215 16% 84%;
-  --ring: 215 56% 12%;
+  /* HD Black foreground */
+  --foreground: 0 0% 4%;
 
-  /* Slightly lighter cream for cards */
-  --card: 43 33% 97%;
-  --card-foreground: 215 56% 12%;
-  --card-border: 215 16% 84%;
+  /* Thin neutral dividers */
+  --border: 0 0% 82%;
+  --input: 0 0% 82%;
+  --ring: 0 72% 32%;
 
-  --popover: 43 33% 97%;
-  --popover-foreground: 215 56% 12%;
-  --popover-border: 215 16% 84%;
+  /* Clean cards */
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 4%;
+  --card-border: 0 0% 82%;
 
-  /* Navy primary */
-  --primary: 215 56% 12%;
-  --primary-foreground: 43 33% 95%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 4%;
+  --popover-border: 0 0% 82%;
 
-  /* Slate secondary */
-  --secondary: 215 16% 44%;
-  --secondary-foreground: 43 33% 95%;
+  /* HD Black primary */
+  --primary: 0 0% 4%;
+  --primary-foreground: 0 0% 98%;
 
-  /* Muted slate/charcoal */
-  --muted: 215 16% 90%;
-  --muted-foreground: 215 16% 44%;
+  /* Charcoal secondary */
+  --secondary: 0 0% 30%;
+  --secondary-foreground: 0 0% 98%;
 
-  /* Maroon accent */
-  --accent: 0 70% 30%;
-  --accent-foreground: 43 33% 95%;
+  /* Muted */
+  --muted: 0 0% 91%;
+  --muted-foreground: 0 0% 35%;
 
+  /* MEDX Maroon Red */
+  --accent: 0 72% 32%;
+  --accent-foreground: 0 0% 98%;
+  
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
@@ -90,25 +91,41 @@
 }
 
 .dark {
-  --background: 215 56% 10%;
-  --foreground: 43 33% 95%;
-  --border: 217 33% 22%;
-  --input: 217 33% 22%;
-  --ring: 43 33% 95%;
-  --card: 217 33% 15%;
-  --card-foreground: 43 33% 95%;
-  --card-border: 217 33% 22%;
-  --popover: 217 33% 15%;
-  --popover-foreground: 43 33% 95%;
-  --popover-border: 217 33% 22%;
-  --primary: 43 33% 95%;
-  --primary-foreground: 215 56% 12%;
-  --secondary: 215 16% 47%;
-  --secondary-foreground: 43 33% 95%;
-  --muted: 217 33% 20%;
-  --muted-foreground: 215 16% 65%;
-  --accent: 0 68% 32%;
-  --accent-foreground: 43 33% 95%;
+  /* HD Black background */
+  --background: 0 0% 4%;
+  --foreground: 0 0% 96%;
+
+  /* Dark borders */
+  --border: 0 0% 16%;
+  --input: 0 0% 16%;
+  --ring: 0 72% 32%;
+
+  /* Cards */
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 96%;
+  --card-border: 0 0% 16%;
+
+  /* Popovers */
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 96%;
+  --popover-border: 0 0% 16%;
+
+  /* Primary */
+  --primary: 0 0% 96%;
+  --primary-foreground: 0 0% 4%;
+
+  /* Secondary */
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 96%;
+
+  /* Muted */
+  --muted: 0 0% 13%;
+  --muted-foreground: 0 0% 65%;
+
+  /* MEDX Maroon Red */
+  --accent: 0 72% 32%;
+  --accent-foreground: 0 0% 98%;
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 }
