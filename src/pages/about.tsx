@@ -1,20 +1,21 @@
 import { Layout } from "@/components/layout";
+import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { PageMeta } from "@/components/ui/page-meta";
+import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
-import { ArrowRight, BookOpen, Users, Lightbulb, Globe2, Handshake } from "lucide-react";
-import partnershipImg from "@assets/IMG-20260720-WA0022.jpg";
+import { BookOpen, Users, Lightbulb, Globe2 } from "lucide-react";
+import { Link } from "wouter";
+import { BRAND } from "@/config/links";
 
 export default function About() {
   return (
     <Layout>
-      <PageMeta
-        title="About MEDX"
-        description="Learn about the history, mission, and partnerships of MEDX R&Ed — a global student-led platform democratizing access to medical research and education."
-      />
+      <PageMeta {...SEO.about} />
 
       {/* Header */}
       <section className="pt-24 pb-16 px-4 sm:px-6 border-b-[1px] border-border bg-card">
         <div className="max-w-4xl mx-auto">
+          <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "About" }]} />
           <FadeIn>
             <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-6">
               Our Story
@@ -23,9 +24,9 @@ export default function About() {
               About MEDX
             </h1>
             <div className="section-rule mb-8" />
-            <p className="font-serif text-xl md:text-2xl text-secondary leading-relaxed max-w-3xl">
+            <p className="font-sans text-xl md:text-2xl text-secondary leading-relaxed max-w-3xl">
               MEDX R&amp;Ed exists to democratize access to medical research and
-              education — connecting students across borders, institutions, and
+              education - connecting students across borders, institutions, and
               disciplines to collaborate, learn, and publish.
             </p>
           </FadeIn>
@@ -37,29 +38,29 @@ export default function About() {
 
           {/* History */}
           <FadeIn className="mb-20">
-            <h2 className="font-mono text-sm uppercase tracking-widest text-secondary mb-6">
-              Our History
-            </h2>
-            <div className="prose prose-lg prose-slate font-serif max-w-none text-muted-foreground">
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Background</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">Our History</h2>
+            <div className="section-rule mb-8" />
+            <div className="prose prose-lg prose-slate font-sans max-w-none text-muted-foreground">
               <p>
                 MEDX was founded by Sangeen Khan, a medical student whose experience
                 navigating the barriers of clinical research as a student inspired him
                 to build something different. It quickly became clear that the challenges
-                he faced — lack of structured guidance, no access to methodology training,
-                and an absence of global peer networks — were universal.
+                he faced - lack of structured guidance, no access to methodology training,
+                and an absence of global peer networks - were universal.
               </p>
               <p>
                 What began as a small cohort of passionate students evolved into a
                 global organization running systematic review workshops, long-term
-                mentorship programs, and international conference preparation —
+                mentorship programs, and international conference preparation -
                 guided by a singular principle: rigorous, evidence-based medicine
                 should be accessible to all who wish to learn.
               </p>
               <p>
-                Today, MEDX R&amp;Ed spans 8+ countries, with City Representatives
-                building local chapters from Pakistan and Sri Lanka to Colombia and
-                the United States — united under one mission:{" "}
-                <em>Together, We Turn Curiosity into Discovery.</em>
+                Today, MEDX R&amp;Ed spans 10+ countries and 20+ cities, with City
+                Representatives building local chapters from Pakistan and Sri Lanka to
+                Colombia and Canada - united under one mission:{" "}
+                <em>{BRAND.motto}.</em>
               </p>
             </div>
           </FadeIn>
@@ -68,15 +69,15 @@ export default function About() {
 
           {/* What We Do */}
           <FadeIn className="mb-8">
-            <h2 className="font-mono text-sm uppercase tracking-widest text-secondary mb-8">
-              What We Do
-            </h2>
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Our Focus</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">What We Do</h2>
+            <div className="section-rule" />
           </FadeIn>
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             <StaggerItem>
               <BookOpen size={24} className="text-accent mb-4" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-2">Research Programs</h3>
-              <p className="font-serif text-sm text-muted-foreground leading-relaxed">
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Our flagship SRMA workshops guide cohorts through the rigorous process
                 of systematic review and meta-analysis, resulting in publication-ready
                 manuscripts.
@@ -85,7 +86,7 @@ export default function About() {
             <StaggerItem>
               <Lightbulb size={24} className="text-accent mb-4" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-2">Educational Outreach</h3>
-              <p className="font-serif text-sm text-muted-foreground leading-relaxed">
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Through workshops, webinars, and the MEDX Minds platform, we provide
                 curated medical education and mental wellness resources for the next
                 generation of physician-scientists.
@@ -94,7 +95,7 @@ export default function About() {
             <StaggerItem>
               <Users size={24} className="text-accent mb-4" strokeWidth={1.5} aria-hidden="true" />
               <h3 className="font-semibold text-lg mb-2">Global Network</h3>
-              <p className="font-serif text-sm text-muted-foreground leading-relaxed">
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 City Representatives and Campus Ambassadors build local chapters that
                 connect back to our international framework, fostering cross-border
                 collaboration and community.
@@ -106,9 +107,8 @@ export default function About() {
 
           {/* Member Benefits */}
           <FadeIn className="mb-8">
-            <h2 className="font-mono text-sm uppercase tracking-widest text-secondary mb-4">
-              Member Benefits
-            </h2>
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Membership</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">Member Benefits</h2>
             <div className="section-rule mb-8" />
           </FadeIn>
           <FadeIn>
@@ -134,7 +134,7 @@ export default function About() {
                   <span className="font-mono text-xs text-accent flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="font-serif text-muted-foreground">{benefit}</span>
+                  <span className="font-sans text-muted-foreground">{benefit}</span>
                 </div>
               ))}
             </div>
@@ -142,80 +142,21 @@ export default function About() {
 
           <div className="h-[1px] w-full bg-border my-20" />
 
-          {/* Partnerships */}
-          <FadeIn>
-            <h2 className="font-mono text-sm uppercase tracking-widest text-secondary mb-8">
-              Partnerships &amp; Collaborations
-            </h2>
-          </FadeIn>
-
-          {/* NSRI */}
-          <FadeIn className="mb-8">
-            <div className="p-8 border-[1px] border-border bg-card flex items-start gap-6">
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0" aria-hidden="true">
-                <Globe2 size={18} strokeWidth={1.5} className="text-secondary" />
-              </div>
-              <div>
-                <p className="font-semibold text-lg mb-1">
-                  NSRI — National Student Research Institution
-                </p>
-                <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-3">
-                  BUMHS-LC Chapter · Research Collaboration
-                </p>
-                <p className="font-serif text-muted-foreground text-sm leading-relaxed">
-                  MEDX partners with NSRI BUMHS-LC to co-host immersive Research Week
-                  events, pooling expertise to deliver world-class training in systematic
-                  reviews, data analysis, and manuscript writing.
-                </p>
-              </div>
+          {/* Partnerships pointer */}
+          <FadeIn className="p-8 border-[1px] border-border bg-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-2">Partnerships &amp; Collaborations</h3>
+              <p className="font-sans text-muted-foreground text-sm leading-relaxed max-w-md">
+                MEDX's strategic partners - Metasphere Global, GradMeta, SRF AKU, and NSRI BUMHS-LC -
+                now have their own dedicated department page.
+              </p>
             </div>
-          </FadeIn>
-
-          {/* GradMeta — with image */}
-          <FadeIn>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 border-[1px] border-border bg-card">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <Handshake size={20} strokeWidth={1.5} className="text-accent" aria-hidden="true" />
-                  <p className="font-semibold text-lg">GradMeta</p>
-                </div>
-                <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-3">
-                  AI-Powered Research Solutions · Strategic Partnership
-                </p>
-                <p className="font-serif text-muted-foreground text-sm leading-relaxed mb-4">
-                  MEDX R&amp;Ed and GradMeta share a commitment to empowering students
-                  through medical education, research mentorship, innovation, and global
-                  academic opportunities. Together, we provide impactful educational
-                  initiatives and research capacity-building programs.
-                </p>
-                <p className="font-serif text-muted-foreground text-sm leading-relaxed mb-4">
-                  <strong>Exclusive Member Benefit:</strong> MEDX members receive free
-                  access to GradMeta's professional systematic review tool (valued at $50)
-                  — validated against R metafor across core statistical methods.
-                </p>
-                <a
-                  href="https://forms.gle/yJzGnk4DwmWysygv9"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity group"
-                >
-                  Join to Access GradMeta{" "}
-                  <ArrowRight
-                    size={13}
-                    className="group-hover:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  />
-                </a>
-              </div>
-              <div className="relative">
-                <div className="absolute -top-3 -right-3 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
-                <img
-                  src={partnershipImg}
-                  alt="MEDX R&Ed × GradMeta Partnership — A New Era of Research Collaboration"
-                  className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
-                />
-              </div>
-            </div>
+            <Link
+              href="/partnerships"
+              className="whitespace-nowrap px-6 py-3 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest hover:bg-primary/90 transition-colors flex-shrink-0"
+            >
+              View Partnerships
+            </Link>
           </FadeIn>
         </div>
       </section>
@@ -227,10 +168,10 @@ export default function About() {
             <Globe2 size={24} strokeWidth={1} />
           </div>
           <h2 className="font-serif italic text-3xl md:text-5xl font-light tracking-wide max-w-4xl mx-auto">
-            "Together, We Turn Curiosity into Discovery"
+            &ldquo;{BRAND.motto}&rdquo;
           </h2>
           <p className="font-mono text-xs uppercase tracking-widest text-primary-foreground/40 mt-8">
-            MEDX R&amp;Ed — Research · Education · Development
+            {BRAND.mottoTagline}
           </p>
         </FadeIn>
       </section>

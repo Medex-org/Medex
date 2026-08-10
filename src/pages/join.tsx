@@ -1,9 +1,13 @@
 import { Layout } from "@/components/layout";
+import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { PageMeta } from "@/components/ui/page-meta";
+import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { ArrowRight } from "lucide-react";
-import memberBenefitsImg from "@assets/WhatsApp Image 2026-07-23 at 5.16.43 PM.jpeg";
-import campusAmbImg from "@assets/WhatsApp Image 2026-07-18 at 2.18.36 AM.jpeg";
+import { Link } from "wouter";
+import { LINKS, BRAND } from "@/config/links";
+import memberBenefitsImg from "@assets/medx-calls-main-officers.webp";
+import campusAmbImg from "@assets/medx-join-us-as-campus-ambassadors.webp";
 
 const tracks = [
   {
@@ -14,7 +18,7 @@ const tracks = [
       "Strong communication skills",
       "Passion for research & community building",
     ],
-    form: "https://forms.gle/yJzGnk4DwmWysygv9",
+    form: LINKS.cityRepForm,
   },
   {
     title: "Campus Ambassador",
@@ -24,7 +28,7 @@ const tracks = [
       "Interest in medical research & education",
       "Ability to inspire peers",
     ],
-    form: "https://forms.gle/yJzGnk4DwmWysygv9",
+    form: LINKS.campusAmbassadorForm,
   },
   {
     title: "Workshop Participant",
@@ -34,7 +38,7 @@ const tracks = [
       "Commitment to attend scheduled sessions",
       "Curiosity-driven learning mindset",
     ],
-    form: "https://forms.gle/yJzGnk4DwmWysygv9",
+    form: LINKS.membershipForm,
   },
   {
     title: "MEDX Minds Associate",
@@ -44,7 +48,8 @@ const tracks = [
       "Willingness to share personal experiences",
       "Collaborative mindset",
     ],
-    form: "https://forms.gle/yJzGnk4DwmWysygv9",
+    form: "/medx-minds#associate",
+    internal: true,
   },
 ];
 
@@ -66,14 +71,12 @@ const benefits = [
 export default function Join() {
   return (
     <Layout>
-      <PageMeta
-        title="Join MEDX"
-        description="Become part of MEDX R&Ed — apply as a City Representative, Campus Ambassador, Workshop Participant, or MEDX Minds Associate. Open to all medical and health-science students."
-      />
+      <PageMeta {...SEO.join} />
 
       {/* Header */}
       <section className="pt-24 pb-16 px-4 sm:px-6 border-b-[1px] border-border bg-primary text-primary-foreground text-center">
         <div className="max-w-4xl mx-auto">
+          <BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Join" }]} />
           <FadeIn>
             <p className="font-mono text-xs uppercase tracking-widest text-primary-foreground/40 mb-6">
               Be Part of MEDX
@@ -81,10 +84,10 @@ export default function Join() {
             <h1 className="text-4xl md:text-6xl font-semibold mb-6">
               Become Part of Something Extraordinary
             </h1>
-            <p className="font-serif text-xl text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="font-sans text-xl text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">
               MEDX R&amp;Ed is building the next generation of physician-scientists.
               Whether you're a medical student, health-science researcher, or
-              passionate advocate for evidence-based medicine — there is a place
+              passionate advocate for evidence-based medicine - there is a place
               for you here.
             </p>
           </FadeIn>
@@ -116,7 +119,7 @@ export default function Join() {
                 <h3 className="text-xl font-semibold mb-3 group-hover:text-accent transition-colors">
                   {track.title}
                 </h3>
-                <p className="font-serif text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">
                   {track.desc}
                 </p>
                 <div className="mb-6">
@@ -125,25 +128,39 @@ export default function Join() {
                   </p>
                   <ul className="space-y-1">
                     {track.requirements.map((r, j) => (
-                      <li key={j} className="text-sm text-muted-foreground font-serif flex gap-2">
-                        <span className="text-accent flex-shrink-0" aria-hidden="true">—</span> {r}
+                      <li key={j} className="text-sm text-muted-foreground font-sans flex gap-2">
+                        <span className="text-accent flex-shrink-0" aria-hidden="true">-</span> {r}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <a
-                  href={track.form}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors group/btn w-fit"
-                >
-                  Apply Now{" "}
-                  <ArrowRight
-                    size={13}
-                    className="group-hover/btn:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  />
-                </a>
+                {track.internal ? (
+                  <Link
+                    href={track.form}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors group/btn w-fit"
+                  >
+                    Apply Now{" "}
+                    <ArrowRight
+                      size={13}
+                      className="group-hover/btn:translate-x-1 transition-transform"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                ) : (
+                  <a
+                    href={track.form}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors group/btn w-fit"
+                  >
+                    Apply Now{" "}
+                    <ArrowRight
+                      size={13}
+                      className="group-hover/btn:translate-x-1 transition-transform"
+                      aria-hidden="true"
+                    />
+                  </a>
+                )}
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -161,9 +178,9 @@ export default function Join() {
               <h2 className="text-3xl font-semibold text-primary mb-6">
                 Member Benefits
               </h2>
-              <p className="font-serif text-secondary mb-8 leading-relaxed">
+              <p className="font-sans text-secondary mb-8 leading-relaxed">
                 MEDX membership unlocks a world of opportunities. Become a member
-                today and gain access to 12 exclusive benefits — from research tools
+                today and gain access to 12 exclusive benefits - from research tools
                 to global recognition.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
@@ -175,14 +192,14 @@ export default function Join() {
                     <span className="font-mono text-xs text-accent flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="font-serif text-muted-foreground text-xs leading-snug">
+                    <span className="font-sans text-muted-foreground text-xs leading-snug">
                       {b}
                     </span>
                   </div>
                 ))}
               </div>
               <a
-                href="https://forms.gle/yJzGnk4DwmWysygv9"
+                href={LINKS.membershipForm}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-accent-foreground font-semibold tracking-widest uppercase text-sm hover:bg-accent/90 transition-colors group"
@@ -204,8 +221,10 @@ export default function Join() {
                 <div className="absolute -top-4 -right-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                 <img
                   src={memberBenefitsImg}
-                  alt="Become a MEDX Member — Benefits & Global Community"
+                  alt="Become a MEDX Member - Benefits & Global Community"
                   className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </FadeIn>
@@ -222,8 +241,10 @@ export default function Join() {
                 <div className="absolute -top-4 -left-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
                 <img
                   src={campusAmbImg}
-                  alt="Join MEDX as Campus Ambassador — Be the Voice. Be the Change."
+                  alt="Join MEDX as Campus Ambassador - Be the Voice. Be the Change."
                   className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </FadeIn>
@@ -235,7 +256,7 @@ export default function Join() {
               <h2 className="text-3xl font-semibold text-primary mb-6">
                 Become a Campus Ambassador
               </h2>
-              <p className="font-serif text-secondary leading-relaxed mb-6">
+              <p className="font-sans text-secondary leading-relaxed mb-6">
                 Your campus. Your impact. Your legacy. As a MEDX Campus Ambassador,
                 you represent the voice of a global research community in your own
                 institution.
@@ -250,7 +271,7 @@ export default function Join() {
                 ].map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-sm font-serif text-muted-foreground"
+                    className="flex items-start gap-3 text-sm font-sans text-muted-foreground"
                   >
                     <ArrowRight
                       size={14}
@@ -262,7 +283,7 @@ export default function Join() {
                 ))}
               </ul>
               <a
-                href="https://forms.gle/yJzGnk4DwmWysygv9"
+                href={LINKS.membershipForm}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-sm hover:bg-primary/90 transition-colors group"
@@ -286,7 +307,7 @@ export default function Join() {
             "Your Journey. Our Support. A Better Future."
           </h2>
           <p className="font-mono text-xs uppercase tracking-widest text-accent-foreground/50 mt-6">
-            MEDX R&amp;Ed — Together We Research. We Educate. We Create Impact.
+            MEDX R&amp;Ed - Together We Research. We Educate. We Create Impact.
           </p>
         </FadeIn>
       </section>

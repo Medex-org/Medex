@@ -1,0 +1,80 @@
+[
+  {
+    "key": "home",
+    "path": "/",
+    "title": "MEDX R&Ed - Medical Exchange, Research & Education",
+    "description": "A global community of medical and health-science students united by rigorous methodology, cross-border mentorship, and the pursuit of evidence-based medicine."
+  },
+  {
+    "key": "about",
+    "path": "/about",
+    "title": "About MEDX",
+    "description": "Learn about the history, mission, and partnerships of MEDX R&Ed - a global student-led platform democratizing access to medical research and education."
+  },
+  {
+    "key": "team",
+    "path": "/team",
+    "title": "Leadership & Governance",
+    "description": "MEDX R&Ed's leadership hierarchy - Executive Council, Chief Officers, Directors, and Department Heads powering the organization."
+  },
+  {
+    "key": "research",
+    "path": "/research",
+    "title": "Department of Research",
+    "description": "MEDX Department of Research - mentors, SRMA and LTE mentorship, ongoing project tracking, cohort applications, and donor-supported student research."
+  },
+  {
+    "key": "education",
+    "path": "/education",
+    "title": "Department of Education",
+    "description": "MEDX Department of Education - academic programs, Higher Pathways guidance for USMLE, PLAB, AMC & Gulf licensing exams, and educator onboarding."
+  },
+  {
+    "key": "medicalExchange",
+    "path": "/medical-exchange",
+    "title": "Department of Medical Exchange",
+    "description": "MEDX Medical Exchange - international placements and announcements including SUSI, UGRAD, and global electives & observerships."
+  },
+  {
+    "key": "technology",
+    "path": "/technology",
+    "title": "Department of Technology & Innovation",
+    "description": "MEDX's centralized LMS - course tracking, certificate generation, and an AI-assisted study companion for MEDX members."
+  },
+  {
+    "key": "partnerships",
+    "path": "/partnerships",
+    "title": "Department of Partnerships & External Affairs",
+    "description": "MEDX's strategic collaborations with Metasphere Global, GradMeta, SRF AKU, and NSRI BUMHS-LC - and how institutions can partner with MEDX."
+  },
+  {
+    "key": "medxMinds",
+    "path": "/medx-minds",
+    "title": "Department of MEDX Minds",
+    "description": "MEDX Minds is dedicated to student mental health, burnout prevention, resilience, and wellbeing - the Wellness Corner, Peer Community Circles, and storytelling hub."
+  },
+  {
+    "key": "events",
+    "path": "/events",
+    "title": "Events & Opportunities",
+    "description": "Conferences, workshops, and recruitment opportunities for the MEDX R&Ed community - ASH, SVIN, Research Week, LTE workshops, and more."
+  },
+  {
+    "key": "cityReps",
+    "path": "/city-reps",
+    "title": "City Representatives & Campus Ambassadors",
+    "description": "MEDX's global network of City Representatives and Campus Ambassadors - browse the regional leadership dashboard and apply to lead in your own city or campus."
+  },
+  {
+    "key": "join",
+    "path": "/join",
+    "title": "Join MEDX",
+    "description": "Become part of MEDX R&Ed - apply as a City Representative, Campus Ambassador, Workshop Participant, or MEDX Minds Associate. Open to all medical and health-science students."
+  },
+  {
+    "key": "notFound",
+    "path": null,
+    "title": "404 - Page Not Found",
+    "description": "The page you are looking for does not exist in the MEDX R&Ed archives."
+  }
+]

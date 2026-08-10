@@ -1,15 +1,13 @@
 import { Layout } from "@/components/layout";
 import { PageMeta } from "@/components/ui/page-meta";
+import { SEO } from "@/data/seo";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 
 export default function NotFound() {
   return (
     <Layout>
-      <PageMeta
-        title="404 — Page Not Found"
-        description="The page you are looking for does not exist in the MEDX R&Ed archives."
-      />
+      <PageMeta {...SEO.notFound} />
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-32 text-center">
         {/* Decorative rule */}
@@ -24,7 +22,7 @@ export default function NotFound() {
         <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6 -mt-4">
           Page Not Found
         </h2>
-        <p className="font-serif text-lg text-secondary max-w-md mx-auto mb-12 leading-relaxed">
+        <p className="font-sans text-lg text-secondary max-w-md mx-auto mb-12 leading-relaxed">
           The scholarly record you are looking for does not exist in our archives.
           It may have been moved, renamed, or never written.
         </p>

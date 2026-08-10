@@ -1,8 +1,19 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { FaLinkedin, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import medxLogo from "@assets/medx-logo.png";
+import medxLogoWebp from "@assets/medx-logo.webp";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { DEPARTMENTS } from "@/data/departments";
+import { LINKS, BRAND } from "@/config/links";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -20,14 +31,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Lock background scroll while the mobile menu overlay is open.
+  React.useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
+  // Scroll to a #hash target after navigation. Layout is inside each
+  // lazy-loaded route, so by the time this effect runs the full page has
+  // already committed - but retry a few frames anyway in case the target
+  // section isn't laid out yet on the very first frame.
+  React.useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    let attempts = 0;
+    let raf: number;
+    const tryScroll = () => {
+      const el = document.getElementById(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      attempts += 1;
+      if (attempts < 20) raf = requestAnimationFrame(tryScroll);
+    };
+    tryScroll();
+    return () => cancelAnimationFrame(raf);
+  }, [location]);
+
   const navLinks = [
     { label: "About", href: "/about" },
-    { label: "Team", href: "/team" },
-    { label: "Programs", href: "/programs" },
-    { label: "MEDX Minds", href: "/medx-minds" },
+    { label: "Leadership", href: "/team" },
     { label: "Events", href: "/events" },
     { label: "City Reps", href: "/city-reps" },
   ];
+
+  const isDeptActive = DEPARTMENTS.some((d) => d.href === location);
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background text-foreground selection:bg-accent selection:text-white font-sans">
@@ -40,18 +83,63 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <img
-              src={medxLogo}
-              alt="MEDX R&Ed"
-              className="h-9 w-auto object-contain"
-            />
-            <span className="font-bold tracking-wider text-base uppercase text-primary leading-none hidden sm:block">
+            <picture>
+              <source srcSet={medxLogoWebp} type="image/webp" />
+              <img
+                src={medxLogo}
+                alt="MEDX R&Ed"
+                width={512}
+                height={512}
+                className="h-9 w-auto object-contain"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
+            </picture>
+            <span className="font-bold tracking-wider text-base uppercase text-primary leading-none whitespace-nowrap hidden lg:block">
               MEDX R&amp;Ed
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-7 text-sm font-medium" aria-label="Main navigation">
-            {navLinks.map((link) => (
+          <nav className="hidden md:flex items-center gap-4 lg:gap-7 text-sm font-medium whitespace-nowrap" aria-label="Main navigation">
+            <Link
+              href="/about"
+              className={`transition-colors hover:text-accent relative pb-0.5 ${
+                location === "/about"
+                  ? "text-accent after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-accent"
+                  : "text-foreground"
+              }`}
+            >
+              About
+            </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={`flex items-center gap-1 outline-none transition-colors hover:text-accent relative pb-0.5 ${
+                  isDeptActive
+                    ? "text-accent after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-accent"
+                    : "text-foreground"
+                }`}
+              >
+                Departments
+                <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-72 p-2">
+                {DEPARTMENTS.map((dept) => (
+                  <DropdownMenuItem key={dept.href} asChild className="cursor-pointer py-2.5">
+                    <Link href={dept.href} className="flex items-start gap-3">
+                      <dept.icon size={16} strokeWidth={1.5} className="text-accent mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      <span className="flex flex-col">
+                        <span className="font-medium text-sm">{dept.shortName}</span>
+                        <span className="text-xs text-muted-foreground font-mono">{dept.tagline}</span>
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {navLinks.slice(1).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -64,6 +152,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
+
+            <ThemeToggle />
+
             <Link
               href="/join"
               className="px-5 py-2 bg-accent text-accent-foreground hover:bg-accent/90 transition-colors text-xs uppercase tracking-widest font-semibold"
@@ -72,15 +163,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
 
-          <button
-            className="md:hidden p-2 -mr-2 text-foreground rounded-sm hover:bg-muted transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            <ThemeToggle />
+            <button
+              className="p-2 -mr-2 text-foreground rounded-sm hover:bg-muted transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -95,14 +189,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden fixed inset-0 z-40 bg-background pt-16 flex flex-col"
+            className="md:hidden fixed inset-0 z-40 bg-background pt-16 flex flex-col overflow-y-auto"
           >
             <nav className="flex flex-col px-4 sm:px-6 py-8 gap-0" aria-label="Mobile navigation">
-              {navLinks.map((link) => (
+              <Link
+                href="/about"
+                className={`font-sans border-b-[1px] border-border py-5 text-xl ${
+                  location === "/about" ? "text-accent" : "text-foreground"
+                }`}
+              >
+                About
+              </Link>
+
+              <p className="font-mono text-xs uppercase tracking-widest text-secondary pt-6 pb-2">
+                Departments
+              </p>
+              {DEPARTMENTS.map((dept) => (
+                <Link
+                  key={dept.href}
+                  href={dept.href}
+                  className={`font-sans border-b-[1px] border-border py-4 text-lg ${
+                    location === dept.href ? "text-accent" : "text-foreground"
+                  }`}
+                >
+                  {dept.shortName}
+                </Link>
+              ))}
+
+              <div className="pt-4" />
+              {navLinks.slice(1).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-serif italic border-b-[1px] border-border py-5 text-xl ${
+                  className={`font-sans border-b-[1px] border-border py-5 text-xl ${
                     location === link.href ? "text-accent" : "text-foreground"
                   }`}
                 >
@@ -122,49 +241,49 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1 flex flex-col">{children}</main>
 
-      <footer className="border-t-[1px] border-border bg-primary text-primary-foreground mt-auto py-16 px-4 sm:px-6">
+      <footer className="border-t-[1px] border-border bg-footer text-footer-foreground mt-auto py-16 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-12">
             {/* Brand */}
             <div className="sm:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={medxLogo}
-                  alt="MEDX R&Ed"
-                  className="h-10 w-auto object-contain brightness-0 invert"
-                />
+                <picture>
+                  <source srcSet={medxLogoWebp} type="image/webp" />
+                  <img
+                    src={medxLogo}
+                    alt="MEDX R&Ed"
+                    width={512}
+                    height={512}
+                    className="h-10 w-auto object-contain brightness-0 invert"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <span className="font-bold tracking-wider text-lg uppercase">
                   MEDX R&amp;Ed
                 </span>
               </div>
-              <p className="font-serif italic text-primary-foreground/70 text-sm leading-relaxed max-w-xs">
-                "Together, We Turn Curiosity into Discovery"
+              <p className="font-sans italic text-footer-foreground/70 text-sm leading-relaxed max-w-xs">
+                &ldquo;{BRAND.motto}&rdquo;
               </p>
-              <p className="font-mono text-xs text-primary-foreground/40 uppercase tracking-widest mt-4">
-                Research · Education · Development
+              <p className="font-mono text-xs text-footer-foreground/60 uppercase tracking-widest mt-4">
+                {BRAND.mottoTagline}
               </p>
             </div>
 
             {/* Navigation */}
             <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">
-                Navigate
-              </h4>
+              <p className="font-mono text-xs uppercase tracking-widest text-footer-foreground/50 mb-4">
+                Departments
+              </p>
               <ul className="space-y-2">
-                {[
-                  { label: "About", href: "/about" },
-                  { label: "Team", href: "/team" },
-                  { label: "Programs", href: "/programs" },
-                  { label: "Events", href: "/events" },
-                  { label: "City Representatives", href: "/city-reps" },
-                  { label: "MEDX Minds", href: "/medx-minds" },
-                ].map((l) => (
-                  <li key={l.href}>
+                {DEPARTMENTS.map((dept) => (
+                  <li key={dept.href}>
                     <Link
-                      href={l.href}
-                      className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+                      href={dept.href}
+                      className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                     >
-                      {l.label}
+                      {dept.shortName}
                     </Link>
                   </li>
                 ))}
@@ -173,57 +292,75 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Connect */}
             <div>
-              <h4 className="font-mono text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-footer-foreground/50 mb-4">
                 Connect
-              </h4>
-              <ul className="space-y-2">
+              </p>
+              <ul className="space-y-3">
                 <li>
                   <a
-                    href="https://www.linkedin.com/company/medx-medical-exchange-research-and-education"
+                    href={LINKS.social.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+                    className="flex items-center gap-2 py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >
-                    LinkedIn
+                    <FaLinkedin size={14} aria-hidden="true" /> LinkedIn
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://www.instagram.com/medxresearch_education"
+                    href={LINKS.social.instagram}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+                    className="flex items-center gap-2 py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >
-                    Instagram
+                    <FaInstagram size={14} aria-hidden="true" /> Instagram
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://forms.gle/yJzGnk4DwmWysygv9"
+                    href={LINKS.social.whatsappCommunity}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+                    className="flex items-center gap-2 py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
+                  >
+                    <FaWhatsapp size={14} aria-hidden="true" /> WhatsApp Community
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={LINKS.social.whatsappChannel}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
+                  >
+                    <FaWhatsapp size={14} aria-hidden="true" /> WhatsApp Channel
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    href="/join"
+                    className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >
                     Join MEDX
-                  </a>
+                  </Link>
                 </li>
               </ul>
-              <div className="mt-6 pt-6 border-t-[1px] border-primary-foreground/10">
+              <div className="mt-6 pt-6 border-t-[1px] border-footer-foreground/10">
                 <a
-                  href="mailto:connect@medx.org"
-                  className="text-xs text-primary-foreground/40 font-mono hover:text-primary-foreground/70 transition-colors"
+                  href={`mailto:${LINKS.email}`}
+                  className="text-xs text-footer-foreground/60 font-mono hover:text-footer-foreground/70 transition-colors"
                 >
-                  connect@medx.org
+                  {LINKS.email}
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="border-t-[1px] border-primary-foreground/10 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="text-xs font-mono text-primary-foreground/30 uppercase tracking-widest">
+          <div className="border-t-[1px] border-footer-foreground/10 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <p className="text-xs font-mono text-footer-foreground/60 uppercase tracking-widest">
               &copy; {new Date().getFullYear()} MEDX R&amp;Ed. All rights reserved.
             </p>
-            <p className="text-xs font-serif italic text-primary-foreground/30">
+            <p className="text-xs font-sans italic text-footer-foreground/60">
               A student-led platform, for students.
             </p>
           </div>
