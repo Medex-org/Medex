@@ -132,3 +132,81 @@ select * from (values
   ('Campus Ambassador Recruitment Drive', 'Recruitment', null::date, null::time, null, 'Virtual', 'MEDX is recruiting Campus Ambassadors across institutions worldwide.', 'published', 'https://forms.gle/yJzGnk4DwmWysygv9')
 ) as seed(title, category, date, time, timezone, location_type, description, status, registration_url)
 where not exists (select 1 from public.events);
+
+-- Reconnect media uploaded during the original migration. These updates are
+-- safe to rerun and preserve the original image locations in the admin view.
+update public.achievements
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'medx-systematic-review-and-meta-analysis-project.webp'
+  limit 1
+)
+where title = '6-Lecture SRMA Workshop Series'
+  and image_path is null;
+
+update public.achievements
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp'
+  limit 1
+)
+where title = 'LTE Recap & Interactive Q&A'
+  and image_path is null;
+
+update public.achievements
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'medx-invites-you-to-join-free-workshop-basics-of-research-and-why-srma-mentorship-is-essential.webp'
+  limit 1
+)
+where title = 'Basics of Research & Publication'
+  and image_path is null;
+
+update public.achievements
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'nsri-and-medx-announces-complete-research-week.webp'
+  limit 1
+)
+where title = 'Collaborative Research Week × NSRI BUMHS-LC'
+  and image_path is null;
+
+update public.event_banners b
+set image_path = (
+  select bucket_path from public.media m
+  where m.file_name = case b.label
+    when 'Global Main Officer Recruitment' then 'medx-calls-main-officers.webp'
+    when 'City Representative Slots Open' then 'medx-announces-slots-for-city-representative.webp'
+    when 'Campus Ambassador Recruitment' then 'medx-join-us-as-campus-ambassadors.webp'
+    when 'MEDX Minds - Speakers & Storytellers' then 'medx-minds-join-us-as-speakers-or-story-tellers.webp'
+  end
+  limit 1
+)
+where b.image_path is null;
+
+update public.events
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'nsri-and-medx-announces-complete-research-week.webp'
+  limit 1
+)
+where title = 'MEDX × NSRI Complete Research Week'
+  and image_path is null;
+
+update public.events
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp'
+  limit 1
+)
+where title = 'LTE Free Workshop - Letter to the Editor'
+  and image_path is null;
+
+update public.events
+set image_path = (
+  select bucket_path from public.media
+  where file_name = 'medx-join-us-as-campus-ambassadors.webp'
+  limit 1
+)
+where title = 'Campus Ambassador Recruitment Drive'
+  and image_path is null;

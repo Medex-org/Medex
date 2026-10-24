@@ -87,6 +87,13 @@ export function ManagedContentManager({ type, request, clearRequest }: {
           {items.map((item) => (
             <article key={item.id} className="border border-border bg-card p-5 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
+                {item.imagePath && media.find((asset) => asset.id === item.imagePath) ? (
+                  <img
+                    src={media.find((asset) => asset.id === item.imagePath)?.src}
+                    alt=""
+                    className="mb-3 h-20 w-32 object-cover border border-border"
+                  />
+                ) : null}
                 <h3 className="font-semibold text-primary">{item.title}</h3>
                 {item.secondary ? <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mt-1">{item.secondary}</p> : null}
                 <p className="text-sm text-muted-foreground mt-2 max-w-3xl">{item.description}</p>

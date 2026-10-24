@@ -34,6 +34,10 @@ function publicMediaUrl(path: string | null): string | null {
   return supabase.storage.from("media").getPublicUrl(path).data.publicUrl;
 }
 
+function contentKey(value: string | null | undefined): string {
+  return (value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
 export function useSiteContent(): SiteContent {
   const [content, setContent] = useState<SiteContent>({
     achievements: FALLBACK_ACHIEVEMENTS,
@@ -63,14 +67,18 @@ export function useSiteContent(): SiteContent {
       const [achievements, newsHighlights, webinars, eventBanners, partners, courses, events, media] = results;
       const mediaPaths = new Map((media.data || []).map((item) => [item.id, item.bucket_path]));
       const resolveMediaPath = (path: string | null) => publicMediaUrl(mediaPaths.get(path || "") || path);
+      const fallbackAchievement = new Map(FALLBACK_ACHIEVEMENTS.map((item) => [contentKey(item.title), item]));
+      const fallbackBanner = new Map(FALLBACK_EVENT_BANNERS.map((item) => [contentKey(item.label), item]));
+      const fallbackPartner = new Map(FALLBACK_PARTNERS.map((item) => [contentKey(item.name), item]));
+      const fallbackEvent = new Map(FALLBACK_EVENTS.map((item) => [contentKey(item.name), item]));
       setContent({
-        achievements: achievements.data?.length ? achievements.data.map((item) => ({ id: item.id, title: item.title, badge: item.badge || "", description: item.description || "", image: resolveMediaPath(item.image_path) })) : FALLBACK_ACHIEVEMENTS,
+        achievements: achievements.data?.length ? achievements.data.map((item) => ({ id: item.id, title: item.title, badge: item.badge || "", description: item.description || "", image: resolveMediaPath(item.image_path) || fallbackAchievement.get(contentKey(item.title))?.image || null })) : FALLBACK_ACHIEVEMENTS,
         newsHighlights: newsHighlights.data?.length ? newsHighlights.data.map((item) => ({ id: item.id, title: item.title, description: item.description || "" })) : FALLBACK_NEWS_HIGHLIGHTS,
         webinars: webinars.data?.length ? webinars.data.map((item) => ({ id: item.id, title: item.title, cadence: item.cadence || "", description: item.description || "" })) : FALLBACK_WEBINARS,
-        eventBanners: eventBanners.data?.length ? eventBanners.data.map((item) => ({ id: item.id, label: item.label, href: item.href || "#", image: resolveMediaPath(item.image_path) })) : FALLBACK_EVENT_BANNERS,
-        partners: partners.data?.length ? partners.data.map((item) => ({ id: item.id, name: item.name, description: item.description || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) })) : FALLBACK_PARTNERS,
+        eventBanners: eventBanners.data?.length ? eventBanners.data.map((item) => ({ id: item.id, label: item.label, href: item.href || "#", image: resolveMediaPath(item.image_path) || fallbackBanner.get(contentKey(item.label))?.image || null })) : FALLBACK_EVENT_BANNERS,
+        partners: partners.data?.length ? partners.data.map((item) => ({ id: item.id, name: item.name, description: item.description || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) || fallbackPartner.get(contentKey(item.name))?.image || null })) : FALLBACK_PARTNERS,
         courses: courses.data?.length ? courses.data.map((item) => ({ id: item.id, title: item.title, category: item.category || "", description: item.description || "", registrationUrl: item.registration_url || "" })) : FALLBACK_COURSES,
-        events: events.data?.length ? events.data.map((item) => ({ id: item.id, name: item.title, type: item.category || "Event", status: "Upcoming", date: [item.date, item.time, item.timezone].filter(Boolean).join(" · "), desc: item.description || "", image: resolveMediaPath(item.image_path), link: item.registration_url || null, linkLabel: item.registration_url ? "Register" : null })) : FALLBACK_EVENTS,
+        events: events.data?.length ? events.data.map((item) => ({ id: item.id, name: item.title, type: item.category || "Event", status: "Upcoming", date: [item.date, item.time, item.timezone].filter(Boolean).join(" · "), desc: item.description || "", image: resolveMediaPath(item.image_path) || fallbackEvent.get(contentKey(item.title))?.image || null, link: item.registration_url || null, linkLabel: item.registration_url ? "Register" : null })) : FALLBACK_EVENTS,
         loading: false,
       });
     }
