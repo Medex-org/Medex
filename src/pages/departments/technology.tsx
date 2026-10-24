@@ -5,6 +5,7 @@ import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { Progress } from "@/components/ui/progress";
 import { Cpu, BookOpen, Award, Bot, PlayCircle, Lock } from "lucide-react";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 const COURSES = [
   { title: "SRMA Foundations", progress: 65, certificate: false },
@@ -13,6 +14,8 @@ const COURSES = [
 ];
 
 export default function DepartmentTechnology() {
+  const { courses } = useSiteContent();
+
   return (
     <Layout>
       <PageMeta {...SEO.technology} />
@@ -52,26 +55,29 @@ export default function DepartmentTechnology() {
           </FadeIn>
 
           <StaggerContainer className="space-y-4">
-            {COURSES.map((c) => (
+            {courses.map((c, index) => {
+              const progress = index === 1 ? 100 : index === 0 ? 65 : 20;
+              return (
               <StaggerItem key={c.title} className="p-6 border-[1px] border-border bg-card">
                 <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between mb-3 gap-x-4">
                   <div className="flex items-center gap-3">
                     <BookOpen size={16} className="text-accent flex-shrink-0" strokeWidth={1.5} aria-hidden="true" />
                     <h3 className="font-semibold text-sm">{c.title}</h3>
                   </div>
-                  {c.certificate ? (
+                  {progress === 100 ? (
                     <span className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-accent">
                       <Award size={13} aria-hidden="true" /> Certificate Issued
                     </span>
                   ) : (
                     <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                      {c.progress}% Complete
+                      {progress}% Complete
                     </span>
                   )}
                 </div>
-                <Progress value={c.progress} className="h-1.5" aria-label={`${c.title} course progress`} />
+                <Progress value={progress} className="h-1.5" aria-label={`${c.title} course progress`} />
               </StaggerItem>
-            ))}
+              );
+            })}
           </StaggerContainer>
         </div>
       </section>

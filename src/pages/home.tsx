@@ -10,6 +10,7 @@ import { SimpleApplicationModal } from "@/components/shared/simple-application-m
 import { PARTNERS } from "@/data/partners";
 import { DEPARTMENTS } from "@/data/departments";
 import { LINKS, BRAND } from "@/config/links";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 import srmaImg from "@assets/medx-systematic-review-and-meta-analysis-project.webp";
 import lteRecapImg from "@assets/collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp";
@@ -91,6 +92,8 @@ const JOIN_ROLES = [
 ];
 
 export default function Home() {
+  const { achievements, eventBanners, newsHighlights, webinars, partners } = useSiteContent();
+
   return (
     <Layout>
       <PageMeta {...SEO.home} />
@@ -144,7 +147,7 @@ export default function Home() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {ACHIEVEMENTS.map((a) => (
+            {achievements.map((a) => (
               <StaggerItem key={a.title} className="border-[1px] border-border bg-background overflow-hidden group">
                 <div className="aspect-[4/3] overflow-hidden bg-muted">
                   <img src={a.image} alt={a.title} className="w-full h-full object-cover img-scholarly" loading="lazy" decoding="async" />
@@ -160,7 +163,7 @@ export default function Home() {
                   <h3 className="font-semibold text-sm mb-2 group-hover:text-accent transition-colors leading-snug">
                     {a.title}
                   </h3>
-                  <p className="font-sans text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
+                  <p className="font-sans text-xs text-muted-foreground leading-relaxed">{a.description}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -195,9 +198,9 @@ export default function Home() {
             <div className="section-rule mx-auto" />
           </FadeIn>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PARTNERS.map((partner) => (
+            {partners.map((partner) => (
               <StaggerItem key={partner.name}>
-                <PartnerCard partner={partner} />
+                <PartnerCard partner={{ name: partner.name, description: partner.description, logo: partner.image || undefined, linkedinUrl: partner.linkedinUrl }} />
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -253,11 +256,11 @@ export default function Home() {
           <FadeIn>
             <Carousel opts={{ loop: true }} className="px-4 md:px-10">
               <CarouselContent>
-                {EVENT_BANNERS.map((b) => (
+                {eventBanners.map((b) => (
                   <CarouselItem key={b.label} className="basis-[85%] sm:basis-1/2">
                     <Link href={b.href} className="block border-[1px] border-border overflow-hidden group">
                       <div className="aspect-[16/10] overflow-hidden bg-muted">
-                        <img src={b.image} alt={b.label} className="w-full h-full object-cover img-scholarly" loading="lazy" decoding="async" />
+                        {b.image ? <img src={b.image} alt={b.label} className="w-full h-full object-cover img-scholarly" loading="lazy" decoding="async" /> : null}
                       </div>
                       <div className="p-4 bg-card">
                         <p className="text-sm font-semibold group-hover:text-accent transition-colors">{b.label}</p>
@@ -286,10 +289,10 @@ export default function Home() {
             <div className="section-rule" />
           </FadeIn>
           <StaggerContainer className="space-y-4">
-            {NEWS_HIGHLIGHTS.map((n) => (
+            {newsHighlights.map((n) => (
               <StaggerItem key={n.title} className="p-6 border-[1px] border-border bg-background">
                 <h3 className="font-semibold text-base mb-1.5">{n.title}</h3>
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{n.desc}</p>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{n.description}</p>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -319,14 +322,14 @@ export default function Home() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-            {WEBINARS.map((w) => (
+            {webinars.map((w) => (
               <StaggerItem key={w.title} className="p-6 border-[1px] border-border bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <Mic size={15} className="text-accent" strokeWidth={1.5} aria-hidden="true" />
                   <span className="font-mono text-xs uppercase tracking-widest text-secondary">{w.cadence}</span>
                 </div>
                 <h3 className="font-semibold text-base mb-2">{w.title}</h3>
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{w.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{w.description}</p>
               </StaggerItem>
             ))}
           </StaggerContainer>

@@ -8,6 +8,7 @@ const DEFAULT_DESCRIPTION =
 interface PageMetaProps {
   title: string;
   description: string;
+  noindex?: boolean;
 }
 
 function setMetaByAttr(attr: "name" | "property", key: string, content: string) {
@@ -20,6 +21,10 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
   el.content = content;
 }
 
+function setRobots(content: string) {
+  setMetaByAttr("name", "robots", content);
+}
+
 /**
  * Sets document.title, meta description, and OG/Twitter tags for the current
  * page client-side. This keeps the SPA's own document consistent when users
@@ -27,7 +32,7 @@ function setMetaByAttr(attr: "name" | "property", key: string, content: string) 
  * don't execute JS - the per-route static HTML stamped by
  * scripts/generate-static-meta.mjs at build time is what they actually see.
  */
-export function PageMeta({ title, description }: PageMetaProps) {
+export function PageMeta({ title, description, noindex = false }: PageMetaProps) {
   useEffect(() => {
     const fullTitle = title.includes(SITE_NAME) ? title : `${title} - ${SITE_NAME}`;
     document.title = fullTitle;
@@ -37,6 +42,7 @@ export function PageMeta({ title, description }: PageMetaProps) {
     setMetaByAttr("property", "og:description", description);
     setMetaByAttr("name", "twitter:title", fullTitle);
     setMetaByAttr("name", "twitter:description", description);
+    setRobots(noindex ? "noindex, nofollow" : "index, follow");
 
     return () => {
       document.title = DEFAULT_TITLE;
@@ -45,8 +51,9 @@ export function PageMeta({ title, description }: PageMetaProps) {
       setMetaByAttr("property", "og:description", DEFAULT_DESCRIPTION);
       setMetaByAttr("name", "twitter:title", DEFAULT_TITLE);
       setMetaByAttr("name", "twitter:description", DEFAULT_DESCRIPTION);
+      setRobots("index, follow");
     };
-  }, [title, description]);
+  }, [title, description, noindex]);
 
   return null;
 }

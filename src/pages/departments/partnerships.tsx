@@ -7,8 +7,11 @@ import { Handshake, ArrowRight } from "lucide-react";
 import { PartnerCard } from "@/components/shared/partner-card";
 import { PARTNERS } from "@/data/partners";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 export default function DepartmentPartnerships() {
+  const { partners } = useSiteContent();
+
   return (
     <Layout>
       <PageMeta {...SEO.partnerships} />
@@ -45,9 +48,9 @@ export default function DepartmentPartnerships() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PARTNERS.map((partner) => (
+            {partners.map((partner) => (
               <StaggerItem key={partner.name}>
-                <PartnerCard partner={partner} />
+                <PartnerCard partner={{ name: partner.name, description: partner.description, logo: partner.image || undefined, linkedinUrl: partner.linkedinUrl }} />
               </StaggerItem>
             ))}
           </StaggerContainer>

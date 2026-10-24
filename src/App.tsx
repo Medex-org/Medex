@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Spinner } from '@/components/ui/spinner';
+import { AuthProvider } from '@/admin/auth/AuthProvider';
+import { RequireAuth } from '@/admin/auth/RequireAuth';
 
 const Home = lazy(() => import('@/pages/home'));
 const About = lazy(() => import('@/pages/about'));
@@ -17,6 +19,8 @@ const MedxMinds = lazy(() => import('@/pages/departments/medx-minds'));
 const Events = lazy(() => import('@/pages/events'));
 const CityReps = lazy(() => import('@/pages/city-reps'));
 const Join = lazy(() => import('@/pages/join'));
+const AdminDashboard = lazy(() => import('@/admin/AdminDashboard'));
+const AdminLogin = lazy(() => import('@/admin/auth/Login'));
 const NotFound = lazy(() => import('@/pages/not-found'));
 
 const queryClient = new QueryClient();
@@ -45,6 +49,12 @@ function Router() {
         <Route path="/events" component={Events} />
         <Route path="/city-reps" component={CityReps} />
         <Route path="/join" component={Join} />
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin">
+          <RequireAuth>
+            <AdminDashboard />
+          </RequireAuth>
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -55,10 +65,12 @@ function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <AuthProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );
