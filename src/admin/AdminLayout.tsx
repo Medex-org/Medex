@@ -12,8 +12,10 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import medxLogo from "@assets/medx-logo.png";
-import medxLogoWebp from "@assets/medx-logo.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const medxLogo = mediaUrl("medx-logo.png");
+const medxLogoWebp = mediaUrl("medx-logo.webp");
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { AdminSection } from "./admin-types";
 import { useAdminStore } from "./use-admin-store";

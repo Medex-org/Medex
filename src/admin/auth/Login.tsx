@@ -3,8 +3,10 @@ import { supabase, supabaseConfigured } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import medxLogo from '@assets/medx-logo.png';
-import medxLogoWebp from '@assets/medx-logo.webp';
+import { mediaUrl } from '@/lib/media-url';
+
+const medxLogo = mediaUrl("medx-logo.png");
+const medxLogoWebp = mediaUrl("medx-logo.webp");
 
 export default function Login() {
   const [email, setEmail] = useState('');

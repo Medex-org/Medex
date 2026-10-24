@@ -1,12 +1,5 @@
-import srmaImg from "@assets/medx-systematic-review-and-meta-analysis-project.webp";
-import lteRecapImg from "@assets/collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp";
-import basicsImg from "@assets/medx-invites-you-to-join-free-workshop-basics-of-research-and-why-srma-mentorship-is-essential.webp";
-import researchWeekImg from "@assets/nsri-and-medx-announces-complete-research-week.webp";
-import gmoImg from "@assets/medx-calls-main-officers.webp";
-import cityRepImg from "@assets/medx-announces-slots-for-city-representative.webp";
-import campusAmbImg from "@assets/medx-join-us-as-campus-ambassadors.webp";
-import mindsSpeakerImg from "@assets/medx-minds-join-us-as-speakers-or-story-tellers.webp";
 import { LINKS } from "@/config/links";
+import { mediaUrl } from "@/lib/media-url";
 
 export interface SiteAchievement {
   id: string;
@@ -65,17 +58,17 @@ export interface SiteEvent {
 }
 
 export const FALLBACK_ACHIEVEMENTS: SiteAchievement[] = [
-  { id: "srma", title: "6-Lecture SRMA Workshop Series", badge: "Flagship", image: srmaImg, description: "A structured six-lecture series on systematic review and meta-analysis methodology, from basics to publication." },
-  { id: "lte", title: "LTE Recap & Interactive Q&A", badge: "Completed", image: lteRecapImg, description: "A recap session on Letter to the Editor writing with live, interactive Q&A - held in collaboration with NSRI." },
-  { id: "research-basics", title: "Basics of Research & Publication", badge: "Ongoing", image: basicsImg, description: "A free introductory workshop covering research fundamentals and why structured mentorship matters." },
-  { id: "research-week", title: "Collaborative Research Week × NSRI BUMHS-LC", badge: "Featured", image: researchWeekImg, description: "A multi-day intensive research program co-hosted with NSRI BUMHS-LC, covering the full research pipeline." },
+  { id: "srma", title: "6-Lecture SRMA Workshop Series", badge: "Flagship", image: mediaUrl("medx-systematic-review-and-meta-analysis-project.webp"), description: "A structured six-lecture series on systematic review and meta-analysis methodology, from basics to publication." },
+  { id: "lte", title: "LTE Recap & Interactive Q&A", badge: "Completed", image: mediaUrl("collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp"), description: "A recap session on Letter to the Editor writing with live, interactive Q&A - held in collaboration with NSRI." },
+  { id: "research-basics", title: "Basics of Research & Publication", badge: "Ongoing", image: mediaUrl("medx-invites-you-to-join-free-workshop-basics-of-research-and-why-srma-mentorship-is-essential.webp"), description: "A free introductory workshop covering research fundamentals and why structured mentorship matters." },
+  { id: "research-week", title: "Collaborative Research Week × NSRI BUMHS-LC", badge: "Featured", image: mediaUrl("nsri-and-medx-announces-complete-research-week.webp"), description: "A multi-day intensive research program co-hosted with NSRI BUMHS-LC, covering the full research pipeline." },
 ];
 
 export const FALLBACK_EVENT_BANNERS: SiteEventBanner[] = [
-  { id: "officers", image: gmoImg, label: "Global Main Officer Recruitment", href: "/team" },
-  { id: "city-reps", image: cityRepImg, label: "City Representative Slots Open", href: "/city-reps" },
-  { id: "campus", image: campusAmbImg, label: "Campus Ambassador Recruitment", href: "/city-reps" },
-  { id: "minds", image: mindsSpeakerImg, label: "MEDX Minds - Speakers & Storytellers", href: "/medx-minds" },
+  { id: "officers", image: mediaUrl("medx-calls-main-officers.webp"), label: "Global Main Officer Recruitment", href: "/team" },
+  { id: "city-reps", image: mediaUrl("medx-announces-slots-for-city-representative.webp"), label: "City Representative Slots Open", href: "/city-reps" },
+  { id: "campus", image: mediaUrl("medx-join-us-as-campus-ambassadors.webp"), label: "Campus Ambassador Recruitment", href: "/city-reps" },
+  { id: "minds", image: mediaUrl("medx-minds-join-us-as-speakers-or-story-tellers.webp"), label: "MEDX Minds - Speakers & Storytellers", href: "/medx-minds" },
 ];
 
 export const FALLBACK_NEWS_HIGHLIGHTS: SiteNewsHighlight[] = [
@@ -105,9 +98,9 @@ export const FALLBACK_COURSES: SiteCourse[] = [
 export const FALLBACK_EVENTS: SiteEvent[] = [
   { id: "ash", name: "ASH Annual Meeting", type: "Conference", status: "Upcoming", date: "TBA - Dec 2026", desc: "MEDX R&Ed is preparing participants for the American Society of Hematology Annual Meeting - one of the premier global conferences in blood disorders research. Apply for mentorship and abstract preparation support.", image: null, link: LINKS.membershipForm, linkLabel: "Apply for Mentorship" },
   { id: "svin", name: "SVIN Annual Meeting", type: "Conference", status: "Upcoming", date: "TBA", desc: "Society of Vascular and Interventional Neurology Annual Meeting. MEDX is coordinating participation and abstract submissions for students.", image: null, link: LINKS.membershipForm, linkLabel: "Express Interest" },
-  { id: "research-week-event", name: "MEDX × NSRI Complete Research Week", type: "Workshop", status: "Ongoing", date: "July 20–26, 2026 · 10PM PKT", desc: "6-day intensive online research program in collaboration with NSRI BUMHS-LC. Covering Cross-Sectional Studies, SPSS Data Analysis, Manuscript Writing, and more. Mentors: Dr. Rida Noor & Abdul Moiz.", image: researchWeekImg, link: "https://docs.google.com/forms/d/e/1FAIpQLSfCvfQnpyB96EkLhmeIVv8JZl3VOeSBSQITBiBNa3R5FydsBQ/viewform", linkLabel: "View Program" },
-  { id: "lte-event", name: "LTE Free Workshop - Letter to the Editor", type: "Workshop", status: "Completed", date: "July 18, 2026 · 10PM PKT", desc: "Free session on Letter to the Editor writing - what it is, structure, journal selection, and submission process. Speaker: Imad Khan (North West School of Medicine, Peshawar, 5+ Publications).", image: lteRecapImg, link: null, linkLabel: null },
+  { id: "research-week-event", name: "MEDX × NSRI Complete Research Week", type: "Workshop", status: "Ongoing", date: "July 20–26, 2026 · 10PM PKT", desc: "6-day intensive online research program in collaboration with NSRI BUMHS-LC. Covering Cross-Sectional Studies, SPSS Data Analysis, Manuscript Writing, and more. Mentors: Dr. Rida Noor & Abdul Moiz.", image: mediaUrl("nsri-and-medx-announces-complete-research-week.webp"), link: "https://docs.google.com/forms/d/e/1FAIpQLSfCvfQnpyB96EkLhmeIVv8JZl3VOeSBSQITBiBNa3R5FydsBQ/viewform", linkLabel: "View Program" },
+  { id: "lte-event", name: "LTE Free Workshop - Letter to the Editor", type: "Workshop", status: "Completed", date: "July 18, 2026 · 10PM PKT", desc: "Free session on Letter to the Editor writing - what it is, structure, journal selection, and submission process. Speaker: Imad Khan (North West School of Medicine, Peshawar, 5+ Publications).", image: mediaUrl("collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp"), link: null, linkLabel: null },
   { id: "srma-event", name: "SRMA Free Lecture Series", type: "Workshop", status: "Ongoing", date: "Recurring · 8PM PKT", desc: "Free introductory lectures on systematic review and meta-analysis methodology. Open to all. Sessions held regularly - check MEDX channels for the next scheduled session.", image: null, link: LINKS.membershipForm, linkLabel: "Register" },
   { id: "launch", name: "MEDX Website Official Launch", type: "Community", status: "Upcoming", date: "Monday (Announced)", desc: "Official MEDX website launch - a live session with the global team and a guest speaker. Registration open.", image: null, link: LINKS.membershipForm, linkLabel: "RSVP" },
-  { id: "campus-event", name: "Campus Ambassador Recruitment Drive", type: "Recruitment", status: "Open", date: "Ongoing", desc: "MEDX is recruiting Campus Ambassadors across institutions worldwide. Be the voice of MEDX in your institution - expand the global network, lead initiatives, and develop leadership skills.", image: campusAmbImg, link: LINKS.campusAmbassadorForm, linkLabel: "Apply Now" },
+  { id: "campus-event", name: "Campus Ambassador Recruitment Drive", type: "Recruitment", status: "Open", date: "Ongoing", desc: "MEDX is recruiting Campus Ambassadors across institutions worldwide. Be the voice of MEDX in your institution - expand the global network, lead initiatives, and develop leadership skills.", image: mediaUrl("medx-join-us-as-campus-ambassadors.webp"), link: LINKS.campusAmbassadorForm, linkLabel: "Apply Now" },
 ];

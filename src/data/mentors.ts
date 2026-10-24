@@ -1,9 +1,11 @@
 import type { MentorProfile } from "@/components/shared/profile-modal";
 
-import abdulMoizImg from "@assets/abdul-moiz-photo.webp";
-import zohaibHassanImg from "@assets/zohaib-hassan-photo.webp";
-import taroobaKhanImg from "@assets/tarooba-khan-photo.webp";
-import amnaAhmedImg from "@assets/amna-ahmed-photo.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const abdulMoizImg = mediaUrl("abdul-moiz-photo.webp");
+const zohaibHassanImg = mediaUrl("zohaib-hassan-photo.webp");
+const taroobaKhanImg = mediaUrl("tarooba-khan-photo.webp");
+const amnaAhmedImg = mediaUrl("amna-ahmed-photo.webp");
 
 /**
  * Research mentors & team, per the Department of Research spec.

@@ -3,8 +3,10 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { FaLinkedin, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import medxLogo from "@assets/medx-logo.png";
-import medxLogoWebp from "@assets/medx-logo.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const medxLogo = mediaUrl("medx-logo.png");
+const medxLogoWebp = mediaUrl("medx-logo.webp");
 import { ThemeToggle } from "@/components/theme-toggle";
 import { DEPARTMENTS } from "@/data/departments";
 import { LINKS, BRAND } from "@/config/links";

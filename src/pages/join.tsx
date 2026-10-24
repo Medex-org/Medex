@@ -6,8 +6,10 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animation
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { LINKS, BRAND } from "@/config/links";
-import memberBenefitsImg from "@assets/medx-calls-main-officers.webp";
-import campusAmbImg from "@assets/medx-join-us-as-campus-ambassadors.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const memberBenefitsImg = mediaUrl("medx-calls-main-officers.webp");
+const campusAmbImg = mediaUrl("medx-join-us-as-campus-ambassadors.webp");
 
 const tracks = [
   {

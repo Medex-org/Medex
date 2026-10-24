@@ -5,14 +5,16 @@ import type {
   NewsUpdate,
 } from "./admin-types";
 
-import srmaImg from "@assets/medx-systematic-review-and-meta-analysis-project.webp";
-import basicsImg from "@assets/medx-invites-you-to-join-free-workshop-basics-of-research-and-why-srma-mentorship-is-essential.webp";
-import lteImg from "@assets/collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp";
-import researchWeekImg from "@assets/nsri-and-medx-announces-complete-research-week.webp";
-import campusImg from "@assets/medx-join-us-as-campus-ambassadors.webp";
-import cityRepImg from "@assets/medx-announces-slots-for-city-representative.webp";
-import mindsImg from "@assets/medx-minds-join-us-as-speakers-or-story-tellers.webp";
-import officersImg from "@assets/medx-calls-main-officers.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const srmaImg = mediaUrl("medx-systematic-review-and-meta-analysis-project.webp");
+const basicsImg = mediaUrl("medx-invites-you-to-join-free-workshop-basics-of-research-and-why-srma-mentorship-is-essential.webp");
+const lteImg = mediaUrl("collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp");
+const researchWeekImg = mediaUrl("nsri-and-medx-announces-complete-research-week.webp");
+const campusImg = mediaUrl("medx-join-us-as-campus-ambassadors.webp");
+const cityRepImg = mediaUrl("medx-announces-slots-for-city-representative.webp");
+const mindsImg = mediaUrl("medx-minds-join-us-as-speakers-or-story-tellers.webp");
+const officersImg = mediaUrl("medx-calls-main-officers.webp");
 
 export const COURSE_CATEGORIES = [
   "Research Methods",

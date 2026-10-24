@@ -10,6 +10,22 @@ create policy "Public media files are readable"
 on storage.objects for select
 using (bucket_id = 'media');
 
+alter table public.media enable row level security;
+create unique index if not exists media_bucket_path_key on public.media(bucket_path);
+drop policy if exists "Authenticated users can manage media records" on public.media;
+create policy "Authenticated users can manage media records"
+on public.media for all to authenticated
+using (true)
+with check (true);
+
+insert into public.media (file_name, bucket_path, mime_type, size_bytes, used_in)
+select split_part(name, '/', 2), name,
+  coalesce(metadata->>'mimetype', 'application/octet-stream'),
+  coalesce((metadata->>'size')::bigint, 0), '[]'::jsonb
+from storage.objects
+where bucket_id = 'media' and name like 'site/%'
+on conflict (bucket_path) do nothing;
+
 drop policy if exists "Authenticated admins can upload media" on storage.objects;
 create policy "Authenticated admins can upload media"
 on storage.objects for insert to authenticated

@@ -1,21 +1,23 @@
 import type { HierarchyPerson } from "@/components/shared/hierarchy-card";
 
-import sangeenImg from "@assets/sangeen-khan-photo.webp";
-import ifzaImg from "@assets/ifza-zia-photo.webp";
-import sohamImg from "@assets/soham-biren-photo.webp";
-import smyanImg from "@assets/smyan-reddy-photo.webp";
-import shanmukaImg from "@assets/shanmuka-gottimukkala-photo.webp";
-import taroobaImg from "@assets/tarooba-khan-photo.webp";
-import kamilImg from "@assets/kamil-sheikh-photo.webp";
-import momImg from "@assets/syeda-momina-photo.webp";
-import amnaImg from "@assets/amna-ahmed-photo.webp";
-import anshikaImg from "@assets/anshika-jaiswal-photo.webp";
-import fahimaImg from "@assets/fahima-hossain-muna-photo.webp";
-import shehzadImg from "@assets/muhammad-shehzad-photo.webp";
-import monishaImg from "@assets/monisha-pathi-photo.webp";
-import aruzhanImg from "@assets/aruzhan-maratova-photo.webp";
-import zohaibHassanImg from "@assets/zohaib-hassan-photo.webp";
-import abdulMoizImg from "@assets/abdul-moiz-photo.webp";
+import { mediaUrl } from "@/lib/media-url";
+
+const sangeenImg = mediaUrl("sangeen-khan-photo.webp");
+const ifzaImg = mediaUrl("ifza-zia-photo.webp");
+const sohamImg = mediaUrl("soham-biren-photo.webp");
+const smyanImg = mediaUrl("smyan-reddy-photo.webp");
+const shanmukaImg = mediaUrl("shanmuka-gottimukkala-photo.webp");
+const taroobaImg = mediaUrl("tarooba-khan-photo.webp");
+const kamilImg = mediaUrl("kamil-sheikh-photo.webp");
+const momImg = mediaUrl("syeda-momina-photo.webp");
+const amnaImg = mediaUrl("amna-ahmed-photo.webp");
+const anshikaImg = mediaUrl("anshika-jaiswal-photo.webp");
+const fahimaImg = mediaUrl("fahima-hossain-muna-photo.webp");
+const shehzadImg = mediaUrl("muhammad-shehzad-photo.webp");
+const monishaImg = mediaUrl("monisha-pathi-photo.webp");
+const aruzhanImg = mediaUrl("aruzhan-maratova-photo.webp");
+const zohaibHassanImg = mediaUrl("zohaib-hassan-photo.webp");
+const abdulMoizImg = mediaUrl("abdul-moiz-photo.webp");
 
 export interface HierarchyLevel {
   title: string;

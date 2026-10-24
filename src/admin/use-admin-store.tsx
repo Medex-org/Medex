@@ -123,13 +123,26 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
         type: m.mime_type || '',
         sizeLabel: m.size_bytes ? `${Math.round(m.size_bytes / 1024)} KB` : '',
         src: getPublicUrl(m.bucket_path) || '',
-        usedIn: m.used_in || [],
+        usedIn: [],
         isLocal: false,
       });
     });
     setMedia(Array.from(mediaMap.values()));
     const mediaIdForPath = (path: string | null) =>
       path ? Array.from(mediaMap.values()).find((asset) => asset.bucketPath === path)?.id || path : null;
+    const references = new Map<string, string[]>();
+    const addReference = (path: string | null, label: string) => {
+      if (!path) return;
+      const asset = Array.from(mediaMap.values()).find((entry) => entry.id === path || entry.bucketPath === path);
+      if (!asset) return;
+      const current = references.get(asset.id) || [];
+      references.set(asset.id, [...current, label]);
+    };
+    (coursesRes.data || []).forEach((item: any) => addReference(item.image_path, `Course: ${item.title}`));
+    (newsRes.data || []).forEach((item: any) => addReference(item.image_path, `News: ${item.title}`));
+    (eventsRes.data || []).forEach((item: any) => addReference(item.image_path, `Event: ${item.title}`));
+    managedResults.forEach((result, index) => (result.data || []).forEach((item: any) => addReference(item.image_path, `${Object.keys(managedTables)[index]}: ${item.title || item.label || item.name}`)));
+    mediaMap.forEach((asset) => { asset.usedIn = references.get(asset.id) || []; });
 
     setCourses((coursesRes.data || []).map((c: any) => ({
       id: c.id,
@@ -351,7 +364,13 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const removeMedia = async (id: string) => {
-    await supabase.from('media').delete().eq('id', id);
+    const asset = media.find((item) => item.id === id);
+    if (asset?.bucketPath) {
+      const { error } = await supabase.storage.from("media").remove([asset.bucketPath]);
+      if (error) throw error;
+    }
+    const { error } = await supabase.from('media').delete().eq('id', id);
+    if (error) throw error;
     await fetchAll();
   };
 
