@@ -129,44 +129,68 @@ export function NewsManager({
     return Object.keys(next).length === 0;
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!validate()) return;
-    if (editingId) {
-      updateNews(editingId, form);
+    try {
+      if (editingId) {
+        await updateNews(editingId, form);
+        toast({
+          title: "Update saved",
+          description: "Changes saved to Supabase.",
+        });
+      } else {
+        await createNews(form);
+        toast({
+          title: "Update created",
+          description: "Saved to Supabase.",
+        });
+      }
+      setDialogOpen(false);
+    } catch (error) {
       toast({
-        title: "Update saved",
-        description: "Changes saved to Supabase.",
-      });
-    } else {
-      createNews(form);
-      toast({
-        title: "Update created",
-        description: "Saved to Supabase.",
+        title: "Could not save update",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
       });
     }
-    setDialogOpen(false);
   };
 
-  const toggleStatus = (item: NewsUpdate) => {
-    toggleNewsStatus(item.id);
-    toast({
-      title:
-        item.status === "published"
-          ? "Moved to draft"
-          : "Marked published",
-      description:
-        "Status updated on the public site.",
-    });
+  const toggleStatus = async (item: NewsUpdate) => {
+    try {
+      await toggleNewsStatus(item.id);
+      toast({
+        title:
+          item.status === "published"
+            ? "Moved to draft"
+            : "Marked published",
+        description:
+          "Status updated on the public site.",
+      });
+    } catch (error) {
+      toast({
+        title: "Could not update status",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteTarget) return;
-    deleteNews(deleteTarget.id);
-    toast({
-      title: "News update deleted",
-      description: "Deleted from Supabase.",
-    });
-    setDeleteTarget(null);
+    try {
+      await deleteNews(deleteTarget.id);
+      toast({
+        title: "News update deleted",
+        description: "Deleted from Supabase.",
+      });
+      setDeleteTarget(null);
+    } catch (error) {
+      toast({
+        title: "Could not delete update",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -174,7 +198,7 @@ export function NewsManager({
       <AdminPageHeader
         eyebrow="Content"
         title="News & Updates"
-        description="Draft and review sample announcements. Published status here is visual only and never reaches the live website."
+        description="Search, create, and edit announcements published to the public updates page."
         action={
           <Button
             onClick={openCreate}

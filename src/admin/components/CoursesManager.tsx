@@ -133,44 +133,68 @@ export function CoursesManager({
     return Object.keys(next).length === 0;
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!validate()) return;
-    if (editingId) {
-      updateCourse(editingId, form);
+    try {
+      if (editingId) {
+        await updateCourse(editingId, form);
+        toast({
+          title: "Course updated",
+          description: "Changes saved to Supabase.",
+        });
+      } else {
+        await createCourse(form);
+        toast({
+          title: "Course created",
+          description: "Saved to Supabase.",
+        });
+      }
+      setDialogOpen(false);
+    } catch (error) {
       toast({
-        title: "Course updated",
-        description: "Changes saved to Supabase.",
-      });
-    } else {
-      createCourse(form);
-      toast({
-        title: "Course created",
-        description: "Saved to Supabase.",
+        title: "Could not save course",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
       });
     }
-    setDialogOpen(false);
   };
 
-  const toggleStatus = (course: Course) => {
-    toggleCourseStatus(course.id);
-    toast({
-      title:
-        course.status === "published"
-          ? "Moved to draft"
-          : "Marked published",
-      description:
-        "Status updated on the public site.",
-    });
+  const toggleStatus = async (course: Course) => {
+    try {
+      await toggleCourseStatus(course.id);
+      toast({
+        title:
+          course.status === "published"
+            ? "Moved to draft"
+            : "Marked published",
+        description:
+          "Status updated on the public site.",
+      });
+    } catch (error) {
+      toast({
+        title: "Could not update status",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteTarget) return;
-    deleteCourse(deleteTarget.id);
-    toast({
-      title: "Course deleted",
-      description: "Deleted from Supabase.",
-    });
-    setDeleteTarget(null);
+    try {
+      await deleteCourse(deleteTarget.id);
+      toast({
+        title: "Course deleted",
+        description: "Deleted from Supabase.",
+      });
+      setDeleteTarget(null);
+    } catch (error) {
+      toast({
+        title: "Could not delete course",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -54,14 +54,22 @@ export function MediaLibrary() {
     }
   };
 
-  const confirmRemove = () => {
+  const confirmRemove = async () => {
     if (!deleteTarget) return;
-    removeMedia(deleteTarget.id);
-    toast({
-      title: "Media asset removed",
-      description: "The asset was removed from the media library.",
-    });
-    setDeleteTarget(null);
+    try {
+      await removeMedia(deleteTarget.id);
+      toast({
+        title: "Media asset removed",
+        description: "The asset was removed from the media library.",
+      });
+      setDeleteTarget(null);
+    } catch (error) {
+      toast({
+        title: "Could not remove media asset",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

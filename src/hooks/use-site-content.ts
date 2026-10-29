@@ -14,6 +14,7 @@ import {
   type SiteEventBanner,
   type SiteNewsHighlight,
   type SitePartner,
+  type SiteUpdate,
   type SiteWebinar,
 } from "@/data/site-content";
 
@@ -25,6 +26,7 @@ export interface SiteContent {
   partners: SitePartner[];
   courses: SiteCourse[];
   events: SiteEvent[];
+  updates: SiteUpdate[];
   loading: boolean;
 }
 
@@ -47,12 +49,16 @@ export function useSiteContent(): SiteContent {
     partners: FALLBACK_PARTNERS,
     courses: FALLBACK_COURSES,
     events: FALLBACK_EVENTS,
+    updates: [],
     loading: true,
   });
 
   useEffect(() => {
     let active = true;
+    let inFlight = false;
     async function load() {
+      if (inFlight) return;
+      inFlight = true;
       const results = await Promise.all([
         supabase.from("achievements").select("*").order("sort_order"),
         supabase.from("news_highlights").select("*").order("sort_order"),
@@ -61,10 +67,13 @@ export function useSiteContent(): SiteContent {
         supabase.from("partners").select("*").order("sort_order"),
         supabase.from("courses").select("*").eq("status", "published").order("created_at"),
         supabase.from("events").select("*").eq("status", "published").order("date"),
+        supabase.from("news_updates").select("*").eq("status", "published").order("date", { ascending: false, nullsFirst: false }).order("created_at", { ascending: false }),
         supabase.from("media").select("id,bucket_path"),
-      ]);
+      ]).finally(() => {
+        inFlight = false;
+      });
       if (!active) return;
-      const [achievements, newsHighlights, webinars, eventBanners, partners, courses, events, media] = results;
+      const [achievements, newsHighlights, webinars, eventBanners, partners, courses, events, updates, media] = results;
       const mediaPaths = new Map((media.data || []).map((item) => [item.id, item.bucket_path]));
       const resolveMediaPath = (path: string | null) => publicMediaUrl(mediaPaths.get(path || "") || path);
       const fallbackAchievement = new Map(FALLBACK_ACHIEVEMENTS.map((item) => [contentKey(item.title), item]));
@@ -79,13 +88,25 @@ export function useSiteContent(): SiteContent {
         partners: partners.data?.length ? partners.data.map((item) => ({ id: item.id, name: item.name, description: item.description || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) || fallbackPartner.get(contentKey(item.name))?.image || null })) : FALLBACK_PARTNERS,
         courses: courses.data?.length ? courses.data.map((item) => ({ id: item.id, title: item.title, category: item.category || "", description: item.description || "", registrationUrl: item.registration_url || "" })) : FALLBACK_COURSES,
         events: events.data?.length ? events.data.map((item) => ({ id: item.id, name: item.title, type: item.category || "Event", status: "Upcoming", date: [item.date, item.time, item.timezone].filter(Boolean).join(" · "), desc: item.description || "", image: resolveMediaPath(item.image_path) || fallbackEvent.get(contentKey(item.title))?.image || null, link: item.registration_url || null, linkLabel: item.registration_url ? "Register" : null })) : FALLBACK_EVENTS,
+        updates: (updates.data || []).map((item) => ({ id: item.id, title: item.title, category: item.category || "", body: item.body || "", date: item.date || "", image: resolveMediaPath(item.image_path) })),
         loading: false,
       });
     }
     load().catch(() => {
       if (active) setContent((current) => ({ ...current, loading: false }));
     });
-    return () => { active = false; };
+    const refresh = () => {
+      if (document.visibilityState === "visible") {
+        load().catch(() => {});
+      }
+    };
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      active = false;
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
   }, []);
 
   return content;

@@ -57,6 +57,15 @@ export interface SiteEvent {
   linkLabel: string | null;
 }
 
+export interface SiteUpdate {
+  id: string;
+  title: string;
+  category: string;
+  body: string;
+  date: string;
+  image: string | null;
+}
+
 export const FALLBACK_ACHIEVEMENTS: SiteAchievement[] = [
   { id: "srma", title: "6-Lecture SRMA Workshop Series", badge: "Flagship", image: mediaUrl("medx-systematic-review-and-meta-analysis-project.webp"), description: "A structured six-lecture series on systematic review and meta-analysis methodology, from basics to publication." },
   { id: "lte", title: "LTE Recap & Interactive Q&A", badge: "Completed", image: mediaUrl("collaboration-nsri-and-medx-LTE-recap-and-question-and-answer.webp"), description: "A recap session on Letter to the Editor writing with live, interactive Q&A - held in collaboration with NSRI." },

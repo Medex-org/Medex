@@ -69,6 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { label: "About", href: "/about" },
     { label: "Leadership", href: "/team" },
     { label: "Events", href: "/events" },
+    { label: "Updates", href: "/updates" },
     { label: "City Reps", href: "/city-reps" },
   ];
 
@@ -337,6 +338,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   >
                     <FaWhatsapp size={14} aria-hidden="true" /> WhatsApp Channel
                   </a>
+                </li>
+                <li>
+                  <Link
+                    href="/updates"
+                    className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
+                  >
+                    News &amp; Updates
+                  </Link>
                 </li>
                 <li>
                   <Link

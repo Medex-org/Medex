@@ -59,17 +59,33 @@ export function ManagedContentManager({ type, request, clearRequest }: {
       toast({ title: "Title and description are required", variant: "destructive" });
       return;
     }
-    if (editingId) await updateManagedContent(type, editingId, form);
-    else await createManagedContent(type, form);
-    setOpen(false);
-    toast({ title: `${config.singular} saved`, description: "The published site will use this record." });
+    try {
+      if (editingId) await updateManagedContent(type, editingId, form);
+      else await createManagedContent(type, form);
+      setOpen(false);
+      toast({ title: `${config.singular} saved`, description: "The published site will use this record." });
+    } catch (error) {
+      toast({
+        title: `Could not save ${config.singular}`,
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   const confirmDelete = async () => {
     if (!deleteTarget) return;
-    await deleteManagedContent(type, deleteTarget.id);
-    setDeleteTarget(null);
-    toast({ title: `${config.singular} deleted` });
+    try {
+      await deleteManagedContent(type, deleteTarget.id);
+      setDeleteTarget(null);
+      toast({ title: `${config.singular} deleted` });
+    } catch (error) {
+      toast({
+        title: `Could not delete ${config.singular}`,
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -17,6 +17,11 @@ const SECTIONS: AdminSection[] = [
   "news",
   "events",
   "media",
+  "achievements",
+  "news-highlights",
+  "webinars",
+  "banners",
+  "partners",
   "preferences",
 ];
 

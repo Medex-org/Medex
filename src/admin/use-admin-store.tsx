@@ -210,18 +210,25 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     return { ...base, title: item.title };
   };
 
+  const throwIfError = (error: { message: string } | null) => {
+    if (error) throw new Error(error.message);
+  };
+
   const createManagedContent = async (type: ManagedContentType, item: Omit<ManagedContentItem, "id">) => {
-    await supabase.from(managedTables[type]).insert(managedPayload(type, item) as never);
+    const { error } = await supabase.from(managedTables[type]).insert(managedPayload(type, item) as never);
+    throwIfError(error);
     await fetchAll();
   };
 
   const updateManagedContent = async (type: ManagedContentType, id: string, item: Omit<ManagedContentItem, "id">) => {
-    await supabase.from(managedTables[type]).update(managedPayload(type, item) as never).eq("id", id);
+    const { error } = await supabase.from(managedTables[type]).update(managedPayload(type, item) as never).eq("id", id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const deleteManagedContent = async (type: ManagedContentType, id: string) => {
-    await supabase.from(managedTables[type]).delete().eq("id", id);
+    const { error } = await supabase.from(managedTables[type]).delete().eq("id", id);
+    throwIfError(error);
     await fetchAll();
   };
 
@@ -241,7 +248,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       registration_url: input.registrationUrl || null,
       created_by: profile?.id,
     });
-    if (!error) await fetchAll();
+    throwIfError(error);
+    await fetchAll();
   };
 
   const updateCourse = async (id: string, patch: CourseInput) => {
@@ -255,18 +263,21 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       image_path: imagePath,
       registration_url: patch.registrationUrl || null,
     }).eq('id', id);
-    if (!error) await fetchAll();
+    throwIfError(error);
+    await fetchAll();
   };
 
   const deleteCourse = async (id: string) => {
-    await supabase.from('courses').delete().eq('id', id);
+    const { error } = await supabase.from('courses').delete().eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const toggleCourseStatus = async (id: string) => {
     const course = courses.find(c => c.id === id);
     if (!course) return;
-    await supabase.from('courses').update({ status: course.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('courses').update({ status: course.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
@@ -281,12 +292,13 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       image_path: imagePath,
       created_by: profile?.id,
     });
-    if (!error) await fetchAll();
+    throwIfError(error);
+    await fetchAll();
   };
 
   const updateNews = async (id: string, patch: NewsUpdateInput) => {
     const imagePath = media.find((asset) => asset.id === patch.imageId)?.bucketPath || patch.imageId;
-    await supabase.from('news_updates').update({
+    const { error } = await supabase.from('news_updates').update({
       title: patch.title,
       category: patch.category,
       body: patch.body,
@@ -294,24 +306,27 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       status: patch.status,
       image_path: imagePath,
     }).eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const deleteNews = async (id: string) => {
-    await supabase.from('news_updates').delete().eq('id', id);
+    const { error } = await supabase.from('news_updates').delete().eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const toggleNewsStatus = async (id: string) => {
     const item = news.find(n => n.id === id);
     if (!item) return;
-    await supabase.from('news_updates').update({ status: item.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('news_updates').update({ status: item.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const createEvent = async (input: EventInput) => {
     const imagePath = media.find((asset) => asset.id === input.imageId)?.bucketPath || input.imageId;
-    await supabase.from('events').insert({
+    const { error } = await supabase.from('events').insert({
       title: input.title,
       category: input.category,
       date: input.date || null,
@@ -325,12 +340,13 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       image_path: imagePath,
       created_by: profile?.id,
     });
+    throwIfError(error);
     await fetchAll();
   };
 
   const updateEvent = async (id: string, patch: EventInput) => {
     const imagePath = media.find((asset) => asset.id === patch.imageId)?.bucketPath || patch.imageId;
-    await supabase.from('events').update({
+    const { error } = await supabase.from('events').update({
       title: patch.title,
       category: patch.category,
       date: patch.date || null,
@@ -343,18 +359,21 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       registration_url: patch.registrationUrl || null,
       image_path: imagePath,
     }).eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const deleteEvent = async (id: string) => {
-    await supabase.from('events').delete().eq('id', id);
+    const { error } = await supabase.from('events').delete().eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 
   const toggleEventStatus = async (id: string) => {
     const event = events.find(e => e.id === id);
     if (!event) return;
-    await supabase.from('events').update({ status: event.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('events').update({ status: event.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    throwIfError(error);
     await fetchAll();
   };
 

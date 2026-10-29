@@ -17,6 +17,7 @@ const DeptTechnology = lazy(() => import('@/pages/departments/technology'));
 const DeptPartnerships = lazy(() => import('@/pages/departments/partnerships'));
 const MedxMinds = lazy(() => import('@/pages/departments/medx-minds'));
 const Events = lazy(() => import('@/pages/events'));
+const Updates = lazy(() => import('@/pages/updates'));
 const CityReps = lazy(() => import('@/pages/city-reps'));
 const Join = lazy(() => import('@/pages/join'));
 const AdminDashboard = lazy(() => import('@/admin/AdminDashboard'));
@@ -47,6 +48,7 @@ function Router() {
         <Route path="/partnerships" component={DeptPartnerships} />
         <Route path="/medx-minds" component={MedxMinds} />
         <Route path="/events" component={Events} />
+        <Route path="/updates" component={Updates} />
         <Route path="/city-reps" component={CityReps} />
         <Route path="/join" component={Join} />
         <Route path="/admin/login" component={AdminLogin} />

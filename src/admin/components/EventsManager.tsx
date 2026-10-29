@@ -157,44 +157,68 @@ export function EventsManager({
     return Object.keys(next).length === 0;
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!validate()) return;
-    if (editingId) {
-      updateEvent(editingId, form);
+    try {
+      if (editingId) {
+        await updateEvent(editingId, form);
+        toast({
+          title: "Event saved",
+          description: "Changes saved to Supabase.",
+        });
+      } else {
+        await createEvent(form);
+        toast({
+          title: "Event created",
+          description: "Saved to Supabase.",
+        });
+      }
+      setDialogOpen(false);
+    } catch (error) {
       toast({
-        title: "Event saved",
-        description: "Changes saved to Supabase.",
-      });
-    } else {
-      createEvent(form);
-      toast({
-        title: "Event created",
-        description: "Saved to Supabase.",
+        title: "Could not save event",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
       });
     }
-    setDialogOpen(false);
   };
 
-  const toggleStatus = (event: EventItem) => {
-    toggleEventStatus(event.id);
-    toast({
-      title:
-        event.status === "published"
-          ? "Moved to draft"
-          : "Marked published",
-      description:
-        "Status updated on the public site.",
-    });
+  const toggleStatus = async (event: EventItem) => {
+    try {
+      await toggleEventStatus(event.id);
+      toast({
+        title:
+          event.status === "published"
+            ? "Moved to draft"
+            : "Marked published",
+        description:
+          "Status updated on the public site.",
+      });
+    } catch (error) {
+      toast({
+        title: "Could not update status",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteTarget) return;
-    deleteEvent(deleteTarget.id);
-    toast({
-      title: "Event deleted",
-      description: "Deleted from Supabase.",
-    });
-    setDeleteTarget(null);
+    try {
+      await deleteEvent(deleteTarget.id);
+      toast({
+        title: "Event deleted",
+        description: "Deleted from Supabase.",
+      });
+      setDeleteTarget(null);
+    } catch (error) {
+      toast({
+        title: "Could not delete event",
+        description: error instanceof Error ? error.message : "Unknown error.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -202,7 +226,7 @@ export function EventsManager({
       <AdminPageHeader
         eyebrow="Content"
         title="Events"
-        description="Manage sample events, dates, time zones, and venues. Nothing here creates a real event or collects registrations."
+        description="Search, create, and edit events published to the public events page."
         action={
           <Button
             onClick={openCreate}

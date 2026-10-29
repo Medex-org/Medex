@@ -224,6 +224,13 @@ export default function Home() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+          <Link
+            href="/updates"
+            className="inline-flex items-center gap-2 mt-8 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
+          >
+            View all updates
+            <ArrowRight size={13} aria-hidden="true" />
+          </Link>
         </div>
       </section>
 

@@ -60,6 +60,12 @@
     "description": "Conferences, workshops, and recruitment opportunities for the MEDX R&Ed community - ASH, SVIN, Research Week, LTE workshops, and more."
   },
   {
+    "key": "updates",
+    "path": "/updates",
+    "title": "News & Updates",
+    "description": "Announcements, recruitment drives, and program updates from the MEDX R&Ed community."
+  },
+  {
     "key": "cityReps",
     "path": "/city-reps",
     "title": "City Representatives & Campus Ambassadors",
