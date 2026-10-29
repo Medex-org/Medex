@@ -48,7 +48,7 @@ function emptyEvent(): EventInput {
     locationType: "Virtual",
     location: "",
     description: "",
-    status: "draft",
+    status: "published",
     registrationUrl: "",
     imageId: null,
   };
@@ -162,14 +162,14 @@ export function EventsManager({
     if (editingId) {
       updateEvent(editingId, form);
       toast({
-        title: "Demo event saved",
-        description: "Session-only change. Nothing was published.",
+        title: "Event saved",
+        description: "Changes saved to Supabase.",
       });
     } else {
       createEvent(form);
       toast({
-        title: "Demo event created",
-        description: "Added to this browser session only.",
+        title: "Event created",
+        description: "Saved to Supabase.",
       });
     }
     setDialogOpen(false);
@@ -180,10 +180,10 @@ export function EventsManager({
     toast({
       title:
         event.status === "published"
-          ? "Moved to draft (demo)"
-          : "Marked published (demo)",
+          ? "Moved to draft"
+          : "Marked published",
       description:
-        "Status changed in this preview only — the public site is unaffected.",
+        "Status updated on the public site.",
     });
   };
 
@@ -191,8 +191,8 @@ export function EventsManager({
     if (!deleteTarget) return;
     deleteEvent(deleteTarget.id);
     toast({
-      title: "Demo event deleted",
-      description: "Refresh the page to restore the sample data.",
+      title: "Event deleted",
+      description: "Deleted from Supabase.",
     });
     setDeleteTarget(null);
   };

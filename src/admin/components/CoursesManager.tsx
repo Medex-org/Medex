@@ -40,7 +40,7 @@ function emptyCourse(): CourseInput {
     category: "",
     description: "",
     startDate: "",
-    status: "draft",
+    status: "published",
     imageId: null,
     registrationUrl: "",
   };
@@ -138,14 +138,14 @@ export function CoursesManager({
     if (editingId) {
       updateCourse(editingId, form);
       toast({
-        title: "Demo course updated",
-        description: "Session-only change. Nothing was published.",
+        title: "Course updated",
+        description: "Changes saved to Supabase.",
       });
     } else {
       createCourse(form);
       toast({
-        title: "Demo course created",
-        description: "Added to this browser session only.",
+        title: "Course created",
+        description: "Saved to Supabase.",
       });
     }
     setDialogOpen(false);
@@ -156,10 +156,10 @@ export function CoursesManager({
     toast({
       title:
         course.status === "published"
-          ? "Moved to draft (demo)"
-          : "Marked published (demo)",
+          ? "Moved to draft"
+          : "Marked published",
       description:
-        "Status changed in this preview only — the public site is unaffected.",
+        "Status updated on the public site.",
     });
   };
 
@@ -167,8 +167,8 @@ export function CoursesManager({
     if (!deleteTarget) return;
     deleteCourse(deleteTarget.id);
     toast({
-      title: "Demo course deleted",
-      description: "Refresh the page to restore the sample data.",
+      title: "Course deleted",
+      description: "Deleted from Supabase.",
     });
     setDeleteTarget(null);
   };
@@ -178,7 +178,7 @@ export function CoursesManager({
       <AdminPageHeader
         eyebrow="Content"
         title="Courses"
-        description="Search, create, and edit sample course records. These are preview-only and do not affect any public LMS or course listing."
+        description="Search, create, and edit course records published to the site."
         action={
           <Button
             onClick={openCreate}

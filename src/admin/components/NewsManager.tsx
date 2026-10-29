@@ -41,7 +41,7 @@ function emptyNews(): NewsUpdateInput {
     category: "",
     body: "",
     date: "",
-    status: "draft",
+    status: "published",
     imageId: null,
   };
 }
@@ -134,14 +134,14 @@ export function NewsManager({
     if (editingId) {
       updateNews(editingId, form);
       toast({
-        title: "Demo update saved",
-        description: "Session-only change. Nothing was published.",
+        title: "Update saved",
+        description: "Changes saved to Supabase.",
       });
     } else {
       createNews(form);
       toast({
-        title: "Demo update created",
-        description: "Added to this browser session only.",
+        title: "Update created",
+        description: "Saved to Supabase.",
       });
     }
     setDialogOpen(false);
@@ -152,10 +152,10 @@ export function NewsManager({
     toast({
       title:
         item.status === "published"
-          ? "Moved to draft (demo)"
-          : "Marked published (demo)",
+          ? "Moved to draft"
+          : "Marked published",
       description:
-        "Status changed in this preview only — the public site is unaffected.",
+        "Status updated on the public site.",
     });
   };
 
@@ -163,8 +163,8 @@ export function NewsManager({
     if (!deleteTarget) return;
     deleteNews(deleteTarget.id);
     toast({
-      title: "Demo update deleted",
-      description: "Refresh the page to restore the sample data.",
+      title: "News update deleted",
+      description: "Deleted from Supabase.",
     });
     setDeleteTarget(null);
   };
