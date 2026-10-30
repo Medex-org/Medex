@@ -37,6 +37,15 @@ export interface SitePartner {
   image: string | null;
 }
 
+export interface SiteGlobalOfficer {
+  id: string;
+  name: string;
+  role: string;
+  intro: string;
+  image: string | null;
+  linkedinUrl?: string;
+}
+
 export interface SiteCourse {
   id: string;
   title: string;

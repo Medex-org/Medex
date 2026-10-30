@@ -69,6 +69,7 @@ export type AdminSection =
   | "webinars"
   | "banners"
   | "partners"
+  | "officers"
   | "preferences";
 
 export type Achievement = {
@@ -122,7 +123,7 @@ export type Partner = {
   updated_at: string;
 };
 
-export type ManagedContentType = "achievements" | "news-highlights" | "webinars" | "banners" | "partners";
+export type ManagedContentType = "achievements" | "news-highlights" | "webinars" | "banners" | "partners" | "officers";
 
 export interface ManagedContentItem {
   id: string;

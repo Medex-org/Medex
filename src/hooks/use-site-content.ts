@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { GOVERNANCE } from "@/data/governance";
 import {
   FALLBACK_ACHIEVEMENTS,
   FALLBACK_COURSES,
@@ -12,6 +13,7 @@ import {
   type SiteCourse,
   type SiteEvent,
   type SiteEventBanner,
+  type SiteGlobalOfficer,
   type SiteNewsHighlight,
   type SitePartner,
   type SiteUpdate,
@@ -24,6 +26,7 @@ export interface SiteContent {
   webinars: SiteWebinar[];
   eventBanners: SiteEventBanner[];
   partners: SitePartner[];
+  globalOfficers: SiteGlobalOfficer[];
   courses: SiteCourse[];
   events: SiteEvent[];
   updates: SiteUpdate[];
@@ -47,6 +50,7 @@ export function useSiteContent(): SiteContent {
     webinars: FALLBACK_WEBINARS,
     eventBanners: FALLBACK_EVENT_BANNERS,
     partners: FALLBACK_PARTNERS,
+    globalOfficers: [],
     courses: FALLBACK_COURSES,
     events: FALLBACK_EVENTS,
     updates: [],
@@ -65,6 +69,7 @@ export function useSiteContent(): SiteContent {
         supabase.from("webinars").select("*").order("sort_order"),
         supabase.from("event_banners").select("*").order("sort_order"),
         supabase.from("partners").select("*").order("sort_order"),
+        supabase.from("global_officers").select("*").order("sort_order"),
         supabase.from("courses").select("*").eq("status", "published").order("created_at"),
         supabase.from("events").select("*").eq("status", "published").order("date"),
         supabase.from("news_updates").select("*").eq("status", "published").order("date", { ascending: false, nullsFirst: false }).order("created_at", { ascending: false }),
@@ -73,19 +78,21 @@ export function useSiteContent(): SiteContent {
         inFlight = false;
       });
       if (!active) return;
-      const [achievements, newsHighlights, webinars, eventBanners, partners, courses, events, updates, media] = results;
+      const [achievements, newsHighlights, webinars, eventBanners, partners, globalOfficers, courses, events, updates, media] = results;
       const mediaPaths = new Map((media.data || []).map((item) => [item.id, item.bucket_path]));
       const resolveMediaPath = (path: string | null) => publicMediaUrl(mediaPaths.get(path || "") || path);
       const fallbackAchievement = new Map(FALLBACK_ACHIEVEMENTS.map((item) => [contentKey(item.title), item]));
       const fallbackBanner = new Map(FALLBACK_EVENT_BANNERS.map((item) => [contentKey(item.label), item]));
       const fallbackPartner = new Map(FALLBACK_PARTNERS.map((item) => [contentKey(item.name), item]));
       const fallbackEvent = new Map(FALLBACK_EVENTS.map((item) => [contentKey(item.name), item]));
+      const fallbackOfficer = new Map<string, { intro?: string; image: string | null }>(GOVERNANCE[0].people.map((item) => [contentKey(item.name), item]));
       setContent({
         achievements: achievements.data?.length ? achievements.data.map((item) => ({ id: item.id, title: item.title, badge: item.badge || "", description: item.description || "", image: resolveMediaPath(item.image_path) || fallbackAchievement.get(contentKey(item.title))?.image || null })) : FALLBACK_ACHIEVEMENTS,
         newsHighlights: newsHighlights.data?.length ? newsHighlights.data.map((item) => ({ id: item.id, title: item.title, description: item.description || "" })) : FALLBACK_NEWS_HIGHLIGHTS,
         webinars: webinars.data?.length ? webinars.data.map((item) => ({ id: item.id, title: item.title, cadence: item.cadence || "", description: item.description || "" })) : FALLBACK_WEBINARS,
         eventBanners: eventBanners.data?.length ? eventBanners.data.map((item) => ({ id: item.id, label: item.label, href: item.href || "#", image: resolveMediaPath(item.image_path) || fallbackBanner.get(contentKey(item.label))?.image || null })) : FALLBACK_EVENT_BANNERS,
         partners: partners.data?.length ? partners.data.map((item) => ({ id: item.id, name: item.name, description: item.description || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) || fallbackPartner.get(contentKey(item.name))?.image || null })) : FALLBACK_PARTNERS,
+        globalOfficers: globalOfficers.data?.length ? globalOfficers.data.map((item: any) => ({ id: item.id, name: item.name, role: item.role, intro: item.intro || fallbackOfficer.get(contentKey(item.name))?.intro || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) || fallbackOfficer.get(contentKey(item.name))?.image || null })) : [],
         courses: courses.data?.length ? courses.data.map((item) => ({ id: item.id, title: item.title, category: item.category || "", description: item.description || "", registrationUrl: item.registration_url || "" })) : FALLBACK_COURSES,
         events: events.data?.length ? events.data.map((item) => ({ id: item.id, name: item.title, type: item.category || "Event", status: "Upcoming", date: [item.date, item.time, item.timezone].filter(Boolean).join(" · "), desc: item.description || "", image: resolveMediaPath(item.image_path) || fallbackEvent.get(contentKey(item.title))?.image || null, link: item.registration_url || null, linkLabel: item.registration_url ? "Register" : null })) : FALLBACK_EVENTS,
         updates: (updates.data || []).map((item) => ({ id: item.id, title: item.title, category: item.category || "", body: item.body || "", date: item.date || "", image: resolveMediaPath(item.image_path) })),

@@ -18,6 +18,7 @@ const CONFIG: Record<ManagedContentType, { title: string; singular: string; seco
   webinars: { title: "Webinars", singular: "webinar", secondary: "Cadence" },
   banners: { title: "Event Banners", singular: "banner", secondary: "Link", hasLink: true },
   partners: { title: "Partners", singular: "partner", secondary: "LinkedIn URL", hasLink: true },
+  officers: { title: "Global Officers", singular: "officer", secondary: "Role", hasLink: true },
 };
 
 const emptyItem = (): Omit<ManagedContentItem, "id"> => ({

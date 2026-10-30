@@ -10,6 +10,7 @@ import {
   Menu,
   Newspaper,
   ShieldCheck,
+  Users,
   X,
 } from "lucide-react";
 import { mediaUrl } from "@/lib/media-url";
@@ -37,6 +38,7 @@ const NAV_ITEMS: {
   { id: "webinars", label: "Webinars", icon: CalendarDays },
   { id: "banners", label: "Banners", icon: Images },
   { id: "partners", label: "Partners", icon: ShieldCheck },
+  { id: "officers", label: "Global Officers", icon: Users },
   { id: "preferences", label: "Preferences & Access", icon: ShieldCheck },
 ];
 
@@ -51,6 +53,7 @@ const SECTION_LABELS: Record<AdminSection, string> = {
   webinars: "Webinars",
   banners: "Banners",
   partners: "Partners",
+  officers: "Global Officers",
   preferences: "Preferences & Access",
 };
 

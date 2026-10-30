@@ -87,6 +87,29 @@ create table if not exists public.partners (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.global_officers (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  role text not null,
+  intro text,
+  linkedin_url text,
+  image_path text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.global_officers enable row level security;
+drop policy if exists "Public global officers are readable" on public.global_officers;
+create policy "Public global officers are readable"
+on public.global_officers for select
+using (true);
+drop policy if exists "Authenticated users can manage global officers" on public.global_officers;
+create policy "Authenticated users can manage global officers"
+on public.global_officers for all to authenticated
+using (true)
+with check (true);
+
 insert into public.achievements (title, badge, description, sort_order)
 select * from (values
   ('6-Lecture SRMA Workshop Series', 'Flagship', 'A structured six-lecture series on systematic review and meta-analysis methodology, from basics to publication.', 0),
@@ -128,6 +151,21 @@ select * from (values
   ('NSRI BUMHS-LC', 'National Students Research Institution', null, 3)
 ) as seed(name, description, linkedin_url, sort_order)
 where not exists (select 1 from public.partners);
+
+insert into public.global_officers (name, role, intro, sort_order)
+select * from (values
+  ('Sangeen Khan Mandokhail', 'Founder & Chief Executive Officer (CEO)', 'Founded MEDX R&Ed to give medical students structured access to research methodology, mentorship, and a global peer network.', 0),
+  ('Ifza Zia', 'Co-Founder & Chief Operational Officer (COO)', 'Co-founder overseeing MEDX''s day-to-day operations across departments and chapters.', 1),
+  ('Soham Biren', 'Chief Internal Officer (CIO)', 'Co-founder shaping MEDX''s information and technology strategy.', 2),
+  ('Smyan Reddy', 'Chief Advisor (CA)', 'Advises MEDX leadership across strategy and program direction.', 3),
+  ('Tarooba Khan', 'Chief Research Officer (CRO)', 'Leads MEDX''s research strategy and currently heads SRMA Project-1.', 4),
+  ('Aruzhan Maratova', 'Chief Tech Officer (CTO)', 'Leads MEDX''s technology direction, including the centralized LMS.', 5),
+  ('Imad Khan', 'Chief Officer MEDX Education (CO.ME)', 'Leads MEDX''s education strategy across academic programs and Higher Pathways guidance.', 6),
+  ('Shaikh Kamil', 'Chief External Affairs and Partnerships Officer (CEPO)', 'Leads MEDX''s strategic partnerships and external collaborations.', 7),
+  ('Open Position', 'Chief Officer MEDX Minds (Co.MM)', null, 8),
+  ('Open Position', 'Chief Officer Medical Exchange (CO.MX)', null, 9)
+) as seed(name, role, intro, sort_order)
+where not exists (select 1 from public.global_officers);
 
 insert into public.courses (title, category, description, status, registration_url)
 select * from (values

@@ -22,6 +22,7 @@ const SECTIONS: AdminSection[] = [
   "webinars",
   "banners",
   "partners",
+  "officers",
   "preferences",
 ];
 
@@ -86,6 +87,7 @@ function DashboardShell() {
       {section === "webinars" ? <ManagedContentManager type="webinars" request={request?.section === "webinars" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "banners" ? <ManagedContentManager type="banners" request={request?.section === "banners" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "partners" ? <ManagedContentManager type="partners" request={request?.section === "partners" ? request : undefined} clearRequest={clearRequest} /> : null}
+      {section === "officers" ? <ManagedContentManager type="officers" request={request?.section === "officers" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "preferences" ? <PreferencesPanel /> : null}
     </AdminLayout>
   );

@@ -58,7 +58,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const [media, setMedia] = useState<MediaAsset[]>([]);
   const [loading, setLoading] = useState(true);
   const [managedContent, setManagedContent] = useState<Record<ManagedContentType, ManagedContentItem[]>>({
-    achievements: [], "news-highlights": [], webinars: [], banners: [], partners: [],
+    achievements: [], "news-highlights": [], webinars: [], banners: [], partners: [], officers: [],
   });
 
   const managedTables: Record<ManagedContentType, string> = {
@@ -67,6 +67,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     webinars: "webinars",
     banners: "event_banners",
     partners: "partners",
+    officers: "global_officers",
   };
 
   const uploadMedia = async (file: File): Promise<MediaAsset> => {
@@ -188,8 +189,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       nextManaged[type] = (managedResults[index]?.data || []).map((item: any) => ({
         id: item.id,
         title: item.title || item.label || item.name || "",
-        secondary: item.badge || item.cadence || item.linkedin_url || "",
-        description: item.description || "",
+        secondary: item.badge || item.cadence || item.role || (type === "partners" ? item.linkedin_url : "") || "",
+        description: item.description || item.intro || "",
         link: item.href || item.linkedin_url || "",
         imagePath: mediaIdForPath(item.image_path) || "",
         sortOrder: item.sort_order || 0,
@@ -207,6 +208,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     if (type === "webinars") return { ...base, title: item.title, cadence: item.secondary || null };
     if (type === "banners") return { ...base, label: item.title, href: item.link || null };
     if (type === "partners") return { ...base, name: item.title, linkedin_url: item.link || null };
+    if (type === "officers") return { ...base, name: item.title, role: item.secondary, intro: item.description, linkedin_url: item.link || null };
     return { ...base, title: item.title };
   };
 

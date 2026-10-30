@@ -10,6 +10,7 @@ import { DEPARTMENTS } from "@/data/departments";
 import { LINKS } from "@/config/links";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { SectionNav } from "@/components/shared/section-nav";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 const SUPPORT_TEAM_VACANCIES: HierarchyPerson[] = DEPARTMENTS.flatMap((dept) => [
   { name: "Open Position", role: `${dept.shortName} Associate`, image: null, vacant: true as const },
@@ -33,6 +34,22 @@ const SECTIONS = [
 ];
 
 export default function Team() {
+  const { globalOfficers } = useSiteContent();
+  const governance = globalOfficers.length
+    ? GOVERNANCE.map((level, index) => index === 0
+      ? {
+          ...level,
+          people: globalOfficers.map((officer) => ({
+            name: officer.name,
+            role: officer.role,
+            intro: officer.intro,
+            image: officer.image,
+            linkedinUrl: officer.linkedinUrl,
+          })),
+        }
+      : level)
+    : GOVERNANCE;
+
   return (
     <Layout>
       <PageMeta {...SEO.team} />
@@ -60,7 +77,7 @@ export default function Team() {
 
       <SectionNav items={SECTIONS} />
 
-      {GOVERNANCE.map((level, i) => (
+      {governance.map((level, i) => (
         <section
           key={level.title}
           id={LEVEL_IDS[i]}
