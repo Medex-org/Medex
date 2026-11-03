@@ -50,7 +50,7 @@ const tracks = [
       "Willingness to share personal experiences",
       "Collaborative mindset",
     ],
-    form: "/medx-minds#associate",
+    form: "/medx-minds/#associate",
     internal: true,
   },
 ];

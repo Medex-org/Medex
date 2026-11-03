@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 
 const SITE_NAME = "MEDX R&Ed";
-const DEFAULT_TITLE = `${SITE_NAME} - Medical Exchange, Research & Education`;
+const SITE_URL = "https://medxred.org";
+const DEFAULT_TITLE = `${SITE_NAME} | Clinical Research & Medical Education`;
 const DEFAULT_DESCRIPTION =
-  "A global community of medical and health-science students united by rigorous methodology, cross-border mentorship, and the pursuit of evidence-based medicine.";
+  "MEDX R&Ed advances clinical research education, medical exchange, and technology for global health. Join our global student-led mission.";
 
 interface PageMetaProps {
   title: string;
@@ -25,6 +26,22 @@ function setRobots(content: string) {
   setMetaByAttr("name", "robots", content);
 }
 
+function canonicalPath() {
+  if (typeof window === "undefined") return "/";
+  const pathname = window.location.pathname.replace(/\/+$/, "");
+  return `${pathname || ""}/`;
+}
+
+function setCanonical(href: string) {
+  let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", "canonical");
+    document.head.appendChild(el);
+  }
+  el.href = href;
+}
+
 /**
  * Sets document.title, meta description, and OG/Twitter tags for the current
  * page client-side. This keeps the SPA's own document consistent when users
@@ -44,6 +61,10 @@ export function PageMeta({ title, description, noindex = false }: PageMetaProps)
     setMetaByAttr("name", "twitter:description", description);
     setRobots(noindex ? "noindex, nofollow" : "index, follow");
 
+    const canonical = `${SITE_URL}${canonicalPath()}`;
+    setCanonical(canonical);
+    setMetaByAttr("property", "og:url", canonical);
+
     return () => {
       document.title = DEFAULT_TITLE;
       setMetaByAttr("name", "description", DEFAULT_DESCRIPTION);
@@ -52,6 +73,8 @@ export function PageMeta({ title, description, noindex = false }: PageMetaProps)
       setMetaByAttr("name", "twitter:title", DEFAULT_TITLE);
       setMetaByAttr("name", "twitter:description", DEFAULT_DESCRIPTION);
       setRobots("index, follow");
+      setCanonical(`${SITE_URL}/`);
+      setMetaByAttr("property", "og:url", `${SITE_URL}/`);
     };
   }, [title, description, noindex]);
 

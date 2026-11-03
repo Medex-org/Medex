@@ -66,11 +66,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [location]);
 
   const navLinks = [
-    { label: "About", href: "/about" },
-    { label: "Leadership", href: "/team" },
-    { label: "Events", href: "/events" },
-    { label: "Updates", href: "/updates" },
-    { label: "City Reps", href: "/city-reps" },
+    { label: "About", href: "/about/" },
+    { label: "Leadership", href: "/team/" },
+    { label: "Events", href: "/events/" },
+    { label: "Updates", href: "/updates/" },
+    { label: "City Reps", href: "/city-reps/" },
   ];
 
   const isDeptActive = DEPARTMENTS.some((d) => d.href === location);
@@ -106,9 +106,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <nav className="hidden md:flex items-center gap-4 lg:gap-7 text-sm font-medium whitespace-nowrap" aria-label="Main navigation">
             <Link
-              href="/about"
+              href="/about/"
               className={`transition-colors hover:text-accent relative pb-0.5 ${
-                location === "/about"
+                location === "/about/"
                   ? "text-accent after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-accent"
                   : "text-foreground"
               }`}
@@ -159,7 +159,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <ThemeToggle />
 
             <Link
-              href="/join"
+              href="/join/"
               className="px-5 py-2 bg-accent text-accent-foreground hover:bg-accent/90 transition-colors text-xs uppercase tracking-widest font-semibold"
             >
               Join MEDX
@@ -196,9 +196,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           >
             <nav className="flex flex-col px-4 sm:px-6 py-8 gap-0" aria-label="Mobile navigation">
               <Link
-                href="/about"
+                href="/about/"
                 className={`font-sans border-b-[1px] border-border py-5 text-xl ${
-                  location === "/about" ? "text-accent" : "text-foreground"
+                  location === "/about/" ? "text-accent" : "text-foreground"
                 }`}
               >
                 About
@@ -232,7 +232,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               ))}
               <Link
-                href="/join"
+                href="/join/"
                 className="mt-8 px-6 py-4 bg-accent text-accent-foreground text-center font-sans uppercase tracking-widest text-sm font-semibold"
               >
                 Join MEDX
@@ -341,7 +341,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </li>
                 <li>
                   <Link
-                    href="/updates"
+                    href="/updates/"
                     className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >
                     News &amp; Updates
@@ -349,7 +349,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </li>
                 <li>
                   <Link
-                    href="/join"
+                    href="/join/"
                     className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >
                     Join MEDX

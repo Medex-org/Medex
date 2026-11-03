@@ -152,7 +152,7 @@ export default function About() {
               </p>
             </div>
             <Link
-              href="/partnerships"
+              href="/partnerships/"
               className="whitespace-nowrap px-6 py-3 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest hover:bg-primary/90 transition-colors flex-shrink-0"
             >
               View Partnerships

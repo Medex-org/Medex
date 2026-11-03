@@ -16,7 +16,7 @@ const JOIN_ROLES = [
   { title: "City Representative", href: LINKS.cityRepForm, desc: "Lead MEDX initiatives in your city." },
   { title: "Campus Ambassador", href: LINKS.campusAmbassadorForm, desc: "Represent MEDX at your institution." },
   { title: "Workshop Participant", href: LINKS.membershipForm, desc: "Learn research methodology and join MEDX cohorts." },
-  { title: "MEDX Minds Associate", href: "/medx-minds#associate", desc: "Support student mental health initiatives.", internal: true },
+  { title: "MEDX Minds Associate", href: "/medx-minds/#associate", desc: "Support student mental health initiatives.", internal: true },
 ];
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0 opacity-[0.06] pointer-events-none bg-texture-molecular" aria-hidden="true" />
         <div className="absolute inset-0 z-0 pointer-events-none bg-radial-[at_50%_0%] from-accent/5 to-transparent" aria-hidden="true" />
 
-        <FadeIn className="relative z-10 max-w-4xl mx-auto">
+        <div className="relative z-10 max-w-4xl mx-auto">
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-secondary mb-6">
             Medical Exchange · Research · Education
           </p>
@@ -56,13 +56,13 @@ export default function Home() {
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </a>
             <Link
-              href="/research"
+              href="/research/"
               className="w-full sm:w-auto px-8 py-4 border-[1px] border-primary text-primary font-semibold tracking-widest uppercase text-sm hover:bg-primary/5 transition-colors text-center"
             >
               Explore Departments
             </Link>
           </div>
-        </FadeIn>
+        </div>
       </section>
 
       {/* ── MEDX at a Glance ─────────────────────────────────────────── */}
@@ -176,7 +176,7 @@ export default function Home() {
               <h2 className="text-2xl md:text-3xl font-semibold text-primary">Upcoming Events</h2>
               <div className="section-rule mt-4" />
             </div>
-            <Link href="/events" className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity">
+            <Link href="/events/" className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity">
               View All <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </FadeIn>
@@ -225,7 +225,7 @@ export default function Home() {
             ))}
           </StaggerContainer>
           <Link
-            href="/updates"
+            href="/updates/"
             className="inline-flex items-center gap-2 mt-8 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
           >
             View all updates
@@ -340,12 +340,43 @@ export default function Home() {
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </a>
             <Link
-              href="/join"
+              href="/join/"
               className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity"
             >
               All Application Tracks <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* ── Explore MEDX ─────────────────────────────────────────────── */}
+      <section className="border-t-[1px] border-border py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <FadeIn className="mb-10 text-center">
+            <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4">Explore MEDX R&amp;Ed</h2>
+            <div className="section-rule mx-auto" />
+          </FadeIn>
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { href: "/about/", label: "Our Mission", desc: "Who we are and why we exist." },
+              { href: "/join/", label: "Join Our Programs", desc: "Apply and start your research journey." },
+              { href: "/education/", label: "Clinical Research Education", desc: "Programs, pathways, and study guides." },
+              { href: "/medical-exchange/", label: "Global Medical Exchange", desc: "Rotations, electives, and observerships." },
+            ].map((item) => (
+              <StaggerItem key={item.href}>
+                <Link
+                  href={item.href}
+                  className="group flex h-full flex-col p-6 border-[1px] border-border bg-card hover:border-accent/40 transition-colors"
+                >
+                  <span className="font-semibold text-base mb-2 flex items-center gap-2">
+                    {item.label}
+                    <ArrowRight size={14} className="text-accent group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                  </span>
+                  <span className="font-sans text-sm text-muted-foreground leading-relaxed">{item.desc}</span>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         </div>
       </section>
     </Layout>

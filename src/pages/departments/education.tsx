@@ -6,6 +6,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animation
 import { GraduationCap, HeartPulse, Stethoscope, BookMarked, Sparkles, ArrowRight } from "lucide-react";
 import { AudioSeries } from "@/components/shared/audio-series";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
+import { Link } from "wouter";
 
 const PROGRAMS = [
   {
@@ -72,6 +73,51 @@ export default function DepartmentEducation() {
                 <Icon size={24} className="text-accent mb-5" strokeWidth={1.5} aria-hidden="true" />
                 <h3 className="font-semibold text-lg mb-3">{label}</h3>
                 <p className="font-sans text-sm text-muted-foreground leading-relaxed">{desc}</p>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      <div className="h-[1px] w-full bg-border" />
+
+      {/* Guides & Resources */}
+      <section className="py-24 px-4 sm:px-6 bg-card">
+        <div className="max-w-5xl mx-auto">
+          <FadeIn className="mb-12">
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Learn the Fundamentals</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">Guides &amp; Resources</h2>
+            <div className="section-rule" />
+          </FadeIn>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                href: "/education/what-is-clinical-research/",
+                label: "What Is Clinical Research?",
+                desc: "Study designs, ethics, and how students can contribute to trustworthy research.",
+              },
+              {
+                href: "/education/medical-exchange-guide/",
+                label: "Medical Exchange Guide",
+                desc: "Eligibility, applications, and what to expect from global clinical rotations.",
+              },
+              {
+                href: "/education/global-health-research/",
+                label: "Global Health Research",
+                desc: "How equitable international collaborations are built and sustained.",
+              },
+            ].map((guide) => (
+              <StaggerItem key={guide.href}>
+                <Link
+                  href={guide.href}
+                  className="group flex h-full flex-col p-8 border-[1px] border-border bg-background hover:border-accent/40 transition-colors"
+                >
+                  <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                    {guide.label}
+                    <ArrowRight size={15} className="text-accent group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                  </h3>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed">{guide.desc}</p>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerContainer>

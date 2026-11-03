@@ -83,10 +83,10 @@ export const FALLBACK_ACHIEVEMENTS: SiteAchievement[] = [
 ];
 
 export const FALLBACK_EVENT_BANNERS: SiteEventBanner[] = [
-  { id: "officers", image: mediaUrl("medx-calls-main-officers.webp"), label: "Global Main Officer Recruitment", href: "/team" },
-  { id: "city-reps", image: mediaUrl("medx-announces-slots-for-city-representative.webp"), label: "City Representative Slots Open", href: "/city-reps" },
-  { id: "campus", image: mediaUrl("medx-join-us-as-campus-ambassadors.webp"), label: "Campus Ambassador Recruitment", href: "/city-reps" },
-  { id: "minds", image: mediaUrl("medx-minds-join-us-as-speakers-or-story-tellers.webp"), label: "MEDX Minds - Speakers & Storytellers", href: "/medx-minds" },
+  { id: "officers", image: mediaUrl("medx-calls-main-officers.webp"), label: "Global Main Officer Recruitment", href: "/team/" },
+  { id: "city-reps", image: mediaUrl("medx-announces-slots-for-city-representative.webp"), label: "City Representative Slots Open", href: "/city-reps/" },
+  { id: "campus", image: mediaUrl("medx-join-us-as-campus-ambassadors.webp"), label: "Campus Ambassador Recruitment", href: "/city-reps/" },
+  { id: "minds", image: mediaUrl("medx-minds-join-us-as-speakers-or-story-tellers.webp"), label: "MEDX Minds - Speakers & Storytellers", href: "/medx-minds/" },
 ];
 
 export const FALLBACK_NEWS_HIGHLIGHTS: SiteNewsHighlight[] = [

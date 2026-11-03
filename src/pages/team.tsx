@@ -147,7 +147,7 @@ export default function Team() {
                 city, and campus.
               </p>
               <Link
-                href="/city-reps"
+                href="/city-reps/"
                 className="mt-auto inline-flex items-center gap-1.5 px-5 py-3 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors"
               >
                 View Regional Dashboard <ArrowRight size={12} aria-hidden="true" />

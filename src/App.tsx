@@ -12,6 +12,9 @@ const About = lazy(() => import('@/pages/about'));
 const Team = lazy(() => import('@/pages/team'));
 const DeptResearch = lazy(() => import('@/pages/departments/research'));
 const DeptEducation = lazy(() => import('@/pages/departments/education'));
+const WhatIsClinicalResearch = lazy(() => import('@/pages/education/what-is-clinical-research'));
+const MedicalExchangeGuide = lazy(() => import('@/pages/education/medical-exchange-guide'));
+const GlobalHealthResearch = lazy(() => import('@/pages/education/global-health-research'));
 const DeptMedicalExchange = lazy(() => import('@/pages/departments/medical-exchange'));
 const DeptTechnology = lazy(() => import('@/pages/departments/technology'));
 const DeptPartnerships = lazy(() => import('@/pages/departments/partnerships'));
@@ -43,6 +46,9 @@ function Router() {
         <Route path="/team" component={Team} />
         <Route path="/research" component={DeptResearch} />
         <Route path="/education" component={DeptEducation} />
+        <Route path="/education/what-is-clinical-research" component={WhatIsClinicalResearch} />
+        <Route path="/education/medical-exchange-guide" component={MedicalExchangeGuide} />
+        <Route path="/education/global-health-research" component={GlobalHealthResearch} />
         <Route path="/medical-exchange" component={DeptMedicalExchange} />
         <Route path="/technology" component={DeptTechnology} />
         <Route path="/partnerships" component={DeptPartnerships} />

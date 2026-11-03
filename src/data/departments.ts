@@ -22,7 +22,7 @@ export interface Department {
 export const DEPARTMENTS: Department[] = [
   {
     slug: "research",
-    href: "/research",
+    href: "/research/",
     name: "Department of Research",
     shortName: "Research",
     icon: FlaskConical,
@@ -32,7 +32,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     slug: "education",
-    href: "/education",
+    href: "/education/",
     name: "Department of Education",
     shortName: "Education & Higher Pathways",
     icon: GraduationCap,
@@ -42,7 +42,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     slug: "medical-exchange",
-    href: "/medical-exchange",
+    href: "/medical-exchange/",
     name: "Department of Medical Exchange",
     shortName: "Medical Exchange",
     icon: Globe2,
@@ -52,7 +52,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     slug: "technology",
-    href: "/technology",
+    href: "/technology/",
     name: "Department of Technology & Innovation",
     shortName: "Technology & Innovation",
     icon: Cpu,
@@ -62,7 +62,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     slug: "partnerships",
-    href: "/partnerships",
+    href: "/partnerships/",
     name: "Department of Partnerships & External Affairs",
     shortName: "Partnerships & External Affairs",
     icon: Handshake,
@@ -72,7 +72,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     slug: "medx-minds",
-    href: "/medx-minds",
+    href: "/medx-minds/",
     name: "Department of MEDX Minds",
     shortName: "MEDX Minds",
     icon: HeartHandshake,

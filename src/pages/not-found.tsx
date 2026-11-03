@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 export default function NotFound() {
   return (
     <Layout>
-      <PageMeta {...SEO.notFound} />
+      <PageMeta {...SEO.notFound} noindex />
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-32 text-center">
         {/* Decorative rule */}
@@ -40,7 +40,7 @@ export default function NotFound() {
             />
           </Link>
           <Link
-            href="/about"
+            href="/about/"
             className="px-8 py-4 border-[1px] border-border text-foreground font-semibold tracking-widest uppercase text-xs hover:bg-muted transition-colors"
           >
             About MEDX

@@ -258,7 +258,7 @@ export function AdminOverview({
               Upcoming events
             </h2>
             <Link
-              href="/events"
+              href="/events/"
               className="font-mono text-[10px] uppercase tracking-widest text-secondary hover:text-accent transition-colors"
             >
               Public events
