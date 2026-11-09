@@ -1,5 +1,71 @@
 -- MEDX site content migration.
--- Run this in the Supabase SQL editor after the base admin schema exists.
+-- Run this in the Supabase SQL editor. This is safe to rerun.
+
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  role text,
+  full_name text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.media (
+  id uuid primary key default gen_random_uuid(),
+  file_name text not null,
+  bucket_path text not null,
+  mime_type text,
+  size_bytes bigint not null default 0,
+  uploaded_by uuid references auth.users(id) on delete set null,
+  used_in jsonb not null default '[]'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.courses (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text,
+  description text not null,
+  start_date date,
+  status text not null default 'draft' check (status in ('draft', 'published')),
+  image_path text,
+  registration_url text,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.news_updates (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text,
+  body text not null,
+  date date,
+  status text not null default 'draft' check (status in ('draft', 'published')),
+  image_path text,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.events (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text,
+  date date,
+  time time,
+  timezone text,
+  location_type text not null default 'Virtual' check (location_type in ('Virtual', 'In person', 'Hybrid')),
+  location text,
+  description text not null,
+  status text not null default 'draft' check (status in ('draft', 'published')),
+  registration_url text,
+  image_path text,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
 
 insert into storage.buckets (id, name, public)
 values ('media', 'media', true)
@@ -12,9 +78,54 @@ using (bucket_id = 'media');
 
 alter table public.media enable row level security;
 create unique index if not exists media_bucket_path_key on public.media(bucket_path);
+alter table public.profiles enable row level security;
+alter table public.courses enable row level security;
+alter table public.news_updates enable row level security;
+alter table public.events enable row level security;
+
+drop policy if exists "Users can read their own profile" on public.profiles;
+create policy "Users can read their own profile"
+on public.profiles for select to authenticated
+using (id = auth.uid());
+
+drop policy if exists "Public media records are readable" on public.media;
+create policy "Public media records are readable"
+on public.media for select
+using (true);
+
 drop policy if exists "Authenticated users can manage media records" on public.media;
 create policy "Authenticated users can manage media records"
 on public.media for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public published courses are readable" on public.courses;
+create policy "Public published courses are readable"
+on public.courses for select
+using (status = 'published');
+drop policy if exists "Authenticated users can manage courses" on public.courses;
+create policy "Authenticated users can manage courses"
+on public.courses for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public published news is readable" on public.news_updates;
+create policy "Public published news is readable"
+on public.news_updates for select
+using (status = 'published');
+drop policy if exists "Authenticated users can manage news" on public.news_updates;
+create policy "Authenticated users can manage news"
+on public.news_updates for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public published events are readable" on public.events;
+create policy "Public published events are readable"
+on public.events for select
+using (status = 'published');
+drop policy if exists "Authenticated users can manage events" on public.events;
+create policy "Authenticated users can manage events"
+on public.events for all to authenticated
 using (true)
 with check (true);
 
@@ -107,6 +218,62 @@ using (true);
 drop policy if exists "Authenticated users can manage global officers" on public.global_officers;
 create policy "Authenticated users can manage global officers"
 on public.global_officers for all to authenticated
+using (true)
+with check (true);
+
+alter table public.achievements enable row level security;
+alter table public.news_highlights enable row level security;
+alter table public.webinars enable row level security;
+alter table public.event_banners enable row level security;
+alter table public.partners enable row level security;
+
+drop policy if exists "Public achievements are readable" on public.achievements;
+create policy "Public achievements are readable"
+on public.achievements for select
+using (true);
+drop policy if exists "Authenticated users can manage achievements" on public.achievements;
+create policy "Authenticated users can manage achievements"
+on public.achievements for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public news highlights are readable" on public.news_highlights;
+create policy "Public news highlights are readable"
+on public.news_highlights for select
+using (true);
+drop policy if exists "Authenticated users can manage news highlights" on public.news_highlights;
+create policy "Authenticated users can manage news highlights"
+on public.news_highlights for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public webinars are readable" on public.webinars;
+create policy "Public webinars are readable"
+on public.webinars for select
+using (true);
+drop policy if exists "Authenticated users can manage webinars" on public.webinars;
+create policy "Authenticated users can manage webinars"
+on public.webinars for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public event banners are readable" on public.event_banners;
+create policy "Public event banners are readable"
+on public.event_banners for select
+using (true);
+drop policy if exists "Authenticated users can manage event banners" on public.event_banners;
+create policy "Authenticated users can manage event banners"
+on public.event_banners for all to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "Public partners are readable" on public.partners;
+create policy "Public partners are readable"
+on public.partners for select
+using (true);
+drop policy if exists "Authenticated users can manage partners" on public.partners;
+create policy "Authenticated users can manage partners"
+on public.partners for all to authenticated
 using (true)
 with check (true);
 
@@ -264,3 +431,15 @@ set image_path = (
 )
 where title = 'Campus Ambassador Recruitment Drive'
   and image_path is null;
+
+notify pgrst, 'reload schema';
+
+-- After creating your Auth user, run this optional statement with your email:
+-- insert into public.profiles (id, email, role, full_name)
+-- select id, email, 'admin', 'Your Name'
+-- from auth.users
+-- where email = 'your-email@example.com'
+-- on conflict (id) do update
+-- set role = 'admin',
+--     email = excluded.email,
+--     full_name = excluded.full_name;
