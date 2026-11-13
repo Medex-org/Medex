@@ -1,15 +1,38 @@
 import { useMemo, useRef, useState } from "react";
-import { Images, Search, Trash2, Upload } from "lucide-react";
+import { FileText, Film, Images, Search, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import type { MediaAsset } from "../admin-types";
 import { useAdminStore } from "../use-admin-store";
+import { ACCEPTED_FILE_TYPES, mediaKind, validateUpload } from "../media-utils";
 import { AdminPageHeader } from "./AdminPageHeader";
 import { AdminEmptyState } from "./AdminEmptyState";
 import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 
-const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+function AssetPreview({ asset }: { asset: MediaAsset }) {
+  const kind = mediaKind(asset.type, asset.fileName);
+  if (kind === "image") {
+    return (
+      <img
+        src={asset.src}
+        alt=""
+        className="h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+  const Icon = kind === "video" ? Film : FileText;
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-muted text-muted-foreground">
+      <Icon size={32} strokeWidth={1.4} aria-hidden="true" />
+      <span className="font-mono text-[10px] uppercase tracking-widest">
+        {kind === "video" ? "Video" : kind === "pdf" ? "PDF" : kind === "document" ? "Document" : "File"}
+      </span>
+    </div>
+  );
+}
 
 export function MediaLibrary() {
   const { media, removeMedia, uploadMedia } = useAdminStore();
@@ -31,26 +54,21 @@ export function MediaLibrary() {
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
+    const validationError = validateUpload(file);
+    if (validationError) {
       toast({
         title: "Unsupported file",
-        description: "Choose an image file.",
-      });
-      return;
-    }
-    if (file.size > MAX_UPLOAD_BYTES) {
-      toast({
-        title: "Image too large",
-        description: "Choose an image under 10 MB.",
+        description: validationError,
+        variant: "destructive",
       });
       return;
     }
 
     try {
       await uploadMedia(file);
-      toast({ title: "Image uploaded", description: "The image is saved in Supabase storage." });
+      toast({ title: "File uploaded", description: "The file is saved in Supabase storage." });
     } catch (error) {
-      toast({ title: "Upload failed", description: error instanceof Error ? error.message : "Could not upload image.", variant: "destructive" });
+      toast({ title: "Upload failed", description: error instanceof Error ? error.message : "Could not upload file.", variant: "destructive" });
     }
   };
 
@@ -77,15 +95,15 @@ export function MediaLibrary() {
       <AdminPageHeader
         eyebrow="Assets"
         title="Media Library"
-        description="Upload, preview, and manage the images used by your public content."
+        description="Upload, preview, and manage the images, documents, and videos used by your public content."
         action={
           <>
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept={ACCEPTED_FILE_TYPES}
               className="sr-only"
-              aria-label="Choose an image to upload"
+              aria-label="Choose a file to upload"
               onChange={(event) => {
                 handleFile(event.target.files?.[0]);
                 event.target.value = "";
@@ -96,7 +114,7 @@ export function MediaLibrary() {
               onClick={() => fileInputRef.current?.click()}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              <Upload size={16} aria-hidden="true" /> Upload image
+              <Upload size={16} aria-hidden="true" /> Upload file
             </Button>
           </>
         }
@@ -125,8 +143,9 @@ export function MediaLibrary() {
 
       <div className="border-[1px] border-border bg-accent/5 px-4 py-3 mb-6">
         <p className="font-sans text-xs text-muted-foreground leading-relaxed">
-          Upload an image here, then select it from any content editor. Images
-          are stored in the Supabase <code>media</code> bucket and previewed here.
+          Upload images, PDFs, Word documents, or videos here, then select them
+          from the content editors. Files are stored in the Supabase{" "}
+          <code>media</code> bucket and previewed here.
         </p>
       </div>
 
@@ -149,13 +168,7 @@ export function MediaLibrary() {
               className="border-[1px] border-border bg-card overflow-hidden flex flex-col"
             >
               <div className="aspect-[16/9] bg-muted overflow-hidden">
-                <img
-                  src={asset.src}
-                  alt=""
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <AssetPreview asset={asset} />
               </div>
               <div className="p-4 flex flex-col gap-3 flex-1">
                 <div>

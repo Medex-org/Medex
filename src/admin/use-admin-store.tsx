@@ -12,6 +12,8 @@ import type {
   ManagedContentItem,
   ManagedContentType,
 } from "./admin-types";
+import { formatFileSize } from "./admin-utils";
+import { validateUpload } from "./media-utils";
 import { useAuth } from "./auth/AuthProvider";
 
 interface AdminStoreValue {
@@ -71,8 +73,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const uploadMedia = async (file: File): Promise<MediaAsset> => {
-    if (!file.type.startsWith("image/")) throw new Error("Choose an image file.");
-    if (file.size > 10 * 1024 * 1024) throw new Error("Images must be 10 MB or smaller.");
+    const validationError = validateUpload(file);
+    if (validationError) throw new Error(validationError);
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
     const bucketPath = `uploads/${crypto.randomUUID()}-${safeName}`;
     const upload = await supabase.storage.from("media").upload(bucketPath, file, {
@@ -98,7 +100,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       bucketPath,
       fileName: file.name,
       type: file.type,
-      sizeLabel: `${Math.max(1, Math.round(file.size / 1024))} KB`,
+      sizeLabel: formatFileSize(file.size),
       src: getPublicUrl(bucketPath) || "",
       usedIn: [],
       isLocal: false,
@@ -122,7 +124,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
         bucketPath: m.bucket_path,
         fileName: m.file_name,
         type: m.mime_type || '',
-        sizeLabel: m.size_bytes ? `${Math.round(m.size_bytes / 1024)} KB` : '',
+        sizeLabel: m.size_bytes ? formatFileSize(Number(m.size_bytes)) : '',
         src: getPublicUrl(m.bucket_path) || '',
         usedIn: [],
         isLocal: false,
@@ -177,6 +179,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: e.timezone || '',
       locationType: e.location_type,
       location: e.location || '',
+      latitude: typeof e.latitude === "number" ? e.latitude : null,
+      longitude: typeof e.longitude === "number" ? e.longitude : null,
       description: e.description || '',
       status: e.status,
       lastUpdated: e.updated_at || e.created_at,
@@ -203,12 +207,17 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
 
   const managedPayload = (type: ManagedContentType, item: Omit<ManagedContentItem, "id">): Record<string, string | number | null> => {
     const selectedMedia = media.find((asset) => asset.id === item.imagePath);
-    const base = { description: item.description, sort_order: item.sortOrder, image_path: selectedMedia?.bucketPath || item.imagePath || null };
+    const imagePath = selectedMedia?.bucketPath || item.imagePath || null;
+    const base = { sort_order: item.sortOrder, image_path: imagePath, description: item.description };
     if (type === "achievements") return { ...base, title: item.title, badge: item.secondary || null };
+    if (type === "news-highlights") return { ...base, title: item.title };
     if (type === "webinars") return { ...base, title: item.title, cadence: item.secondary || null };
     if (type === "banners") return { ...base, label: item.title, href: item.link || null };
     if (type === "partners") return { ...base, name: item.title, linkedin_url: item.link || null };
-    if (type === "officers") return { ...base, name: item.title, role: item.secondary, intro: item.description, linkedin_url: item.link || null };
+    if (type === "officers") {
+      const { description, ...officerBase } = base;
+      return { ...officerBase, name: item.title, role: item.secondary, intro: description, linkedin_url: item.link || null };
+    }
     return { ...base, title: item.title };
   };
 
@@ -336,6 +345,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: input.timezone,
       location_type: input.locationType,
       location: input.location,
+      latitude: input.latitude,
+      longitude: input.longitude,
       description: input.description,
       status: input.status,
       registration_url: input.registrationUrl || null,
@@ -356,6 +367,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: patch.timezone,
       location_type: patch.locationType,
       location: patch.location,
+      latitude: patch.latitude,
+      longitude: patch.longitude,
       description: patch.description,
       status: patch.status,
       registration_url: patch.registrationUrl || null,

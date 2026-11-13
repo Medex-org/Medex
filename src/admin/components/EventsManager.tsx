@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { CalendarDays, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { CalendarDays, LocateFixed, MapPin, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,6 +47,8 @@ function emptyEvent(): EventInput {
     timezone: "PKT",
     locationType: "Virtual",
     location: "",
+    latitude: null,
+    longitude: null,
     description: "",
     status: "published",
     registrationUrl: "",
@@ -56,7 +58,16 @@ function emptyEvent(): EventInput {
 
 function displayLocation(event: EventItem): string {
   if (event.location.trim()) return event.location;
+  if (hasCoordinates(event)) return `${event.latitude}, ${event.longitude}`;
   return event.locationType === "Virtual" ? "Online" : "—";
+}
+
+function hasCoordinates(event: Pick<EventItem, "latitude" | "longitude">): boolean {
+  return typeof event.latitude === "number" && typeof event.longitude === "number";
+}
+
+function mapUrl(event: Pick<EventItem, "latitude" | "longitude">): string {
+  return `https://www.google.com/maps?q=${event.latitude},${event.longitude}`;
 }
 
 export function EventsManager({
@@ -84,6 +95,47 @@ export function EventsManager({
   const [form, setForm] = useState<EventInput>(emptyEvent);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<EventItem | null>(null);
+  const [locating, setLocating] = useState(false);
+
+  const captureLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Location not available",
+        description: "This browser does not support geolocation.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = Number(position.coords.latitude.toFixed(6));
+        const longitude = Number(position.coords.longitude.toFixed(6));
+        setForm((current) => ({
+          ...current,
+          latitude,
+          longitude,
+          location: current.location.trim()
+            ? current.location
+            : `${latitude}, ${longitude}`,
+        }));
+        setLocating(false);
+        toast({
+          title: "Location captured",
+          description: "Coordinates will be saved with this event.",
+        });
+      },
+      (error) => {
+        setLocating(false);
+        toast({
+          title: "Could not get location",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  };
 
   const openCreate = () => {
     setEditingId(null);
@@ -102,6 +154,8 @@ export function EventsManager({
       timezone: event.timezone,
       locationType: event.locationType,
       location: event.location,
+      latitude: event.latitude,
+      longitude: event.longitude,
       description: event.description,
       status: event.status,
       registrationUrl: event.registrationUrl,
@@ -334,6 +388,16 @@ export function EventsManager({
                         {event.locationType}
                       </span>
                       <span className="line-clamp-1">{displayLocation(event)}</span>
+                      {hasCoordinates(event) ? (
+                        <a
+                          href={mapUrl(event)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-accent hover:opacity-70"
+                        >
+                          <MapPin size={11} aria-hidden="true" /> Map
+                        </a>
+                      ) : null}
                     </TableCell>
                     <TableCell>
                       <ContentStatusBadge status={event.status} />
@@ -394,6 +458,19 @@ export function EventsManager({
                   {formatDemoDate(event.date)} · {event.time} {event.timezone}
                   <br />
                   {event.locationType} · {displayLocation(event)}
+                  {hasCoordinates(event) ? (
+                    <>
+                      {" · "}
+                      <a
+                        href={mapUrl(event)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent hover:opacity-70"
+                      >
+                        View map
+                      </a>
+                    </>
+                  ) : null}
                 </p>
                 <div className="flex items-center justify-end gap-1 mt-4">
                   <Button
@@ -586,6 +663,53 @@ export function EventsManager({
                   : "e.g. Sample University Auditorium"
               }
             />
+            {form.locationType !== "Virtual" ? (
+              <div className="mt-2 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={captureLocation}
+                    disabled={locating}
+                  >
+                    <LocateFixed size={14} aria-hidden="true" />
+                    {locating ? "Locating..." : "Use my location"}
+                  </Button>
+                  {hasCoordinates(form) ? (
+                    <>
+                      <span className="font-mono text-[10px] text-muted-foreground">
+                        {form.latitude}, {form.longitude}
+                      </span>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() =>
+                          setForm((current) => ({
+                            ...current,
+                            latitude: null,
+                            longitude: null,
+                          }))
+                        }
+                      >
+                        Clear GPS
+                      </Button>
+                    </>
+                  ) : null}
+                </div>
+                {hasCoordinates(form) ? (
+                  <a
+                    href={mapUrl(form)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-accent hover:opacity-70"
+                  >
+                    <MapPin size={12} aria-hidden="true" /> Open in Maps
+                  </a>
+                ) : null}
+              </div>
+            ) : null}
           </AdminField>
         </div>
 
