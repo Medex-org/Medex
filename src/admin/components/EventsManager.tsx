@@ -35,6 +35,7 @@ import { AdminFormDialog } from "./AdminFormDialog";
 import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 import { AdminEmptyState } from "./AdminEmptyState";
 import { DemoMediaPicker } from "./DemoMediaPicker";
+import { extractCoordinates, mapUrlForLocation, stripCoordinates, withCoordinates } from "@/lib/geo";
 
 const LOCATION_TYPES: EventLocationType[] = ["Virtual", "In person", "Hybrid"];
 
@@ -47,8 +48,6 @@ function emptyEvent(): EventInput {
     timezone: "PKT",
     locationType: "Virtual",
     location: "",
-    latitude: null,
-    longitude: null,
     description: "",
     status: "published",
     registrationUrl: "",
@@ -57,17 +56,10 @@ function emptyEvent(): EventInput {
 }
 
 function displayLocation(event: EventItem): string {
-  if (event.location.trim()) return event.location;
-  if (hasCoordinates(event)) return `${event.latitude}, ${event.longitude}`;
+  const location = stripCoordinates(event.location);
+  if (location) return location;
+  if (extractCoordinates(event.location)) return "Pinned location";
   return event.locationType === "Virtual" ? "Online" : "—";
-}
-
-function hasCoordinates(event: Pick<EventItem, "latitude" | "longitude">): boolean {
-  return typeof event.latitude === "number" && typeof event.longitude === "number";
-}
-
-function mapUrl(event: Pick<EventItem, "latitude" | "longitude">): string {
-  return `https://www.google.com/maps?q=${event.latitude},${event.longitude}`;
 }
 
 export function EventsManager({
@@ -97,6 +89,9 @@ export function EventsManager({
   const [deleteTarget, setDeleteTarget] = useState<EventItem | null>(null);
   const [locating, setLocating] = useState(false);
 
+  const formCoordinates = extractCoordinates(form.location);
+  const formMapUrl = mapUrlForLocation(form.location);
+
   const captureLocation = () => {
     if (!navigator.geolocation) {
       toast({
@@ -113,16 +108,12 @@ export function EventsManager({
         const longitude = Number(position.coords.longitude.toFixed(6));
         setForm((current) => ({
           ...current,
-          latitude,
-          longitude,
-          location: current.location.trim()
-            ? current.location
-            : `${latitude}, ${longitude}`,
+          location: withCoordinates(current.location, latitude, longitude),
         }));
         setLocating(false);
         toast({
           title: "Location captured",
-          description: "Coordinates will be saved with this event.",
+          description: "Coordinates were added to the event location.",
         });
       },
       (error) => {
@@ -154,8 +145,6 @@ export function EventsManager({
       timezone: event.timezone,
       locationType: event.locationType,
       location: event.location,
-      latitude: event.latitude,
-      longitude: event.longitude,
       description: event.description,
       status: event.status,
       registrationUrl: event.registrationUrl,
@@ -313,7 +302,7 @@ export function EventsManager({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="published">Published (demo)</SelectItem>
+            <SelectItem value="published">Published</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
           </SelectContent>
         </Select>
@@ -388,9 +377,9 @@ export function EventsManager({
                         {event.locationType}
                       </span>
                       <span className="line-clamp-1">{displayLocation(event)}</span>
-                      {hasCoordinates(event) ? (
+                      {mapUrlForLocation(event.location) ? (
                         <a
-                          href={mapUrl(event)}
+                          href={mapUrlForLocation(event.location) ?? "#"}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-accent hover:opacity-70"
@@ -458,11 +447,11 @@ export function EventsManager({
                   {formatDemoDate(event.date)} · {event.time} {event.timezone}
                   <br />
                   {event.locationType} · {displayLocation(event)}
-                  {hasCoordinates(event) ? (
+                  {mapUrlForLocation(event.location) ? (
                     <>
                       {" · "}
                       <a
-                        href={mapUrl(event)}
+                        href={mapUrlForLocation(event.location) ?? "#"}
                         target="_blank"
                         rel="noreferrer"
                         className="text-accent hover:opacity-70"
@@ -507,8 +496,8 @@ export function EventsManager({
       <AdminFormDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        title={editingId ? "Edit demo event" : "Create demo event"}
-        description="Changes stay in this browser session and never reach the public site."
+        title={editingId ? "Edit event" : "Create event"}
+        description="Changes are saved to Supabase and appear on the public site when published."
         onSubmit={submit}
         submitLabel={editingId ? "Save changes" : "Create event"}
         formId="event-form"
@@ -676,10 +665,10 @@ export function EventsManager({
                     <LocateFixed size={14} aria-hidden="true" />
                     {locating ? "Locating..." : "Use my location"}
                   </Button>
-                  {hasCoordinates(form) ? (
+                  {formCoordinates ? (
                     <>
                       <span className="font-mono text-[10px] text-muted-foreground">
-                        {form.latitude}, {form.longitude}
+                        {formCoordinates.latitude}, {formCoordinates.longitude}
                       </span>
                       <Button
                         type="button"
@@ -688,8 +677,7 @@ export function EventsManager({
                         onClick={() =>
                           setForm((current) => ({
                             ...current,
-                            latitude: null,
-                            longitude: null,
+                            location: stripCoordinates(current.location),
                           }))
                         }
                       >
@@ -698,9 +686,9 @@ export function EventsManager({
                     </>
                   ) : null}
                 </div>
-                {hasCoordinates(form) ? (
+                {formMapUrl ? (
                   <a
-                    href={mapUrl(form)}
+                    href={formMapUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-xs text-accent hover:opacity-70"
@@ -738,7 +726,7 @@ export function EventsManager({
             label="Registration URL"
             htmlFor="event-url"
             error={errors.registrationUrl}
-            hint="Optional. Demo only — no link is published."
+            hint="Optional. Used as the registration link on the public site."
           >
             <Input
               id="event-url"
@@ -769,7 +757,7 @@ export function EventsManager({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published (demo)</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
               </SelectContent>
             </Select>
           </AdminField>

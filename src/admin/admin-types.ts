@@ -46,8 +46,6 @@ export interface EventItem {
   timezone: string;
   locationType: EventLocationType;
   location: string;
-  latitude: number | null;
-  longitude: number | null;
   description: string;
   status: ContentStatus;
   lastUpdated: string;

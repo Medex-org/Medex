@@ -61,6 +61,7 @@ export interface SiteEvent {
   status: string;
   date: string;
   desc: string;
+  location?: string;
   image: string | null;
   link: string | null;
   linkLabel: string | null;

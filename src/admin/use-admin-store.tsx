@@ -41,6 +41,7 @@ interface AdminStoreValue {
   managedContent: Record<ManagedContentType, ManagedContentItem[]>;
   createManagedContent: (type: ManagedContentType, item: Omit<ManagedContentItem, "id">) => Promise<void>;
   updateManagedContent: (type: ManagedContentType, id: string, item: Omit<ManagedContentItem, "id">) => Promise<void>;
+  reorderManagedContent: (type: ManagedContentType, orderedIds: string[]) => Promise<void>;
   deleteManagedContent: (type: ManagedContentType, id: string) => Promise<void>;
 }
 
@@ -179,8 +180,6 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: e.timezone || '',
       locationType: e.location_type,
       location: e.location || '',
-      latitude: typeof e.latitude === "number" ? e.latitude : null,
-      longitude: typeof e.longitude === "number" ? e.longitude : null,
       description: e.description || '',
       status: e.status,
       lastUpdated: e.updated_at || e.created_at,
@@ -208,22 +207,57 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const managedPayload = (type: ManagedContentType, item: Omit<ManagedContentItem, "id">): Record<string, string | number | null> => {
     const selectedMedia = media.find((asset) => asset.id === item.imagePath);
     const imagePath = selectedMedia?.bucketPath || item.imagePath || null;
-    const base = { sort_order: item.sortOrder, image_path: imagePath, description: item.description };
-    if (type === "achievements") return { ...base, title: item.title, badge: item.secondary || null };
-    if (type === "news-highlights") return { ...base, title: item.title };
-    if (type === "webinars") return { ...base, title: item.title, cadence: item.secondary || null };
-    if (type === "banners") return { ...base, label: item.title, href: item.link || null };
-    if (type === "partners") return { ...base, name: item.title, linkedin_url: item.link || null };
-    if (type === "officers") {
-      const { description, ...officerBase } = base;
-      return { ...officerBase, name: item.title, role: item.secondary, intro: description, linkedin_url: item.link || null };
+    const sortOrder = item.sortOrder;
+    if (type === "achievements") {
+      return {
+        sort_order: sortOrder,
+        image_path: imagePath,
+        title: item.title,
+        badge: item.secondary || null,
+        description: item.description,
+      };
     }
-    return { ...base, title: item.title };
+    if (type === "news-highlights") {
+      return { sort_order: sortOrder, title: item.title, description: item.description };
+    }
+    if (type === "webinars") {
+      return {
+        sort_order: sortOrder,
+        title: item.title,
+        cadence: item.secondary || null,
+        description: item.description,
+      };
+    }
+    if (type === "banners") {
+      return { sort_order: sortOrder, image_path: imagePath, label: item.title, href: item.link || null };
+    }
+    if (type === "partners") {
+      return {
+        sort_order: sortOrder,
+        image_path: imagePath,
+        name: item.title,
+        description: item.description,
+        linkedin_url: item.link || null,
+      };
+    }
+    if (type === "officers") {
+      return {
+        sort_order: sortOrder,
+        image_path: imagePath,
+        name: item.title,
+        role: item.secondary,
+        intro: item.description,
+        linkedin_url: item.link || null,
+      };
+    }
+    return { sort_order: sortOrder, image_path: imagePath, title: item.title, description: item.description };
   };
 
   const throwIfError = (error: { message: string } | null) => {
     if (error) throw new Error(error.message);
   };
+
+  const timestamp = () => new Date().toISOString();
 
   const createManagedContent = async (type: ManagedContentType, item: Omit<ManagedContentItem, "id">) => {
     const { error } = await supabase.from(managedTables[type]).insert(managedPayload(type, item) as never);
@@ -232,8 +266,24 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const updateManagedContent = async (type: ManagedContentType, id: string, item: Omit<ManagedContentItem, "id">) => {
-    const { error } = await supabase.from(managedTables[type]).update(managedPayload(type, item) as never).eq("id", id);
+    const { error } = await supabase
+      .from(managedTables[type])
+      .update({ ...managedPayload(type, item), updated_at: timestamp() } as never)
+      .eq("id", id);
     throwIfError(error);
+    await fetchAll();
+  };
+
+  const reorderManagedContent = async (type: ManagedContentType, orderedIds: string[]) => {
+    const results = await Promise.all(
+      orderedIds.map((id, index) =>
+        supabase
+          .from(managedTables[type])
+          .update({ sort_order: index, updated_at: timestamp() } as never)
+          .eq("id", id),
+      ),
+    );
+    throwIfError(results.find((result) => result.error)?.error ?? null);
     await fetchAll();
   };
 
@@ -273,6 +323,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       status: patch.status,
       image_path: imagePath,
       registration_url: patch.registrationUrl || null,
+      updated_at: timestamp(),
     }).eq('id', id);
     throwIfError(error);
     await fetchAll();
@@ -287,7 +338,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const toggleCourseStatus = async (id: string) => {
     const course = courses.find(c => c.id === id);
     if (!course) return;
-    const { error } = await supabase.from('courses').update({ status: course.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('courses').update({ status: course.status === 'published' ? 'draft' : 'published', updated_at: timestamp() }).eq('id', id);
     throwIfError(error);
     await fetchAll();
   };
@@ -316,6 +367,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       date: patch.date || null,
       status: patch.status,
       image_path: imagePath,
+      updated_at: timestamp(),
     }).eq('id', id);
     throwIfError(error);
     await fetchAll();
@@ -330,7 +382,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const toggleNewsStatus = async (id: string) => {
     const item = news.find(n => n.id === id);
     if (!item) return;
-    const { error } = await supabase.from('news_updates').update({ status: item.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('news_updates').update({ status: item.status === 'published' ? 'draft' : 'published', updated_at: timestamp() }).eq('id', id);
     throwIfError(error);
     await fetchAll();
   };
@@ -345,8 +397,6 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: input.timezone,
       location_type: input.locationType,
       location: input.location,
-      latitude: input.latitude,
-      longitude: input.longitude,
       description: input.description,
       status: input.status,
       registration_url: input.registrationUrl || null,
@@ -367,12 +417,11 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       timezone: patch.timezone,
       location_type: patch.locationType,
       location: patch.location,
-      latitude: patch.latitude,
-      longitude: patch.longitude,
       description: patch.description,
       status: patch.status,
       registration_url: patch.registrationUrl || null,
       image_path: imagePath,
+      updated_at: timestamp(),
     }).eq('id', id);
     throwIfError(error);
     await fetchAll();
@@ -387,7 +436,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const toggleEventStatus = async (id: string) => {
     const event = events.find(e => e.id === id);
     if (!event) return;
-    const { error } = await supabase.from('events').update({ status: event.status === 'published' ? 'draft' : 'published' }).eq('id', id);
+    const { error } = await supabase.from('events').update({ status: event.status === 'published' ? 'draft' : 'published', updated_at: timestamp() }).eq('id', id);
     throwIfError(error);
     await fetchAll();
   };
@@ -414,7 +463,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     createNews, updateNews, deleteNews, toggleNewsStatus,
     createEvent, updateEvent, deleteEvent, toggleEventStatus,
     addMedia, removeMedia, refresh: fetchAll, managedContent,
-    createManagedContent, updateManagedContent, deleteManagedContent, uploadMedia,
+    createManagedContent, updateManagedContent, reorderManagedContent, deleteManagedContent, uploadMedia,
   }), [courses, news, events, media, loading, managedContent]);
 
   return <AdminStoreContext.Provider value={value}>{children}</AdminStoreContext.Provider>;

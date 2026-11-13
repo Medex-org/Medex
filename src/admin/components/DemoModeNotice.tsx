@@ -18,8 +18,9 @@ export function DemoModeNotice() {
           Supabase content
         </p>
         <p className="font-sans text-xs sm:text-sm text-foreground/80 leading-relaxed">
-          Content is stored in Supabase. Run the site-content migration SQL if a
-          section is empty; published records are then used by the public website.
+          Content is stored in Supabase and published records are used by the
+          public website. Add content from the matching section to fill an empty
+          area.
         </p>
       </div>
     </div>

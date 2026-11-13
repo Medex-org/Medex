@@ -251,8 +251,6 @@ export const DEMO_EVENTS: EventItem[] = [
     timezone: "PKT",
     locationType: "Virtual",
     location: "Online (sample link)",
-    latitude: null,
-    longitude: null,
     description:
       "Fictional sample lecture for previewing the event editor. No registration is collected anywhere in this mockup.",
     status: "published",
@@ -269,8 +267,6 @@ export const DEMO_EVENTS: EventItem[] = [
     timezone: "PKT",
     locationType: "Hybrid",
     location: "Sample Campus Hall + online",
-    latitude: null,
-    longitude: null,
     description:
       "Sample multi-day research program kickoff. All dates, venues, and links are placeholders for layout review only.",
     status: "published",
@@ -287,8 +283,6 @@ export const DEMO_EVENTS: EventItem[] = [
     timezone: "UTC",
     locationType: "Virtual",
     location: "Online (sample link)",
-    latitude: null,
-    longitude: null,
     description:
       "Draft sample session on abstract preparation and conference planning. This item is not published anywhere.",
     status: "draft",
@@ -305,8 +299,6 @@ export const DEMO_EVENTS: EventItem[] = [
     timezone: "EST",
     locationType: "Virtual",
     location: "Online (sample link)",
-    latitude: null,
-    longitude: null,
     description:
       "Fictional information session for previewing recruitment-style events and time-zone fields.",
     status: "published",
@@ -322,9 +314,7 @@ export const DEMO_EVENTS: EventItem[] = [
     time: "10:00",
     timezone: "PKT",
     locationType: "In person",
-    location: "Sample University Auditorium",
-    latitude: 34.0151,
-    longitude: 71.5249,
+    location: "Sample University Auditorium · 34.015100, 71.524900",
     description:
       "Draft sample showcase for previewing in-person event fields. Venue details are fictional.",
     status: "draft",
@@ -341,8 +331,6 @@ export const DEMO_EVENTS: EventItem[] = [
     timezone: "PKT",
     locationType: "Virtual",
     location: "Online (sample link)",
-    latitude: null,
-    longitude: null,
     description:
       "A past sample event included so the upcoming-events logic can be checked against the full list.",
     status: "published",

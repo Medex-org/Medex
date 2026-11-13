@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { AdminPageHeader } from "./AdminPageHeader";
-import { DEMO_ACCOUNT } from "../demo-data";
+import { useAuth } from "../auth/AuthProvider";
 
 const CAN_MANAGE = [
   "Courses and program records",
@@ -30,12 +30,23 @@ const CANNOT_MANAGE = [
 ];
 
 export function PreferencesPanel() {
+  const { user, profile } = useAuth();
+  const name = profile?.full_name || user?.email || "Signed-in admin";
+  const email = profile?.email || user?.email || "—";
+  const role = profile?.role || "admin";
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("") || "AD";
+
   return (
     <>
       <AdminPageHeader
         eyebrow="Account"
         title="Preferences & Access"
-        description="An illustrative profile and permission boundary for the future content manager. No authentication or permission enforcement exists in this mockup."
+        description="Your Supabase account and the current permission boundary for content editors."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-6">
@@ -54,18 +65,18 @@ export function PreferencesPanel() {
               id="sample-account-heading"
               className="font-semibold text-base text-primary"
             >
-              Sample account
+              Signed-in account
             </h2>
           </div>
 
           <div className="flex items-center gap-4 mb-6">
             <div className="h-14 w-14 rounded-full bg-accent/10 text-accent flex items-center justify-center font-mono text-sm font-semibold">
-              SM
+              {initials}
             </div>
             <div className="min-w-0">
-              <p className="font-medium">{DEMO_ACCOUNT.name}</p>
+              <p className="font-medium">{name}</p>
               <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
-                {DEMO_ACCOUNT.role}
+                {role}
               </p>
             </div>
           </div>
@@ -75,17 +86,13 @@ export function PreferencesPanel() {
               <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
                 Email
               </dt>
-              <dd className="text-muted-foreground break-all">
-                {DEMO_ACCOUNT.email}
-              </dd>
+              <dd className="text-muted-foreground break-all">{email}</dd>
             </div>
             <div className="flex flex-col gap-0.5">
               <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
-                Intended role
+                Role
               </dt>
-              <dd className="text-muted-foreground">
-                Content manager (illustrative)
-              </dd>
+              <dd className="text-muted-foreground">{role}</dd>
             </div>
             <div className="flex flex-col gap-0.5">
               <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
@@ -99,8 +106,8 @@ export function PreferencesPanel() {
 
           <div className="mt-6 pt-5 border-t-[1px] border-border">
             <p className="font-sans text-xs text-muted-foreground leading-relaxed">
-              This profile is authenticated through Supabase. Database policies
-              should still be reviewed before opening additional admin roles.
+              Admin routes require a profile with the admin role. Database
+              policies should still be reviewed before adding more editors.
             </p>
           </div>
         </section>
@@ -124,9 +131,8 @@ export function PreferencesPanel() {
             </h2>
           </div>
           <p className="font-sans text-xs text-muted-foreground leading-relaxed mb-6">
-            A future editor account should manage public content only. The
-            boundaries below are a design intention for a later phase — not
-            enforced anywhere in this prototype.
+            Admin accounts can manage public content only. The boundaries below
+            describe the intended scope of the content editor role.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -194,11 +200,11 @@ export function PreferencesPanel() {
         </section>
       </div>
 
-      <div className="mt-6 border-[1px] border-destructive/30 bg-destructive/5 px-4 py-3">
+      <div className="mt-6 border-[1px] border-accent/30 bg-accent/5 px-4 py-3">
         <p className="font-sans text-xs text-foreground/80 leading-relaxed">
-          <strong className="font-semibold">Mockup only:</strong> no
-          authentication, authorization, permission enforcement, audit logging, or
-          security controls are active. The dashboard route is not private.
+          <strong className="font-semibold">Access:</strong> the dashboard
+          requires a Supabase account whose profile has the admin role. To add an
+          editor, create the account and set the role in the profiles table.
         </p>
       </div>
     </>

@@ -3,9 +3,10 @@ import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight, MapPin } from "lucide-react";
 import { LINKS } from "@/config/links";
 import { useSiteContent } from "@/hooks/use-site-content";
+import { mapUrlForLocation, stripCoordinates } from "@/lib/geo";
 
 const statusStyles: Record<string, string> = {
   Upcoming: "badge-upcoming",
@@ -87,6 +88,24 @@ export default function Events() {
                         <Calendar size={13} aria-hidden="true" />
                         {event.date}
                       </div>
+                      {stripCoordinates(event.location) || mapUrlForLocation(event.location) ? (
+                        <div className="flex flex-wrap items-center gap-2 text-sm text-secondary font-mono mb-3">
+                          <MapPin size={13} aria-hidden="true" />
+                          {stripCoordinates(event.location) ? (
+                            <span>{stripCoordinates(event.location)}</span>
+                          ) : null}
+                          {mapUrlForLocation(event.location) ? (
+                            <a
+                              href={mapUrlForLocation(event.location) ?? "#"}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-accent hover:opacity-70 transition-opacity"
+                            >
+                              View map
+                            </a>
+                          ) : null}
+                        </div>
+                      ) : null}
                       <p className="font-sans text-muted-foreground leading-relaxed text-sm">
                         {event.desc}
                       </p>

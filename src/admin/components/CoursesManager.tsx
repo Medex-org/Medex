@@ -399,8 +399,8 @@ export function CoursesManager({
       <AdminFormDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        title={editingId ? "Edit demo course" : "Add demo course"}
-        description="Changes stay in this browser session and never reach the public site."
+        title={editingId ? "Edit course" : "Add course"}
+        description="Changes are saved to Supabase and appear on the public site when published."
         onSubmit={submit}
         submitLabel={editingId ? "Save changes" : "Create course"}
         formId="course-form"

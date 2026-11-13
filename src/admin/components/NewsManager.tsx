@@ -395,8 +395,8 @@ export function NewsManager({
       <AdminFormDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-        title={editingId ? "Edit demo update" : "Create demo update"}
-        description="Changes stay in this browser session and never reach the public site."
+        title={editingId ? "Edit update" : "Create update"}
+        description="Changes are saved to Supabase and appear on the public site when published."
         onSubmit={submit}
         submitLabel={editingId ? "Save changes" : "Create update"}
         formId="news-form"

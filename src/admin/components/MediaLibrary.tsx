@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { FileText, Film, Images, Search, Trash2, Upload } from "lucide-react";
+import { FileText, Images, Search, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -23,12 +23,24 @@ function AssetPreview({ asset }: { asset: MediaAsset }) {
       />
     );
   }
-  const Icon = kind === "video" ? Film : FileText;
+  const Icon = FileText;
+  if (kind === "video") {
+    return (
+      <video
+        src={asset.src}
+        controls
+        muted
+        playsInline
+        preload="metadata"
+        className="h-full w-full object-contain bg-black"
+      />
+    );
+  }
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-muted text-muted-foreground">
       <Icon size={32} strokeWidth={1.4} aria-hidden="true" />
       <span className="font-mono text-[10px] uppercase tracking-widest">
-        {kind === "video" ? "Video" : kind === "pdf" ? "PDF" : kind === "document" ? "Document" : "File"}
+        {kind === "pdf" ? "PDF" : kind === "document" ? "Document" : "File"}
       </span>
     </div>
   );
@@ -137,7 +149,7 @@ export function MediaLibrary() {
           />
         </div>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          {filtered.length} of {media.length} sample assets
+          {filtered.length} of {media.length} assets
         </p>
       </div>
 

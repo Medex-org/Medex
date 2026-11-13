@@ -243,6 +243,15 @@ export function DemoMediaPicker({
               alt=""
               className="h-14 w-20 object-cover border-[1px] border-border"
             />
+          ) : mediaKind(selected.type, selected.fileName) === "video" ? (
+            <video
+              src={selected.src}
+              controls
+              muted
+              playsInline
+              preload="metadata"
+              className="h-14 w-20 object-cover border-[1px] border-border bg-black"
+            />
           ) : (
             <span className="flex h-14 w-20 items-center justify-center border-[1px] border-border bg-muted">
               <KindIcon asset={selected} />
