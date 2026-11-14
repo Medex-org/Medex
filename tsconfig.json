@@ -17,8 +17,7 @@
     "esModuleInterop": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@assets/*": ["./assets/*"]
+      "@/*": ["./src/*"]
     }
   }
 }

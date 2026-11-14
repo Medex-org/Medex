@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
 import type {
   Course,
@@ -13,7 +13,8 @@ import type {
   ManagedContentType,
 } from "./admin-types";
 import { formatFileSize } from "./admin-utils";
-import { validateUpload } from "./media-utils";
+import { resolveMimeType, validateUpload } from "./media-utils";
+import { ROSTER_SYNC_MARKER, STATIC_ROSTER, rosterKey } from "@/data/leadership";
 import { useAuth } from "./auth/AuthProvider";
 
 interface AdminStoreValue {
@@ -37,12 +38,15 @@ interface AdminStoreValue {
   addMedia: (input: MediaInput) => Promise<void>;
   removeMedia: (id: string) => Promise<void>;
   uploadMedia: (file: File) => Promise<MediaAsset>;
+  uploadMediaFiles: (files: File[]) => Promise<MediaAsset[]>;
   refresh: () => Promise<void>;
   managedContent: Record<ManagedContentType, ManagedContentItem[]>;
+  leadershipSynced: boolean;
   createManagedContent: (type: ManagedContentType, item: Omit<ManagedContentItem, "id">) => Promise<void>;
   updateManagedContent: (type: ManagedContentType, id: string, item: Omit<ManagedContentItem, "id">) => Promise<void>;
-  reorderManagedContent: (type: ManagedContentType, orderedIds: string[]) => Promise<void>;
+  reorderManagedContent: (type: ManagedContentType, orderedIds: string[], startAt?: number) => Promise<void>;
   deleteManagedContent: (type: ManagedContentType, id: string) => Promise<void>;
+  syncLeadershipRoster: () => Promise<{ inserted: number; alreadySynced: boolean }>;
 }
 
 const AdminStoreContext = createContext<AdminStoreValue | null>(null);
@@ -51,6 +55,13 @@ function getPublicUrl(bucketPath: string | null): string | null {
   if (!bucketPath) return null;
   const { data } = supabase.storage.from('media').getPublicUrl(bucketPath);
   return data.publicUrl;
+}
+
+function newStorageId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 export function AdminStoreProvider({ children }: { children: ReactNode }) {
@@ -63,6 +74,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const [managedContent, setManagedContent] = useState<Record<ManagedContentType, ManagedContentItem[]>>({
     achievements: [], "news-highlights": [], webinars: [], banners: [], partners: [], officers: [],
   });
+  const [leadershipSynced, setLeadershipSynced] = useState(false);
+  const rosterSyncInFlight = useRef<Promise<{ inserted: number; alreadySynced: boolean }> | null>(null);
 
   const managedTables: Record<ManagedContentType, string> = {
     achievements: "achievements",
@@ -73,20 +86,21 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     officers: "global_officers",
   };
 
-  const uploadMedia = async (file: File): Promise<MediaAsset> => {
+  const uploadOne = async (file: File): Promise<MediaAsset> => {
     const validationError = validateUpload(file);
     if (validationError) throw new Error(validationError);
+    const mimeType = resolveMimeType(file);
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
-    const bucketPath = `uploads/${crypto.randomUUID()}-${safeName}`;
+    const bucketPath = `uploads/${newStorageId()}-${safeName}`;
     const upload = await supabase.storage.from("media").upload(bucketPath, file, {
-      contentType: file.type,
+      contentType: mimeType,
       upsert: false,
     });
     if (upload.error) throw upload.error;
     const { data, error } = await supabase.from("media").insert({
       file_name: file.name,
       bucket_path: bucketPath,
-      mime_type: file.type,
+      mime_type: mimeType,
       size_bytes: file.size,
       uploaded_by: profile?.id || null,
       used_in: [],
@@ -95,17 +109,36 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       await supabase.storage.from("media").remove([bucketPath]);
       throw error;
     }
-    await fetchAll();
     return {
       id: data.id,
       bucketPath,
       fileName: file.name,
-      type: file.type,
+      type: mimeType,
       sizeLabel: formatFileSize(file.size),
       src: getPublicUrl(bucketPath) || "",
       usedIn: [],
       isLocal: false,
     };
+  };
+
+  const uploadMediaFiles = async (files: File[]): Promise<MediaAsset[]> => {
+    const uploaded: MediaAsset[] = [];
+    const failures: string[] = [];
+    for (const file of files) {
+      try {
+        uploaded.push(await uploadOne(file));
+      } catch (error) {
+        failures.push(`${file.name}: ${error instanceof Error ? error.message : "upload failed"}`);
+      }
+    }
+    if (uploaded.length) await fetchAll();
+    if (failures.length) throw new Error(failures.join(" · "));
+    return uploaded;
+  };
+
+  const uploadMedia = async (file: File): Promise<MediaAsset> => {
+    const [asset] = await uploadMediaFiles([file]);
+    return asset;
   };
 
   const fetchAll = async () => {
@@ -187,17 +220,22 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       imageId: mediaIdForPath(e.image_path),
     })));
     const managedTypes = Object.keys(managedTables) as ManagedContentType[];
+    const officerIndex = managedTypes.indexOf("officers");
+    const officerRows = managedResults[officerIndex]?.data || [];
+    setLeadershipSynced(officerRows.some((item) => item.name === ROSTER_SYNC_MARKER));
     const nextManaged = {} as Record<ManagedContentType, ManagedContentItem[]>;
     managedTypes.forEach((type, index) => {
-      nextManaged[type] = (managedResults[index]?.data || []).map((item: any) => ({
-        id: item.id,
-        title: item.title || item.label || item.name || "",
-        secondary: item.badge || item.cadence || item.role || (type === "partners" ? item.linkedin_url : "") || "",
-        description: item.description || item.intro || "",
-        link: item.href || item.linkedin_url || "",
-        imagePath: mediaIdForPath(item.image_path) || "",
-        sortOrder: item.sort_order || 0,
-      }));
+      nextManaged[type] = (managedResults[index]?.data || [])
+        .filter((item: any) => type !== "officers" || item.name !== ROSTER_SYNC_MARKER)
+        .map((item: any) => ({
+          id: item.id,
+          title: item.title || item.label || item.name || "",
+          secondary: item.badge || item.cadence || item.role || (type === "partners" ? item.linkedin_url : "") || "",
+          description: item.description || item.intro || "",
+          link: item.href || item.linkedin_url || "",
+          imagePath: mediaIdForPath(item.image_path) || "",
+          sortOrder: item.sort_order || 0,
+        }));
     });
     setManagedContent(nextManaged);
 
@@ -274,12 +312,12 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     await fetchAll();
   };
 
-  const reorderManagedContent = async (type: ManagedContentType, orderedIds: string[]) => {
+  const reorderManagedContent = async (type: ManagedContentType, orderedIds: string[], startAt = 0) => {
     const results = await Promise.all(
       orderedIds.map((id, index) =>
         supabase
           .from(managedTables[type])
-          .update({ sort_order: index, updated_at: timestamp() } as never)
+          .update({ sort_order: startAt + index, updated_at: timestamp() } as never)
           .eq("id", id),
       ),
     );
@@ -291,6 +329,51 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.from(managedTables[type]).delete().eq("id", id);
     throwIfError(error);
     await fetchAll();
+  };
+
+  const syncLeadershipRoster = () => {
+    if (rosterSyncInFlight.current) return rosterSyncInFlight.current;
+    const run = (async () => {
+      const { data, error } = await supabase.from("global_officers").select("name,role");
+      throwIfError(error);
+      const rows = data || [];
+      if (rows.some((row) => row.name === ROSTER_SYNC_MARKER)) {
+        await fetchAll();
+        return { inserted: 0, alreadySynced: true };
+      }
+
+      const existing = new Set(rows.map((row) => rosterKey(row.name, row.role)));
+      const missing = STATIC_ROSTER.filter((row) => !existing.has(rosterKey(row.name, row.role)));
+      if (missing.length) {
+        const { error: insertError } = await supabase.from("global_officers").insert(
+          missing.map((row) => ({
+            name: row.name,
+            role: row.role,
+            intro: row.intro || null,
+            linkedin_url: null,
+            image_path: null,
+            sort_order: row.sortOrder,
+          })) as never,
+        );
+        throwIfError(insertError);
+      }
+
+      const { error: markerError } = await supabase.from("global_officers").insert({
+        name: ROSTER_SYNC_MARKER,
+        role: "system",
+        intro: "Internal marker used to keep the leadership roster in sync.",
+        linkedin_url: null,
+        image_path: null,
+        sort_order: -1,
+      } as never);
+      throwIfError(markerError);
+      await fetchAll();
+      return { inserted: missing.length, alreadySynced: false };
+    })();
+    rosterSyncInFlight.current = run.finally(() => {
+      rosterSyncInFlight.current = null;
+    });
+    return rosterSyncInFlight.current;
   };
 
   useEffect(() => {
@@ -462,9 +545,10 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     createCourse, updateCourse, deleteCourse, toggleCourseStatus,
     createNews, updateNews, deleteNews, toggleNewsStatus,
     createEvent, updateEvent, deleteEvent, toggleEventStatus,
-    addMedia, removeMedia, refresh: fetchAll, managedContent,
-    createManagedContent, updateManagedContent, reorderManagedContent, deleteManagedContent, uploadMedia,
-  }), [courses, news, events, media, loading, managedContent]);
+    addMedia, removeMedia, refresh: fetchAll, managedContent, leadershipSynced,
+    createManagedContent, updateManagedContent, reorderManagedContent, deleteManagedContent,
+    uploadMedia, uploadMediaFiles, syncLeadershipRoster,
+  }), [courses, news, events, media, loading, managedContent, leadershipSynced]);
 
   return <AdminStoreContext.Provider value={value}>{children}</AdminStoreContext.Provider>;
 }

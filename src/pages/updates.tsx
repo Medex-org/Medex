@@ -71,7 +71,7 @@ export default function Updates() {
                         <img
                           src={update.image}
                           alt={update.title}
-                          className="w-full h-40 md:h-full object-cover img-scholarly"
+                          className="w-full h-56 sm:h-64 md:h-full object-cover img-scholarly"
                           loading="lazy"
                           decoding="async"
                         />

@@ -57,7 +57,7 @@ export default function Events() {
                       <img
                         src={event.image}
                         alt={event.name}
-                        className="w-full h-40 md:h-full object-cover img-scholarly"
+                        className="w-full h-56 sm:h-64 md:h-full object-cover img-scholarly"
                         loading="lazy"
                         decoding="async"
                       />

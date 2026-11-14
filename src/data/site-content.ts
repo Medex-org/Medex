@@ -44,6 +44,8 @@ export interface SiteGlobalOfficer {
   intro: string;
   image: string | null;
   linkedinUrl?: string;
+  sortOrder: number;
+  vacant: boolean;
 }
 
 export interface SiteCourse {

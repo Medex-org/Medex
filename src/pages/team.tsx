@@ -5,7 +5,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animation
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { HierarchyCard, type HierarchyPerson } from "@/components/shared/hierarchy-card";
-import { GOVERNANCE } from "@/data/governance";
+import { buildLeadershipLevels } from "@/data/leadership";
 import { DEPARTMENTS } from "@/data/departments";
 import { LINKS } from "@/config/links";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
@@ -34,21 +34,8 @@ const SECTIONS = [
 ];
 
 export default function Team() {
-  const { globalOfficers } = useSiteContent();
-  const governance = globalOfficers.length
-    ? GOVERNANCE.map((level, index) => index === 0
-      ? {
-          ...level,
-          people: globalOfficers.map((officer) => ({
-            name: officer.name,
-            role: officer.role,
-            intro: officer.intro,
-            image: officer.image,
-            linkedinUrl: officer.linkedinUrl,
-          })),
-        }
-      : level)
-    : GOVERNANCE;
+  const { globalOfficers, leadershipSynced } = useSiteContent();
+  const governance = buildLeadershipLevels(globalOfficers, leadershipSynced);
 
   return (
     <Layout>

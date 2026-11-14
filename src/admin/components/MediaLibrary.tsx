@@ -47,11 +47,12 @@ function AssetPreview({ asset }: { asset: MediaAsset }) {
 }
 
 export function MediaLibrary() {
-  const { media, removeMedia, uploadMedia } = useAdminStore();
+  const { media, removeMedia, uploadMediaFiles } = useAdminStore();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<MediaAsset | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -64,23 +65,43 @@ export function MediaLibrary() {
     );
   }, [media, search]);
 
-  const handleFile = async (file: File | undefined) => {
-    if (!file) return;
-    const validationError = validateUpload(file);
-    if (validationError) {
+  const handleFiles = async (files: FileList | File[] | null | undefined) => {
+    if (uploading) return;
+    const list = Array.from(files || []);
+    if (!list.length) return;
+
+    const valid: File[] = [];
+    const invalid: string[] = [];
+    list.forEach((file) => {
+      const validationError = validateUpload(file);
+      if (validationError) invalid.push(`${file.name}: ${validationError}`);
+      else valid.push(file);
+    });
+
+    if (invalid.length) {
       toast({
-        title: "Unsupported file",
-        description: validationError,
+        title: invalid.length === 1 ? "One file was skipped" : `${invalid.length} files were skipped`,
+        description: invalid[0],
         variant: "destructive",
       });
-      return;
     }
+    if (!valid.length) return;
 
+    setUploading(true);
     try {
-      await uploadMedia(file);
-      toast({ title: "File uploaded", description: "The file is saved in Supabase storage." });
+      const uploaded = await uploadMediaFiles(valid);
+      toast({
+        title: `${uploaded.length} file${uploaded.length === 1 ? "" : "s"} uploaded`,
+        description: "The files are saved in Supabase storage.",
+      });
     } catch (error) {
-      toast({ title: "Upload failed", description: error instanceof Error ? error.message : "Could not upload file.", variant: "destructive" });
+      toast({
+        title: "Some uploads failed",
+        description: error instanceof Error ? error.message : "Could not upload files.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -114,19 +135,21 @@ export function MediaLibrary() {
               ref={fileInputRef}
               type="file"
               accept={ACCEPTED_FILE_TYPES}
+              multiple
               className="sr-only"
-              aria-label="Choose a file to upload"
+              aria-label="Choose files to upload"
               onChange={(event) => {
-                handleFile(event.target.files?.[0]);
+                void handleFiles(event.target.files);
                 event.target.value = "";
               }}
             />
             <Button
               type="button"
               onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              <Upload size={16} aria-hidden="true" /> Upload file
+              <Upload size={16} aria-hidden="true" /> {uploading ? "Uploading..." : "Upload files"}
             </Button>
           </>
         }
@@ -153,11 +176,19 @@ export function MediaLibrary() {
         </p>
       </div>
 
-      <div className="border-[1px] border-border bg-accent/5 px-4 py-3 mb-6">
+      <div
+        className="border-[1px] border-dashed border-border bg-accent/5 px-4 py-3 mb-6"
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault();
+          void handleFiles(event.dataTransfer.files);
+        }}
+      >
         <p className="font-sans text-xs text-muted-foreground leading-relaxed">
           Upload images, PDFs, Word documents, or videos here, then select them
-          from the content editors. Files are stored in the Supabase{" "}
-          <code>media</code> bucket and previewed here.
+          from the content editors. You can select several files at once or drop
+          them here. Files are stored in the Supabase <code>media</code> bucket
+          and previewed here.
         </p>
       </div>
 

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PageMeta } from "@/components/ui/page-meta";
+import { useToast } from "@/hooks/use-toast";
 import type { AdminActionRequest, AdminSection } from "./admin-types";
-import { AdminStoreProvider } from "./use-admin-store";
+import { AdminStoreProvider, useAdminStore } from "./use-admin-store";
 import { AdminLayout } from "./AdminLayout";
 import { AdminOverview } from "./components/AdminOverview";
 import { CoursesManager } from "./components/CoursesManager";
@@ -10,6 +11,7 @@ import { EventsManager } from "./components/EventsManager";
 import { MediaLibrary } from "./components/MediaLibrary";
 import { PreferencesPanel } from "./components/PreferencesPanel";
 import { ManagedContentManager } from "./components/ManagedContentManager";
+import { OfficersManager } from "./components/OfficersManager";
 
 const SECTIONS: AdminSection[] = [
   "overview",
@@ -37,6 +39,32 @@ function initialSection(): AdminSection {
 function DashboardShell() {
   const [section, setSection] = useState<AdminSection>(initialSection);
   const [request, setRequest] = useState<AdminActionRequest | undefined>();
+  const { syncLeadershipRoster } = useAdminStore();
+  const { toast } = useToast();
+  const rosterSyncStarted = useRef(false);
+
+  useEffect(() => {
+    if (rosterSyncStarted.current) return;
+    rosterSyncStarted.current = true;
+    syncLeadershipRoster()
+      .then((result) => {
+        if (!result.alreadySynced) {
+          toast({
+            title: "Leadership roster synced",
+            description: result.inserted
+              ? `${result.inserted} people added to Supabase.`
+              : "The Supabase roster is already complete.",
+          });
+        }
+      })
+      .catch((error) => {
+        toast({
+          title: "Could not sync the leadership roster",
+          description: error instanceof Error ? error.message : "Unknown error.",
+          variant: "destructive",
+        });
+      });
+  }, []);
 
   const requestCreate = (target: AdminSection) => {
     setSection(target);
@@ -87,7 +115,7 @@ function DashboardShell() {
       {section === "webinars" ? <ManagedContentManager type="webinars" request={request?.section === "webinars" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "banners" ? <ManagedContentManager type="banners" request={request?.section === "banners" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "partners" ? <ManagedContentManager type="partners" request={request?.section === "partners" ? request : undefined} clearRequest={clearRequest} /> : null}
-      {section === "officers" ? <ManagedContentManager type="officers" request={request?.section === "officers" ? request : undefined} clearRequest={clearRequest} /> : null}
+      {section === "officers" ? <OfficersManager request={request?.section === "officers" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "preferences" ? <PreferencesPanel /> : null}
     </AdminLayout>
   );

@@ -31,8 +31,8 @@ export function AdminFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 gap-0">
-        <DialogHeader className="px-6 py-5 border-b-[1px] border-border">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-2xl p-0 gap-0">
+        <DialogHeader className="px-4 py-5 border-b-[1px] border-border sm:px-6">
           <DialogTitle className="font-serif text-xl">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
@@ -44,10 +44,10 @@ export function AdminFormDialog({
             onSubmit();
           }}
         >
-          <div className="max-h-[60vh] overflow-y-auto px-6 py-5 space-y-4">
+          <div className="max-h-[70dvh] overflow-y-auto overscroll-contain px-4 py-5 space-y-4 sm:px-6">
             {children}
           </div>
-          <DialogFooter className="border-t-[1px] border-border px-6 py-4 gap-2">
+          <DialogFooter className="border-t-[1px] border-border px-4 py-4 gap-2 sm:px-6">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancel

@@ -36,7 +36,7 @@ export function DemoMediaPicker({
   imagesOnly?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { uploadMedia } = useAdminStore();
+  const { uploadMediaFiles } = useAdminStore();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -56,29 +56,34 @@ export function DemoMediaPicker({
     });
   }, [media, search, imagesOnly]);
 
-  const handleUpload = async (file: File | undefined) => {
-    if (!file) return;
-    if (imagesOnly && !isImageAsset({ type: file.type, fileName: file.name })) {
+  const handleUploads = async (files: FileList | File[] | null | undefined) => {
+    if (uploading) return;
+    const list = Array.from(files || []);
+    if (!list.length) return;
+    const uploadable = imagesOnly
+      ? list.filter((file) => isImageAsset({ type: file.type, fileName: file.name }))
+      : list;
+    if (imagesOnly && uploadable.length !== list.length) {
       toast({
-        title: "Unsupported file",
-        description: "Choose an image file for this field.",
+        title: "Some files were skipped",
+        description: "Choose image files for this field.",
         variant: "destructive",
       });
-      return;
     }
+    if (!uploadable.length) return;
     setUploading(true);
     try {
-      const asset = await uploadMedia(file);
-      onChange(asset.id);
+      const assets = await uploadMediaFiles(uploadable);
+      if (assets[0]) onChange(assets[0].id);
       toast({
-        title: "File uploaded",
-        description: "The file is now available in the media library.",
+        title: `${assets.length} file${assets.length === 1 ? "" : "s"} uploaded`,
+        description: "The files are now available in the media library.",
       });
     } catch (error) {
       toast({
         title: "Upload failed",
         description:
-          error instanceof Error ? error.message : "Could not upload file.",
+          error instanceof Error ? error.message : "Could not upload files.",
         variant: "destructive",
       });
     } finally {
@@ -100,9 +105,10 @@ export function DemoMediaPicker({
         ref={inputRef}
         type="file"
         accept={imagesOnly ? ACCEPTED_IMAGE_TYPES : ACCEPTED_FILE_TYPES}
+        multiple
         className="sr-only"
         onChange={(event) => {
-          void handleUpload(event.target.files?.[0]);
+          void handleUploads(event.target.files);
           event.target.value = "";
         }}
       />
@@ -122,7 +128,7 @@ export function DemoMediaPicker({
                 <img
                   src={selected.src}
                   alt=""
-                  className="h-5 w-5 object-cover border-[1px] border-border"
+                  className="h-8 w-8 object-cover border-[1px] border-border"
                 />
               ) : (
                 <KindIcon asset={selected} />
@@ -173,11 +179,11 @@ export function DemoMediaPicker({
               disabled={uploading}
             >
               <Upload size={14} aria-hidden="true" />
-              {uploading ? "Uploading..." : "Upload"}
+              {uploading ? "Uploading..." : "Upload files"}
             </Button>
           </div>
 
-          <div className="max-h-64 overflow-y-auto overscroll-contain touch-pan-y p-1">
+          <div className="max-h-80 overflow-y-auto overscroll-contain touch-pan-y p-1">
             {!imagesOnly ? (
               <button
                 type="button"
@@ -211,10 +217,10 @@ export function DemoMediaPicker({
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="h-10 w-14 shrink-0 object-cover border-[1px] border-border"
+                        className="h-14 w-20 shrink-0 object-cover border-[1px] border-border"
                       />
                     ) : (
-                      <span className="flex h-10 w-14 shrink-0 items-center justify-center border-[1px] border-border bg-muted">
+                      <span className="flex h-14 w-20 shrink-0 items-center justify-center border-[1px] border-border bg-muted">
                         <KindIcon asset={asset} />
                       </span>
                     )}
@@ -241,7 +247,7 @@ export function DemoMediaPicker({
             <img
               src={selected.src}
               alt=""
-              className="h-14 w-20 object-cover border-[1px] border-border"
+              className="h-24 w-32 object-cover border-[1px] border-border"
             />
           ) : mediaKind(selected.type, selected.fileName) === "video" ? (
             <video
@@ -250,10 +256,10 @@ export function DemoMediaPicker({
               muted
               playsInline
               preload="metadata"
-              className="h-14 w-20 object-cover border-[1px] border-border bg-black"
+              className="h-24 w-32 object-cover border-[1px] border-border bg-black"
             />
           ) : (
-            <span className="flex h-14 w-20 items-center justify-center border-[1px] border-border bg-muted">
+            <span className="flex h-24 w-32 items-center justify-center border-[1px] border-border bg-muted">
               <KindIcon asset={selected} />
             </span>
           )}

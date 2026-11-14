@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { User, UserPlus, ArrowRight } from "lucide-react";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { LINKS } from "@/config/links";
@@ -19,6 +20,9 @@ export interface HierarchyPerson {
  * legible pair in light and dark) to guarantee contrast.
  */
 export function HierarchyCard({ person, featured = false }: { person: HierarchyPerson; featured?: boolean }) {
+  const [failedImage, setFailedImage] = useState<string | null>(null);
+  const image = person.image && failedImage !== person.image ? person.image : null;
+
   if (person.vacant) {
     return (
       <div
@@ -57,14 +61,21 @@ export function HierarchyCard({ person, featured = false }: { person: HierarchyP
     >
       <div
         className={`rounded-full overflow-hidden border-[1px] border-border bg-muted mb-5 img-scholarly flex-shrink-0 ${
-          featured ? "w-32 h-32" : "w-24 h-24"
+          featured ? "w-36 h-36" : "w-28 h-28"
         }`}
       >
-        {person.image ? (
-          <img src={person.image} alt={person.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+        {image ? (
+          <img
+            src={image}
+            alt={person.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+            onError={() => setFailedImage(person.image)}
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground" aria-hidden="true">
-            <User size={featured ? 32 : 24} strokeWidth={1} />
+            <User size={featured ? 36 : 28} strokeWidth={1} />
           </div>
         )}
       </div>
