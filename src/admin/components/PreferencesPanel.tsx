@@ -11,13 +11,14 @@ import {
   X,
 } from "lucide-react";
 import { AdminPageHeader } from "./AdminPageHeader";
+import { AccessManager } from "./AccessManager";
 import { useAuth } from "../auth/AuthProvider";
 
 const CAN_MANAGE = [
-  "Courses and program records",
-  "News and updates",
-  "Events and opportunities",
+  "Courses, news, events, and public content",
+  "Department team rosters",
   "Approved media assets",
+  "Admin roles and department assignments",
 ];
 
 const CANNOT_MANAGE = [
@@ -34,6 +35,7 @@ export function PreferencesPanel() {
   const name = profile?.full_name || user?.email || "Signed-in admin";
   const email = profile?.email || user?.email || "—";
   const role = profile?.role || "admin";
+  const roleLabel = profile?.department_slug ? `${role} · ${profile.department_slug}` : role;
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
@@ -76,7 +78,7 @@ export function PreferencesPanel() {
             <div className="min-w-0">
               <p className="font-medium">{name}</p>
               <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
-                {role}
+                {roleLabel}
               </p>
             </div>
           </div>
@@ -92,7 +94,7 @@ export function PreferencesPanel() {
               <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
                 Role
               </dt>
-              <dd className="text-muted-foreground">{role}</dd>
+              <dd className="text-muted-foreground">{roleLabel}</dd>
             </div>
             <div className="flex flex-col gap-0.5">
               <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
@@ -106,8 +108,8 @@ export function PreferencesPanel() {
 
           <div className="mt-6 pt-5 border-t-[1px] border-border">
             <p className="font-sans text-xs text-muted-foreground leading-relaxed">
-              Admin routes require a profile with the admin role. Database
-              policies should still be reviewed before adding more editors.
+              Admin routes require a profile with a super admin, department admin,
+              or content editor role. Database policies enforce the same scope.
             </p>
           </div>
         </section>
@@ -131,8 +133,8 @@ export function PreferencesPanel() {
             </h2>
           </div>
           <p className="font-sans text-xs text-muted-foreground leading-relaxed mb-6">
-            Admin accounts can manage public content only. The boundaries below
-            describe the intended scope of the content editor role.
+            Super admins manage all content and access. Department admins manage
+            their department team and media. Content editors manage public content.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -200,11 +202,13 @@ export function PreferencesPanel() {
         </section>
       </div>
 
+      <AccessManager />
+
       <div className="mt-6 border-[1px] border-accent/30 bg-accent/5 px-4 py-3">
         <p className="font-sans text-xs text-foreground/80 leading-relaxed">
-          <strong className="font-semibold">Access:</strong> the dashboard
-          requires a Supabase account whose profile has the admin role. To add an
-          editor, create the account and set the role in the profiles table.
+          <strong className="font-semibold">Access:</strong> the dashboard requires a
+          Supabase account with a super admin, department admin, or content editor role.
+          Department admins can only manage their assigned department team and media.
         </p>
       </div>
     </>

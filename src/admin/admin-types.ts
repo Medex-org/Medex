@@ -70,6 +70,7 @@ export type AdminSection =
   | "banners"
   | "partners"
   | "officers"
+  | "departments"
   | "preferences";
 
 export type Achievement = {
@@ -133,6 +134,12 @@ export interface ManagedContentItem {
   link: string;
   imagePath: string;
   sortOrder: number;
+  scope?: "global" | "department";
+  departmentSlug?: string | null;
+  levelKey?: string | null;
+  personKey?: string | null;
+  supervisorKey?: string | null;
+  isActive?: boolean;
 }
 
 export interface AdminActionRequest {

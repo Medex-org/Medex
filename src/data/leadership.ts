@@ -3,6 +3,7 @@ import type { SiteGlobalOfficer } from "@/data/site-content";
 import { GOVERNANCE, type HierarchyLevel } from "@/data/governance";
 
 export const ROSTER_SYNC_MARKER = "__roster_synced__";
+export const DEPARTMENT_SYNC_MARKER = "__departments_synced__";
 export const LEADERSHIP_BANDS = [0, 100, 200, 300] as const;
 const LEVEL_LABELS = ["Executive Board", "Directors", "Heads", "Mentorship"] as const;
 
@@ -39,6 +40,10 @@ export function officerKey(name: string | null | undefined, role: string | null 
 export function rosterKey(name: string | null | undefined, role: string | null | undefined): string {
   const vacant = (name || "").trim().toLowerCase() === "open position";
   return vacant ? officerKey(name, role) : contentKey(name);
+}
+
+export function isRosterMarker(name: string | null | undefined): boolean {
+  return name === ROSTER_SYNC_MARKER || name === DEPARTMENT_SYNC_MARKER;
 }
 
 export interface StaticOfficerRow {
@@ -80,7 +85,12 @@ export function buildLeadershipLevels(
 ): LeadershipLevel[] {
   return LEADERSHIP_LEVELS.map((level) => {
     const levelOfficers = officers
-      .filter((officer) => levelIndexForSortOrder(officer.sortOrder) === level.index)
+      .filter(
+        (officer) =>
+          officer.scope !== "department" &&
+          officer.isActive &&
+          levelIndexForSortOrder(officer.sortOrder) === level.index,
+      )
       .sort((a, b) => a.sortOrder - b.sortOrder);
 
     if (synced) {

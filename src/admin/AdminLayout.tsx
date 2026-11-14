@@ -21,6 +21,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import type { AdminSection } from "./admin-types";
 import { useAdminStore } from "./use-admin-store";
 import { useAuth } from "./auth/AuthProvider";
+import { canAccessSection } from "./auth/access";
 import { DemoModeNotice } from "./components/DemoModeNotice";
 
 const NAV_ITEMS: {
@@ -39,6 +40,7 @@ const NAV_ITEMS: {
   { id: "banners", label: "Banners", icon: Images },
   { id: "partners", label: "Partners", icon: ShieldCheck },
   { id: "officers", label: "Global Officers", icon: Users },
+  { id: "departments", label: "Department Teams", icon: Users },
   { id: "preferences", label: "Preferences & Access", icon: ShieldCheck },
 ];
 
@@ -54,6 +56,7 @@ const SECTION_LABELS: Record<AdminSection, string> = {
   banners: "Banners",
   partners: "Partners",
   officers: "Global Officers",
+  departments: "Department Teams",
   preferences: "Preferences & Access",
 };
 
@@ -90,9 +93,11 @@ export function AdminLayout({
     };
   }, [menuOpen]);
 
+  const visibleNavItems = NAV_ITEMS.filter((item) => canAccessSection(profile?.role, item.id));
+
   const navList = (
     <nav aria-label="Dashboard sections" className="space-y-1">
-      {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
+      {visibleNavItems.map(({ id, label, icon: Icon }) => {
         const active = section === id;
         return (
           <button

@@ -7,6 +7,7 @@ import { Handshake, ArrowRight } from "lucide-react";
 import { PartnerCard } from "@/components/shared/partner-card";
 import { PARTNERS } from "@/data/partners";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
+import { DepartmentTeam } from "@/components/shared/department-team";
 import { useSiteContent } from "@/hooks/use-site-content";
 
 export default function DepartmentPartnerships() {
@@ -35,6 +36,8 @@ export default function DepartmentPartnerships() {
           </FadeIn>
         </div>
       </section>
+
+      <DepartmentTeam departmentSlug="partnerships" muted />
 
       {/* Featured Collaborations */}
       <section className="py-24 px-4 sm:px-6">

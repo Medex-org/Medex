@@ -1,5 +1,6 @@
 import { Redirect, useLocation } from 'wouter';
 import { useAuth } from './AuthProvider';
+import { hasAdminAccess } from './access';
 import { Spinner } from '@/components/ui/spinner';
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
@@ -14,7 +15,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!session || !profile || profile.role !== 'admin') {
+  if (!session || !profile || !hasAdminAccess(profile.role)) {
     return <Redirect to={`/admin/login`} />;
   }
 

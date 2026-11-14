@@ -6,6 +6,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animation
 import { GraduationCap, HeartPulse, Stethoscope, BookMarked, Sparkles, ArrowRight } from "lucide-react";
 import { AudioSeries } from "@/components/shared/audio-series";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
+import { DepartmentTeam } from "@/components/shared/department-team";
 import { Link } from "wouter";
 
 const PROGRAMS = [
@@ -58,6 +59,8 @@ export default function DepartmentEducation() {
           </FadeIn>
         </div>
       </section>
+
+      <DepartmentTeam departmentSlug="education" muted />
 
       {/* Academic Programs */}
       <section className="py-24 px-4 sm:px-6">

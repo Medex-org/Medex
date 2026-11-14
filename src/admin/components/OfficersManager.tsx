@@ -17,6 +17,7 @@ import {
   bandForLevel,
   contentKey,
   levelIndexForSortOrder,
+  rosterKey,
 } from "@/data/leadership";
 
 interface OfficerForm {
@@ -45,6 +46,8 @@ const staticImages = new Map(
   GOVERNANCE.flatMap((level) => level.people).map((person) => [contentKey(person.name), person.image]),
 );
 
+const GLOBAL_LEVEL_KEYS = ["executive", "director", "head", "mentor"] as const;
+
 export function OfficersManager({
   request,
   clearRequest,
@@ -63,7 +66,7 @@ export function OfficersManager({
     syncLeadershipRoster,
   } = useAdminStore();
   const { toast } = useToast();
-  const items = managedContent.officers;
+  const items = managedContent.officers.filter((item) => item.scope !== "department");
   const orderedItems = [...items].sort((a, b) => a.sortOrder - b.sortOrder);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -127,13 +130,20 @@ export function OfficersManager({
     const sortOrder = editingId && form.level === currentLevel
       ? form.sortOrder
       : nextSortOrder(form.level);
+    const title = form.vacant ? "Open Position" : form.title.trim();
     const payload = {
-      title: form.vacant ? "Open Position" : form.title.trim(),
+      title,
       secondary: form.secondary.trim(),
       description: form.vacant ? "" : form.description.trim(),
       link: form.vacant ? "" : form.link.trim(),
       imagePath: form.vacant ? "" : form.imagePath,
       sortOrder,
+      scope: "global" as const,
+      departmentSlug: null,
+      levelKey: GLOBAL_LEVEL_KEYS[form.level] || "executive",
+      personKey: rosterKey(title, form.secondary),
+      supervisorKey: null,
+      isActive: true,
     };
 
     try {

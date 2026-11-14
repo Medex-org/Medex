@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { GOVERNANCE } from "@/data/governance";
-import { ROSTER_SYNC_MARKER, contentKey } from "@/data/leadership";
+import {
+  DEPARTMENT_SYNC_MARKER,
+  ROSTER_SYNC_MARKER,
+  contentKey,
+  isRosterMarker,
+} from "@/data/leadership";
+import { DEPARTMENT_ROSTERS } from "@/data/department-roster";
 import {
   FALLBACK_ACHIEVEMENTS,
   FALLBACK_COURSES,
@@ -29,6 +35,7 @@ export interface SiteContent {
   partners: SitePartner[];
   globalOfficers: SiteGlobalOfficer[];
   leadershipSynced: boolean;
+  departmentsSynced: boolean;
   courses: SiteCourse[];
   events: SiteEvent[];
   updates: SiteUpdate[];
@@ -50,6 +57,7 @@ export function useSiteContent(): SiteContent {
     partners: FALLBACK_PARTNERS,
     globalOfficers: [],
     leadershipSynced: false,
+    departmentsSynced: false,
     courses: FALLBACK_COURSES,
     events: FALLBACK_EVENTS,
     updates: [],
@@ -84,13 +92,15 @@ export function useSiteContent(): SiteContent {
       const fallbackBanner = new Map(FALLBACK_EVENT_BANNERS.map((item) => [contentKey(item.label), item]));
       const fallbackPartner = new Map(FALLBACK_PARTNERS.map((item) => [contentKey(item.name), item]));
       const fallbackEvent = new Map(FALLBACK_EVENTS.map((item) => [contentKey(item.name), item]));
-      const fallbackOfficer = new Map<string, { intro?: string; image: string | null }>(
-        GOVERNANCE.flatMap((level) => level.people).map((item) => [contentKey(item.name), item]),
-      );
+      const fallbackOfficer = new Map<string, { intro?: string; image: string | null }>([
+        ...GOVERNANCE.flatMap((level) => level.people),
+        ...Object.values(DEPARTMENT_ROSTERS).flat(),
+      ].map((item) => [contentKey(item.name), item]));
       const officerRows = globalOfficers.data || [];
       const leadershipSynced = officerRows.some((item) => item.name === ROSTER_SYNC_MARKER);
+      const departmentsSynced = officerRows.some((item) => item.name === DEPARTMENT_SYNC_MARKER);
       const officers: SiteGlobalOfficer[] = officerRows
-        .filter((item) => item.name !== ROSTER_SYNC_MARKER)
+        .filter((item) => !isRosterMarker(item.name))
         .map((item) => ({
           id: item.id,
           name: item.name,
@@ -100,6 +110,12 @@ export function useSiteContent(): SiteContent {
           image: resolveMediaPath(item.image_path) || fallbackOfficer.get(contentKey(item.name))?.image || null,
           sortOrder: Number(item.sort_order) || 0,
           vacant: String(item.name || "").trim().toLowerCase() === "open position",
+          scope: item.scope === "department" ? "department" : "global",
+          departmentSlug: item.department_slug || null,
+          levelKey: item.level_key || null,
+          personKey: item.person_key || null,
+          supervisorKey: item.supervisor_key || null,
+          isActive: item.is_active !== false,
         }));
       setContent({
         achievements: achievements.data?.length ? achievements.data.map((item) => ({ id: item.id, title: item.title, badge: item.badge || "", description: item.description || "", image: resolveMediaPath(item.image_path) || fallbackAchievement.get(contentKey(item.title))?.image || null })) : FALLBACK_ACHIEVEMENTS,
@@ -109,6 +125,7 @@ export function useSiteContent(): SiteContent {
         partners: partners.data?.length ? partners.data.map((item) => ({ id: item.id, name: item.name, description: item.description || "", linkedinUrl: item.linkedin_url || undefined, image: resolveMediaPath(item.image_path) || fallbackPartner.get(contentKey(item.name))?.image || null })) : FALLBACK_PARTNERS,
         globalOfficers: officers,
         leadershipSynced,
+        departmentsSynced,
         courses: courses.data?.length ? courses.data.map((item) => ({ id: item.id, title: item.title, category: item.category || "", description: item.description || "", registrationUrl: item.registration_url || "" })) : FALLBACK_COURSES,
         events: events.data?.length ? events.data.map((item) => ({ id: item.id, name: item.title, type: item.category || "Event", status: "Upcoming", date: [item.date, item.time, item.timezone].filter(Boolean).join(" · "), desc: item.description || "", location: item.location || "", image: resolveMediaPath(item.image_path) || fallbackEvent.get(contentKey(item.title))?.image || null, link: item.registration_url || null, linkLabel: item.registration_url ? "Register" : null })) : FALLBACK_EVENTS,
         updates: (updates.data || []).map((item) => ({ id: item.id, title: item.title, category: item.category || "", body: item.body || "", date: item.date || "", image: resolveMediaPath(item.image_path) })),

@@ -10,6 +10,8 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import type { AdminSection } from "../admin-types";
 import { useAdminStore } from "../use-admin-store";
+import { useAuth } from "../auth/AuthProvider";
+import { canAccessSection } from "../auth/access";
 import { formatDemoDate, formatDemoDateShort, isUpcoming } from "../admin-utils";
 import { ContentStatusBadge } from "./ContentStatusBadge";
 import { AdminEmptyState } from "./AdminEmptyState";
@@ -34,6 +36,8 @@ export function AdminOverview({
   onRequestEdit: (section: AdminSection, id: string) => void;
 }) {
   const { courses, news, events, media } = useAdminStore();
+  const { profile } = useAuth();
+  const role = profile?.role;
 
   const publishedCourses = courses.filter((c) => c.status === "published").length;
   const publishedNews = news.filter((n) => n.status === "published").length;
@@ -68,7 +72,7 @@ export function AdminOverview({
       detail: "Bundled sample files",
       icon: Images,
     },
-  ];
+  ].filter((item) => canAccessSection(role, item.section));
 
   const recent: RecentEntry[] = [
     ...courses.map((course) => ({
@@ -99,16 +103,19 @@ export function AdminOverview({
       lastUpdated: event.lastUpdated,
     })),
   ]
+    .filter((entry) => canAccessSection(role, entry.section))
     .sort(
       (a, b) =>
         new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime(),
     )
     .slice(0, 5);
 
-  const upcoming = events
-    .filter((event) => isUpcoming(event.date))
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(0, 4);
+  const upcoming = canAccessSection(role, "events")
+    ? events
+        .filter((event) => isUpcoming(event.date))
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .slice(0, 4)
+    : [];
 
   return (
     <>
@@ -165,24 +172,24 @@ export function AdminOverview({
           Quick actions
         </h2>
         <div className="flex flex-col sm:flex-row flex-wrap gap-2">
-          <Button
-            onClick={() => onRequestCreate("courses")}
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
-          >
-            <Plus size={15} aria-hidden="true" /> Add a course
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onRequestCreate("news")}
-          >
-            <Plus size={15} aria-hidden="true" /> Create an update
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onRequestCreate("events")}
-          >
-            <Plus size={15} aria-hidden="true" /> Create an event
-          </Button>
+          {canAccessSection(role, "courses") ? (
+            <Button
+              onClick={() => onRequestCreate("courses")}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              <Plus size={15} aria-hidden="true" /> Add a course
+            </Button>
+          ) : null}
+          {canAccessSection(role, "news") ? (
+            <Button variant="outline" onClick={() => onRequestCreate("news")}>
+              <Plus size={15} aria-hidden="true" /> Create an update
+            </Button>
+          ) : null}
+          {canAccessSection(role, "events") ? (
+            <Button variant="outline" onClick={() => onRequestCreate("events")}>
+              <Plus size={15} aria-hidden="true" /> Create an event
+            </Button>
+          ) : null}
         </div>
       </section>
 

@@ -3,6 +3,8 @@ import { PageMeta } from "@/components/ui/page-meta";
 import { useToast } from "@/hooks/use-toast";
 import type { AdminActionRequest, AdminSection } from "./admin-types";
 import { AdminStoreProvider, useAdminStore } from "./use-admin-store";
+import { useAuth } from "./auth/AuthProvider";
+import { canAccessSection, isSuperAdmin } from "./auth/access";
 import { AdminLayout } from "./AdminLayout";
 import { AdminOverview } from "./components/AdminOverview";
 import { CoursesManager } from "./components/CoursesManager";
@@ -12,6 +14,7 @@ import { MediaLibrary } from "./components/MediaLibrary";
 import { PreferencesPanel } from "./components/PreferencesPanel";
 import { ManagedContentManager } from "./components/ManagedContentManager";
 import { OfficersManager } from "./components/OfficersManager";
+import { DepartmentTeamsManager } from "./components/DepartmentTeamsManager";
 
 const SECTIONS: AdminSection[] = [
   "overview",
@@ -25,6 +28,7 @@ const SECTIONS: AdminSection[] = [
   "banners",
   "partners",
   "officers",
+  "departments",
   "preferences",
 ];
 
@@ -40,31 +44,37 @@ function DashboardShell() {
   const [section, setSection] = useState<AdminSection>(initialSection);
   const [request, setRequest] = useState<AdminActionRequest | undefined>();
   const { syncLeadershipRoster } = useAdminStore();
+  const { profile } = useAuth();
   const { toast } = useToast();
   const rosterSyncStarted = useRef(false);
 
   useEffect(() => {
+    if (!canAccessSection(profile?.role, section)) setSection("overview");
+  }, [profile?.role, section]);
+
+  useEffect(() => {
+    if (!isSuperAdmin(profile?.role)) return;
     if (rosterSyncStarted.current) return;
     rosterSyncStarted.current = true;
     syncLeadershipRoster()
       .then((result) => {
         if (!result.alreadySynced) {
           toast({
-            title: "Leadership roster synced",
+            title: "Team rosters synced",
             description: result.inserted
               ? `${result.inserted} people added to Supabase.`
-              : "The Supabase roster is already complete.",
+              : "The global and department rosters are already complete.",
           });
         }
       })
       .catch((error) => {
         toast({
-          title: "Could not sync the leadership roster",
+          title: "Could not sync the team rosters",
           description: error instanceof Error ? error.message : "Unknown error.",
           variant: "destructive",
         });
       });
-  }, []);
+  }, [profile?.role]);
 
   const requestCreate = (target: AdminSection) => {
     setSection(target);
@@ -116,6 +126,7 @@ function DashboardShell() {
       {section === "banners" ? <ManagedContentManager type="banners" request={request?.section === "banners" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "partners" ? <ManagedContentManager type="partners" request={request?.section === "partners" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "officers" ? <OfficersManager request={request?.section === "officers" ? request : undefined} clearRequest={clearRequest} /> : null}
+      {section === "departments" ? <DepartmentTeamsManager /> : null}
       {section === "preferences" ? <PreferencesPanel /> : null}
     </AdminLayout>
   );

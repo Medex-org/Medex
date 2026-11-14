@@ -46,6 +46,12 @@ export interface SiteGlobalOfficer {
   linkedinUrl?: string;
   sortOrder: number;
   vacant: boolean;
+  scope: "global" | "department";
+  departmentSlug: string | null;
+  levelKey: string | null;
+  personKey: string | null;
+  supervisorKey: string | null;
+  isActive: boolean;
 }
 
 export interface SiteCourse {

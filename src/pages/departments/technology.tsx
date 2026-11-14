@@ -5,6 +5,7 @@ import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { Progress } from "@/components/ui/progress";
 import { Cpu, BookOpen, Award, Bot, PlayCircle, Lock } from "lucide-react";
+import { DepartmentTeam } from "@/components/shared/department-team";
 import { useSiteContent } from "@/hooks/use-site-content";
 
 const COURSES = [
@@ -39,6 +40,8 @@ export default function DepartmentTechnology() {
           </FadeIn>
         </div>
       </section>
+
+      <DepartmentTeam departmentSlug="technology" muted />
 
       {/* LMS Preview */}
       <section className="py-24 px-4 sm:px-6">

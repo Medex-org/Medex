@@ -14,7 +14,14 @@ import type {
 } from "./admin-types";
 import { formatFileSize } from "./admin-utils";
 import { resolveMimeType, validateUpload } from "./media-utils";
-import { ROSTER_SYNC_MARKER, STATIC_ROSTER, rosterKey } from "@/data/leadership";
+import {
+  DEPARTMENT_SYNC_MARKER,
+  ROSTER_SYNC_MARKER,
+  STATIC_ROSTER,
+  isRosterMarker,
+  rosterKey,
+} from "@/data/leadership";
+import { DEPARTMENT_ROSTERS, departmentRosterKey } from "@/data/department-roster";
 import { useAuth } from "./auth/AuthProvider";
 
 interface AdminStoreValue {
@@ -42,6 +49,7 @@ interface AdminStoreValue {
   refresh: () => Promise<void>;
   managedContent: Record<ManagedContentType, ManagedContentItem[]>;
   leadershipSynced: boolean;
+  departmentsSynced: boolean;
   createManagedContent: (type: ManagedContentType, item: Omit<ManagedContentItem, "id">) => Promise<void>;
   updateManagedContent: (type: ManagedContentType, id: string, item: Omit<ManagedContentItem, "id">) => Promise<void>;
   reorderManagedContent: (type: ManagedContentType, orderedIds: string[], startAt?: number) => Promise<void>;
@@ -75,6 +83,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     achievements: [], "news-highlights": [], webinars: [], banners: [], partners: [], officers: [],
   });
   const [leadershipSynced, setLeadershipSynced] = useState(false);
+  const [departmentsSynced, setDepartmentsSynced] = useState(false);
   const rosterSyncInFlight = useRef<Promise<{ inserted: number; alreadySynced: boolean }> | null>(null);
 
   const managedTables: Record<ManagedContentType, string> = {
@@ -223,10 +232,11 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     const officerIndex = managedTypes.indexOf("officers");
     const officerRows = managedResults[officerIndex]?.data || [];
     setLeadershipSynced(officerRows.some((item) => item.name === ROSTER_SYNC_MARKER));
+    setDepartmentsSynced(officerRows.some((item) => item.name === DEPARTMENT_SYNC_MARKER));
     const nextManaged = {} as Record<ManagedContentType, ManagedContentItem[]>;
     managedTypes.forEach((type, index) => {
       nextManaged[type] = (managedResults[index]?.data || [])
-        .filter((item: any) => type !== "officers" || item.name !== ROSTER_SYNC_MARKER)
+        .filter((item: any) => type !== "officers" || !isRosterMarker(item.name))
         .map((item: any) => ({
           id: item.id,
           title: item.title || item.label || item.name || "",
@@ -235,6 +245,12 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
           link: item.href || item.linkedin_url || "",
           imagePath: mediaIdForPath(item.image_path) || "",
           sortOrder: item.sort_order || 0,
+          scope: item.scope === "department" ? "department" : "global",
+          departmentSlug: item.department_slug || null,
+          levelKey: item.level_key || null,
+          personKey: item.person_key || null,
+          supervisorKey: item.supervisor_key || null,
+          isActive: item.is_active !== false,
         }));
     });
     setManagedContent(nextManaged);
@@ -242,7 +258,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   };
 
-  const managedPayload = (type: ManagedContentType, item: Omit<ManagedContentItem, "id">): Record<string, string | number | null> => {
+  const managedPayload = (type: ManagedContentType, item: Omit<ManagedContentItem, "id">): Record<string, string | number | boolean | null> => {
     const selectedMedia = media.find((asset) => asset.id === item.imagePath);
     const imagePath = selectedMedia?.bucketPath || item.imagePath || null;
     const sortOrder = item.sortOrder;
@@ -286,6 +302,12 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
         role: item.secondary,
         intro: item.description,
         linkedin_url: item.link || null,
+        scope: item.scope || "global",
+        department_slug: item.departmentSlug || null,
+        level_key: item.levelKey || null,
+        person_key: item.personKey || rosterKey(item.title, item.secondary),
+        supervisor_key: item.supervisorKey || null,
+        is_active: item.isActive !== false,
       };
     }
     return { sort_order: sortOrder, image_path: imagePath, title: item.title, description: item.description };
@@ -334,41 +356,101 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const syncLeadershipRoster = () => {
     if (rosterSyncInFlight.current) return rosterSyncInFlight.current;
     const run = (async () => {
-      const { data, error } = await supabase.from("global_officers").select("name,role");
+      const { data, error } = await supabase
+        .from("global_officers")
+        .select("name,role,scope,department_slug");
       throwIfError(error);
       const rows = data || [];
-      if (rows.some((row) => row.name === ROSTER_SYNC_MARKER)) {
-        await fetchAll();
-        return { inserted: 0, alreadySynced: true };
-      }
+      const globalSynced = rows.some((row) => row.name === ROSTER_SYNC_MARKER);
+      const departmentsSynced = rows.some((row) => row.name === DEPARTMENT_SYNC_MARKER);
+      let inserted = 0;
 
-      const existing = new Set(rows.map((row) => rosterKey(row.name, row.role)));
-      const missing = STATIC_ROSTER.filter((row) => !existing.has(rosterKey(row.name, row.role)));
-      if (missing.length) {
-        const { error: insertError } = await supabase.from("global_officers").insert(
-          missing.map((row) => ({
-            name: row.name,
-            role: row.role,
-            intro: row.intro || null,
-            linkedin_url: null,
-            image_path: null,
-            sort_order: row.sortOrder,
-          })) as never,
+      if (!globalSynced) {
+        const existing = new Set(
+          rows
+            .filter((row) => row.scope !== "department" && !isRosterMarker(row.name))
+            .map((row) => rosterKey(row.name, row.role)),
         );
-        throwIfError(insertError);
+        const missing = STATIC_ROSTER.filter((row) => !existing.has(rosterKey(row.name, row.role)));
+        if (missing.length) {
+          const { error: insertError } = await supabase.from("global_officers").insert(
+            missing.map((row) => ({
+              name: row.name,
+              role: row.role,
+              intro: row.intro || null,
+              linkedin_url: null,
+              image_path: null,
+              sort_order: row.sortOrder,
+              scope: "global",
+              person_key: rosterKey(row.name, row.role),
+              is_active: true,
+            })) as never,
+          );
+          throwIfError(insertError);
+          inserted += missing.length;
+        }
+
+        const { error: markerError } = await supabase.from("global_officers").insert({
+          name: ROSTER_SYNC_MARKER,
+          role: "system",
+          intro: "Internal marker used to keep the leadership roster in sync.",
+          linkedin_url: null,
+          image_path: null,
+          sort_order: -1,
+          scope: "global",
+          level_key: "system",
+        } as never);
+        throwIfError(markerError);
       }
 
-      const { error: markerError } = await supabase.from("global_officers").insert({
-        name: ROSTER_SYNC_MARKER,
-        role: "system",
-        intro: "Internal marker used to keep the leadership roster in sync.",
-        linkedin_url: null,
-        image_path: null,
-        sort_order: -1,
-      } as never);
-      throwIfError(markerError);
+      if (!departmentsSynced) {
+        const existingDepartmentRows = new Set(
+          rows
+            .filter((row) => row.scope === "department")
+            .map((row) => departmentRosterKey(row.department_slug, row.name, row.role)),
+        );
+        const missingDepartmentRows = Object.entries(DEPARTMENT_ROSTERS).flatMap(([slug, people]) =>
+          people
+            .filter((person) => !existingDepartmentRows.has(departmentRosterKey(slug, person.name, person.role)))
+            .map((person) => ({
+              name: person.name,
+              role: person.role,
+              intro: person.intro || null,
+              linkedin_url: person.linkedinUrl || null,
+              image_path: null,
+              sort_order: person.sortOrder,
+              scope: "department",
+              department_slug: slug,
+              level_key: person.levelKey,
+              person_key: person.personKey,
+              supervisor_key: person.supervisorKey || null,
+              is_active: true,
+            })),
+        );
+
+        if (missingDepartmentRows.length) {
+          const { error: insertError } = await supabase
+            .from("global_officers")
+            .insert(missingDepartmentRows as never);
+          throwIfError(insertError);
+          inserted += missingDepartmentRows.length;
+        }
+
+        const { error: markerError } = await supabase.from("global_officers").insert({
+          name: DEPARTMENT_SYNC_MARKER,
+          role: "system",
+          intro: "Internal marker used to keep department teams in sync.",
+          linkedin_url: null,
+          image_path: null,
+          sort_order: -2,
+          scope: "department",
+          level_key: "system",
+        } as never);
+        throwIfError(markerError);
+      }
+
       await fetchAll();
-      return { inserted: missing.length, alreadySynced: false };
+      return { inserted, alreadySynced: globalSynced && departmentsSynced };
     })();
     rosterSyncInFlight.current = run.finally(() => {
       rosterSyncInFlight.current = null;
@@ -545,10 +627,10 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     createCourse, updateCourse, deleteCourse, toggleCourseStatus,
     createNews, updateNews, deleteNews, toggleNewsStatus,
     createEvent, updateEvent, deleteEvent, toggleEventStatus,
-    addMedia, removeMedia, refresh: fetchAll, managedContent, leadershipSynced,
+    addMedia, removeMedia, refresh: fetchAll, managedContent, leadershipSynced, departmentsSynced,
     createManagedContent, updateManagedContent, reorderManagedContent, deleteManagedContent,
     uploadMedia, uploadMediaFiles, syncLeadershipRoster,
-  }), [courses, news, events, media, loading, managedContent, leadershipSynced]);
+  }), [courses, news, events, media, loading, managedContent, leadershipSynced, departmentsSynced]);
 
   return <AdminStoreContext.Provider value={value}>{children}</AdminStoreContext.Provider>;
 }

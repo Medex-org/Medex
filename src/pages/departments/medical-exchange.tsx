@@ -5,6 +5,7 @@ import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { Globe2, Plane, ArrowRight } from "lucide-react";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
+import { DepartmentTeam } from "@/components/shared/department-team";
 
 const OPPORTUNITIES = [
   {
@@ -43,6 +44,8 @@ export default function DepartmentMedicalExchange() {
           </FadeIn>
         </div>
       </section>
+
+      <DepartmentTeam departmentSlug="medical-exchange" muted />
 
       {/* Opportunities */}
       <section className="py-24 px-4 sm:px-6">

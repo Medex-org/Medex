@@ -2,15 +2,13 @@ import { Layout } from "@/components/layout";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
-import { ArrowRight, FlaskConical, User } from "lucide-react";
-import { ProfileModal } from "@/components/shared/profile-modal";
+import { ArrowRight, FlaskConical } from "lucide-react";
+import { DepartmentTeam } from "@/components/shared/department-team";
 import { MentorshipPricing } from "@/components/shared/mentorship-pricing";
 import { ResearchTracker } from "@/components/shared/research-tracker";
 import { LteEnrollment } from "@/components/shared/lte-enrollment";
 import { DonationDashboard } from "@/components/shared/donation-dashboard";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
-import { RESEARCH_MENTORS } from "@/data/mentors";
-import { DialogClose } from "@/components/ui/dialog";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { SectionNav } from "@/components/shared/section-nav";
 import { LINKS } from "@/config/links";
@@ -71,56 +69,10 @@ export default function DepartmentResearch() {
 
       <SectionNav items={SECTIONS} />
 
-      {/* Mentors & Research Team */}
-      <section id="team" className="py-24 px-4 sm:px-6 scroll-mt-32">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn className="mb-12">
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Our Team</p>
-            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
-              Mentors &amp; Research Team
-            </h2>
-            <div className="section-rule" />
-          </FadeIn>
-
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {RESEARCH_MENTORS.map((mentor) => (
-              <StaggerItem key={mentor.name}>
-                <ProfileModal
-                  mentor={mentor}
-                  footer={
-                    <DialogClose asChild>
-                      <a
-                        href="#mentorship"
-                        className="inline-flex items-center gap-2 py-2 -my-2 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity mt-4"
-                      >
-                        Get Mentorship <ArrowRight size={13} aria-hidden="true" />
-                      </a>
-                    </DialogClose>
-                  }
-                  trigger={
-                    <button className="w-full p-6 border-[1px] border-border bg-card hover:border-accent/30 transition-all text-left group">
-                      <div className="w-20 h-20 rounded-full overflow-hidden border-[1px] border-border bg-muted mb-4 img-scholarly">
-                        {mentor.image ? (
-                          <img src={mentor.image} alt={mentor.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-muted-foreground" aria-hidden="true">
-                            <User size={28} strokeWidth={1} />
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="font-bold text-lg group-hover:text-accent transition-colors">{mentor.name}</h3>
-                      <p className="font-mono text-xs uppercase tracking-widest text-accent mt-1 mb-3">
-                        {mentor.role}
-                      </p>
-                      <p className="font-sans text-sm text-muted-foreground line-clamp-2">{mentor.bio}</p>
-                    </button>
-                  }
-                />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
+      <DepartmentTeam
+        departmentSlug="research"
+        title="Research Leadership & Team"
+      />
 
       <div className="h-[1px] w-full bg-border" />
 
