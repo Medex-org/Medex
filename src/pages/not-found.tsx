@@ -16,12 +16,12 @@ export default function NotFound() {
         <p className="font-mono text-xs uppercase tracking-[0.25em] text-secondary mb-6">
           Error 404
         </p>
-        <h1 className="font-mono text-[8rem] md:text-[12rem] leading-none font-semibold text-muted/60 tracking-tighter mb-0 select-none" aria-hidden="true">
+        <div className="font-mono text-[8rem] md:text-[12rem] leading-none font-semibold text-muted/60 tracking-tighter mb-0 select-none" aria-hidden="true">
           404
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6 -mt-4">
+        </div>
+        <h1 className="text-2xl md:text-3xl font-semibold text-primary mb-6 -mt-4">
           Page Not Found
-        </h2>
+        </h1>
         <p className="font-sans text-lg text-secondary max-w-md mx-auto mb-12 leading-relaxed">
           The scholarly record you are looking for does not exist in our archives.
           It may have been moved, renamed, or never written.

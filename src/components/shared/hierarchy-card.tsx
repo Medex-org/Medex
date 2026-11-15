@@ -99,6 +99,8 @@ export function HierarchyCard({
           <img
             src={image}
             alt={person.name}
+            width={featured ? 144 : 112}
+            height={featured ? 144 : 112}
             className="w-full h-full object-cover object-top"
             loading="lazy"
             decoding="async"

@@ -10,15 +10,15 @@
     "key": "about",
     "path": "/about/",
     "crumb": "About",
-    "title": "About MEDX R&Ed | Mission & Clinical Research",
-    "description": "Learn about MEDX R&Ed's mission to transform medical education and clinical research, meet our team, and see how we bridge gaps in global health."
+    "title": "About MedX R&ED | International NGO for Medical Education",
+    "description": "MedX R&ED is an international organization advancing clinical research education and equitable medical exchange."
   },
   {
     "key": "team",
     "path": "/team/",
     "crumb": "Our Team",
-    "title": "Our Team | MEDX R&Ed Research Leaders",
-    "description": "Meet the MEDX R&Ed team - physicians, researchers, and educators driving innovation in clinical research and medical exchange programs."
+    "title": "Our Team | Doctors & Researchers - MedX R&ED",
+    "description": "Meet doctors, researchers & students powering MedX R&ED's global medical exchange in Pakistan, US, UK & India."
   },
   {
     "key": "research",
@@ -31,8 +31,8 @@
     "key": "education",
     "path": "/education/",
     "crumb": "Education",
-    "title": "Clinical Research Education | MEDX R&Ed",
-    "description": "Explore MEDX R&Ed clinical research education programs: hands-on training, curriculum, and resources for future medical researchers."
+    "title": "Clinical Research Education | Guides - MedX R&ED",
+    "description": "Free guides on clinical research methods, definition, and global health research. Learn with MedX R&ED's education hub."
   },
   {
     "key": "medicalExchange",
@@ -45,8 +45,8 @@
     "key": "technology",
     "path": "/technology/",
     "crumb": "Technology",
-    "title": "MEDX R&Ed Technology | Research Innovation",
-    "description": "Discover how MEDX R&Ed uses technology to advance clinical research, medical education, and global health collaboration."
+    "title": "Our Technology | Data Platform - MedX R&ED",
+    "description": "How MedX R&ED uses technology to scale clinical research education and medical exchange."
   },
   {
     "key": "partnerships",
@@ -59,8 +59,8 @@
     "key": "medxMinds",
     "path": "/medx-minds/",
     "crumb": "MEDX Minds",
-    "title": "MEDX Minds Community | MEDX R&Ed",
-    "description": "MEDX Minds is a community for medical learners, educators, and researchers - discussions, mental health resources, and collaboration."
+    "title": "MedX Minds | Stories from Global Researchers",
+    "description": "Interviews and stories from our community of medical students and researchers in Pakistan, US, India and beyond."
   },
   {
     "key": "events",
@@ -87,15 +87,34 @@
     "key": "join",
     "path": "/join/",
     "crumb": "Join",
-    "title": "Join MEDX R&Ed | Research Programs & Opportunities",
-    "description": "Join MEDX R&Ed. Apply for clinical research programs, medical exchange, and MEDX Minds. Start your journey in medical research today."
+    "title": "Join MedX R&ED | Apply for Medical Research Programs",
+    "description": "Apply to MedX R&ED's clinical research & medical exchange programs. Open to medical students worldwide. Monthly intake."
   },
   {
     "key": "whatIsClinicalResearch",
     "path": "/education/what-is-clinical-research/",
     "crumb": "What Is Clinical Research?",
-    "title": "What Is Clinical Research? | MEDX R&Ed",
-    "description": "A plain-language guide to clinical research: what it is, how studies are designed, why it matters, and how students can get involved."
+    "title": "What is Clinical Research? Definition & Methods (2026)",
+    "description": "Clinical research explained: definition, types, phases and methods. Free guide by MedX R&ED for students entering global health research.",
+    "brandSuffix": false,
+    "faq": [
+      {
+        "question": "Do I need a medical degree to take part in clinical research?",
+        "answer": "No. Clinical research teams include statisticians, data managers, nurses, public health specialists, and students from many backgrounds. Medical and health-science students often start with literature review, data collection, or study coordination. What matters most is training, supervision, and a clear understanding of ethics and methods."
+      },
+      {
+        "question": "Is clinical research the same as a clinical trial?",
+        "answer": "No. A clinical trial is one type of clinical research, usually an interventional study that tests a treatment or prevention strategy. Clinical research also includes observational studies, diagnostic accuracy studies, qualitative work, and health services research."
+      },
+      {
+        "question": "How long does a clinical research project take?",
+        "answer": "It depends on the question. A secondary analysis of existing data may take months, while a prospective trial can take years. Ethics approval, recruitment, and follow-up often take longer than students expect, so plan backwards from your deadlines and choose a feasible scope."
+      },
+      {
+        "question": "What should I learn first?",
+        "answer": "Start with study design, basic biostatistics, critical appraisal, and research ethics. These four areas help you read papers intelligently and avoid common mistakes. Practical experience with a mentor is the best complement to structured learning."
+      }
+    ]
   },
   {
     "key": "medicalExchangeGuide",

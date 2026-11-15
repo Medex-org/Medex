@@ -5,6 +5,7 @@ export interface SeoEntry {
   path: string | null;
   title: string;
   description: string;
+  brandSuffix?: boolean;
 }
 
 export const SEO_ROUTES = seoRoutes as SeoEntry[];
@@ -15,6 +16,6 @@ export const SEO_ROUTES = seoRoutes as SeoEntry[];
  * (via seo.json directly) to stamp real per-route HTML for social crawlers,
  * which - unlike PageMeta's useEffect - don't execute JS.
  */
-export const SEO: Record<string, Pick<SeoEntry, "title" | "description">> = Object.fromEntries(
-  SEO_ROUTES.map(({ key, title, description }) => [key, { title, description }]),
+export const SEO: Record<string, Pick<SeoEntry, "title" | "description" | "brandSuffix">> = Object.fromEntries(
+  SEO_ROUTES.map(({ key, title, description, brandSuffix }) => [key, { title, description, brandSuffix }]),
 );

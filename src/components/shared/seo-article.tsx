@@ -22,7 +22,7 @@ interface RelatedLink {
 }
 
 interface SeoArticleProps {
-  seo: { title: string; description: string };
+  seo: { title: string; description: string; brandSuffix?: boolean };
   title: string;
   intro: string;
   sections: Section[];

@@ -42,6 +42,8 @@ export function ProfileModal({ mentor, trigger, footer }: ProfileModalProps) {
                 <img
                   src={mentor.image}
                   alt={mentor.name}
+                  width={64}
+                  height={64}
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                   decoding="async"

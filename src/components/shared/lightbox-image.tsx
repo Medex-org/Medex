@@ -15,6 +15,8 @@ interface LightboxImageProps {
   className?: string;
   imageClassName?: string;
   loading?: "lazy" | "eager";
+  width?: number;
+  height?: number;
 }
 
 export function LightboxImage({
@@ -24,6 +26,8 @@ export function LightboxImage({
   className,
   imageClassName,
   loading = "lazy",
+  width,
+  height,
 }: LightboxImageProps) {
   const [open, setOpen] = useState(false);
 
@@ -41,6 +45,8 @@ export function LightboxImage({
         <img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
           className={cn("h-full w-full", imageClassName)}
           loading={loading}
           decoding="async"

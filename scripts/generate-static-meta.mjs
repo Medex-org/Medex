@@ -133,13 +133,39 @@ function websiteSchema() {
   };
 }
 
+function faqSchema(entry) {
+  if (!Array.isArray(entry.faq) || entry.faq.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: entry.faq.map(({ question, answer }) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  };
+}
+
 function jsonLd(entry) {
-  const schema = breadcrumbSchema(entry) ?? websiteSchema();
+  const nodes = [breadcrumbSchema(entry), faqSchema(entry)].filter(Boolean);
+  if (nodes.length === 0) nodes.push(websiteSchema());
+
+  const schema =
+    nodes.length === 1
+      ? nodes[0]
+      : {
+          "@context": "https://schema.org",
+          "@graph": nodes.map(({ "@context": _context, ...node }) => node),
+        };
+
   return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
 }
 
 function stampHtml(template, entry) {
-  const fullTitle = entry.title.includes(SITE_NAME) ? entry.title : `${entry.title} - ${SITE_NAME}`;
+  const fullTitle =
+    entry.brandSuffix === false || /medx/i.test(entry.title)
+      ? entry.title
+      : `${entry.title} - ${SITE_NAME}`;
   const title = escapeHtml(fullTitle);
   const description = escapeHtml(entry.description);
   const url = routeUrl(entry.path);
@@ -170,6 +196,7 @@ function stampHtml(template, entry) {
 }
 
 function writeSitemap(routes) {
+  const lastmod = new Date().toISOString();
   const urls = routes
     .filter((entry) => entry.path)
     .map((entry) => {
@@ -177,6 +204,7 @@ function writeSitemap(routes) {
       return [
         "  <url>",
         `    <loc>${escapeXml(routeUrl(entry.path))}</loc>`,
+        `    <lastmod>${lastmod}</lastmod>`,
         `    <changefreq>${entry.path === "/" || entry.path === "/join/" || entry.path === "/events/" || entry.path === "/updates/" ? "weekly" : "monthly"}</changefreq>`,
         `    <priority>${priority}</priority>`,
         "  </url>",

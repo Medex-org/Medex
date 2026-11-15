@@ -228,6 +228,8 @@ export default function Join() {
                   caption="Become a MEDX Member - Benefits & Global Community"
                   className="border-[1px] border-border relative z-10"
                   imageClassName="w-full h-auto object-contain"
+                  width={800}
+                  height={533}
                 />
               </div>
             </FadeIn>
@@ -248,6 +250,8 @@ export default function Join() {
                   caption="Join MEDX as Campus Ambassador - Be the Voice. Be the Change."
                   className="border-[1px] border-border relative z-10"
                   imageClassName="w-full h-auto object-contain"
+                  width={533}
+                  height={800}
                 />
               </div>
             </FadeIn>

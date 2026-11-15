@@ -10,7 +10,10 @@ interface PageMetaProps {
   title: string;
   description: string;
   noindex?: boolean;
+  brandSuffix?: boolean;
 }
+
+const BRAND_PATTERN = /medx/i;
 
 function setMetaByAttr(attr: "name" | "property", key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -49,9 +52,10 @@ function setCanonical(href: string) {
  * don't execute JS - the per-route static HTML stamped by
  * scripts/generate-static-meta.mjs at build time is what they actually see.
  */
-export function PageMeta({ title, description, noindex = false }: PageMetaProps) {
+export function PageMeta({ title, description, noindex = false, brandSuffix = true }: PageMetaProps) {
   useEffect(() => {
-    const fullTitle = title.includes(SITE_NAME) ? title : `${title} - ${SITE_NAME}`;
+    const fullTitle =
+      !brandSuffix || BRAND_PATTERN.test(title) ? title : `${title} - ${SITE_NAME}`;
     document.title = fullTitle;
 
     setMetaByAttr("name", "description", description);
@@ -76,7 +80,7 @@ export function PageMeta({ title, description, noindex = false }: PageMetaProps)
       setCanonical(`${SITE_URL}/`);
       setMetaByAttr("property", "og:url", `${SITE_URL}/`);
     };
-  }, [title, description, noindex]);
+  }, [title, description, noindex, brandSuffix]);
 
   return null;
 }

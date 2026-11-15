@@ -224,6 +224,14 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 
+  /* Prevent unsized media from overflowing and reduce layout shift while
+     images decode. Explicit width/height utility classes still win, so
+     fixed-size avatars and logos keep their intended dimensions. */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
   /* Seamless theme toggle - scoped to a class stamped briefly on <html> by
      ThemeToggle, so every element eases between light/dark CSS vars without
      putting a 300ms transition on ordinary hovers/interactions site-wide. */

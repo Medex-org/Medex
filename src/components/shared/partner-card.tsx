@@ -20,7 +20,7 @@ export function PartnerCard({ partner }: { partner: Partner }) {
     <div className="h-full p-8 border-[1px] border-border bg-card flex flex-col items-center text-center hover:border-accent/25 transition-colors">
       <div className="w-16 h-16 rounded-full border-[1px] border-border bg-background flex items-center justify-center mb-5" aria-hidden={!!partner.logo}>
         {partner.logo ? (
-          <img src={partner.logo} alt={`${partner.name} logo`} className="w-full h-full object-contain rounded-full" loading="lazy" decoding="async" />
+          <img src={partner.logo} alt={`${partner.name} logo`} width={64} height={64} className="w-full h-full object-contain rounded-full" loading="lazy" decoding="async" />
         ) : (
           <Building2 size={22} strokeWidth={1.5} className="text-secondary" aria-label={`${partner.name} logo placeholder`} />
         )}
