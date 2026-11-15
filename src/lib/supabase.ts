@@ -8,4 +8,9 @@ export const supabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 export const supabase = createClient(
   supabaseUrl || 'https://missing-supabase-config.invalid',
   supabaseAnonKey || 'missing-supabase-anon-key',
+  {
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+    },
+  },
 );

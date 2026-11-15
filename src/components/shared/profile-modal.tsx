@@ -37,12 +37,12 @@ export function ProfileModal({ mentor, trigger, footer }: ProfileModalProps) {
       <DialogContent className="sm:max-w-lg border-border">
         <DialogHeader>
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden border-[1px] border-border bg-muted flex-shrink-0 img-scholarly">
+            <div className="w-16 h-16 rounded-full overflow-hidden border-[1px] border-border bg-muted flex-shrink-0">
               {mentor.image ? (
                 <img
                   src={mentor.image}
                   alt={mentor.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                   loading="lazy"
                   decoding="async"
                 />

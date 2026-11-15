@@ -37,11 +37,27 @@ export interface NewsUpdate {
 
 export type EventLocationType = "Virtual" | "In person" | "Hybrid";
 
+export type ApplicationStatus = "new" | "reviewed" | "archived";
+
+export interface JobApplication {
+  id: string;
+  name: string;
+  email: string;
+  position: string;
+  department: string | null;
+  message: string | null;
+  portfolio_url: string | null;
+  status: ApplicationStatus;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface EventItem {
   id: string;
   title: string;
   category: string;
   date: string;
+  endDate: string;
   time: string;
   timezone: string;
   locationType: EventLocationType;
@@ -71,6 +87,7 @@ export type AdminSection =
   | "partners"
   | "officers"
   | "departments"
+  | "applications"
   | "preferences";
 
 export type Achievement = {

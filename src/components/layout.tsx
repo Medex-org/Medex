@@ -3,10 +3,10 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { FaLinkedin, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { mediaUrl } from "@/lib/media-url";
+import { MEDX_LOGO, MEDX_LOGO_WEBP } from "@/lib/brand";
 
-const medxLogo = mediaUrl("medx-logo.png");
-const medxLogoWebp = mediaUrl("medx-logo.webp");
+const medxLogo = MEDX_LOGO;
+const medxLogoWebp = MEDX_LOGO_WEBP;
 import { ThemeToggle } from "@/components/theme-toggle";
 import { DEPARTMENTS } from "@/data/departments";
 import { LINKS, BRAND } from "@/config/links";
@@ -48,21 +48,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
   // already committed - but retry a few frames anyway in case the target
   // section isn't laid out yet on the very first frame.
   React.useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (!hash) return;
-    let attempts = 0;
-    let raf: number;
-    const tryScroll = () => {
-      const el = document.getElementById(hash);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
-      }
-      attempts += 1;
-      if (attempts < 20) raf = requestAnimationFrame(tryScroll);
+    const scrollToHash = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      let attempts = 0;
+      let raf: number | undefined;
+      const tryScroll = () => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        attempts += 1;
+        if (attempts < 120) raf = requestAnimationFrame(tryScroll);
+      };
+      tryScroll();
+      return () => {
+        if (raf !== undefined) cancelAnimationFrame(raf);
+      };
     };
-    tryScroll();
-    return () => cancelAnimationFrame(raf);
+
+    const cleanup = scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+    return () => {
+      cleanup?.();
+      window.removeEventListener("hashchange", scrollToHash);
+    };
   }, [location]);
 
   const navLinks = [
@@ -84,8 +95,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             : "bg-background/90 backdrop-blur-sm"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
             <picture>
               <source srcSet={medxLogoWebp} type="image/webp" />
               <img
@@ -93,13 +104,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 alt="MEDX R&Ed"
                 width={512}
                 height={512}
-                className="h-9 w-auto object-contain"
+                className="h-12 w-auto object-contain"
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
               />
             </picture>
-            <span className="font-bold tracking-wider text-base uppercase text-primary leading-none whitespace-nowrap hidden lg:block">
+            <span className="font-bold tracking-wider text-sm sm:text-base uppercase text-primary leading-none whitespace-nowrap">
               MEDX R&amp;Ed
             </span>
           </Link>
@@ -192,7 +203,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden fixed inset-0 z-40 bg-background pt-16 flex flex-col overflow-y-auto"
+            className="md:hidden fixed inset-0 z-40 bg-background pt-20 flex flex-col overflow-y-auto"
           >
             <nav className="flex flex-col px-4 sm:px-6 py-8 gap-0" aria-label="Mobile navigation">
               <Link
@@ -257,7 +268,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     alt="MEDX R&Ed"
                     width={512}
                     height={512}
-                    className="h-10 w-auto object-contain brightness-0 invert"
+                    className="h-12 w-auto object-contain brightness-0 invert"
                     loading="lazy"
                     decoding="async"
                   />

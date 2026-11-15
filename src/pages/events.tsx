@@ -1,6 +1,10 @@
+import { useMemo } from "react";
 import { Layout } from "@/components/layout";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
+import { LightboxImage } from "@/components/shared/lightbox-image";
+import { ShareActions } from "@/components/shared/share-actions";
 import { PageMeta } from "@/components/ui/page-meta";
+import { Progress } from "@/components/ui/progress";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { Calendar, ArrowRight, MapPin } from "lucide-react";
@@ -15,8 +19,42 @@ const statusStyles: Record<string, string> = {
   Open: "badge-open",
 };
 
+const STATUS_ORDER: Record<string, number> = {
+  Ongoing: 0,
+  Upcoming: 1,
+  Open: 1,
+  Completed: 2,
+};
+
+const STATUS_BAR: Record<string, string> = {
+  Ongoing: "bg-accent",
+  Upcoming: "bg-primary/40",
+  Completed: "bg-muted-foreground/30",
+};
+
+const TRACKED_STATUSES = ["Ongoing", "Upcoming", "Completed"] as const;
+
 export default function Events() {
   const { events } = useSiteContent();
+  const sortedEvents = useMemo(
+    () =>
+      [...events].sort((a, b) => {
+        const statusDiff =
+          (STATUS_ORDER[a.status] ?? 3) - (STATUS_ORDER[b.status] ?? 3);
+        if (statusDiff !== 0) return statusDiff;
+        return (a.startDate || "").localeCompare(b.startDate || "");
+      }),
+    [events],
+  );
+  const counts = useMemo(
+    () => ({
+      Ongoing: events.filter((event) => event.status === "Ongoing").length,
+      Upcoming: events.filter((event) => event.status === "Upcoming").length,
+      Completed: events.filter((event) => event.status === "Completed").length,
+    }),
+    [events],
+  );
+  const trackedTotal = counts.Ongoing + counts.Upcoming + counts.Completed;
 
   return (
     <Layout>
@@ -42,24 +80,53 @@ export default function Events() {
         </div>
       </section>
 
+      {trackedTotal > 0 ? (
+        <section className="border-b-[1px] border-border bg-card">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+            <div className="grid grid-cols-3 divide-x-[1px] divide-border border-[1px] border-border bg-background">
+              {TRACKED_STATUSES.map((status) => (
+                <div key={status} className="px-4 py-5 text-center">
+                  <p className="font-mono text-2xl font-semibold text-primary">
+                    {counts[status]}
+                  </p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mt-1">
+                    {status}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex h-1.5 w-full overflow-hidden bg-muted">
+              {TRACKED_STATUSES.map((status) => (
+                <div
+                  key={status}
+                  className={STATUS_BAR[status]}
+                  style={{ width: `${(counts[status] / trackedTotal) * 100}%` }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="py-24 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <StaggerContainer className="space-y-6">
-            {events.map((event, i) => (
+            {sortedEvents.map((event) => (
               <StaggerItem
-                key={i}
-                className="border-[1px] border-border bg-background hover:bg-card transition-colors group overflow-hidden"
+                key={event.id}
+                id={`event-${event.id}`}
+                className="scroll-mt-32 border-[1px] border-border bg-background hover:bg-card transition-colors group overflow-hidden"
               >
                 <div className="flex flex-col md:flex-row">
                   {/* Fixed-width image slot - present or absent, layout stays consistent */}
                   <div className="md:w-52 flex-shrink-0 overflow-hidden bg-muted">
                     {event.image ? (
-                      <img
+                      <LightboxImage
                         src={event.image}
                         alt={event.name}
-                        className="w-full h-56 sm:h-64 md:h-full object-cover img-scholarly"
-                        loading="lazy"
-                        decoding="async"
+                        caption={event.name}
+                        className="h-56 sm:h-64 md:h-full"
+                        imageClassName="object-contain"
                       />
                     ) : (
                       <div className="w-full h-2 md:h-full md:w-52" aria-hidden="true" />
@@ -109,23 +176,45 @@ export default function Events() {
                       <p className="font-sans text-muted-foreground leading-relaxed text-sm">
                         {event.desc}
                       </p>
+                      {event.status === "Ongoing" &&
+                      typeof event.progress === "number" ? (
+                        <div className="mt-3">
+                          <div className="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-secondary">
+                            <span>Ongoing progress</span>
+                            <span>{event.progress}%</span>
+                          </div>
+                          <Progress
+                            value={event.progress}
+                            className="h-1.5"
+                            aria-label={`${event.name} progress`}
+                          />
+                        </div>
+                      ) : null}
                     </div>
 
-                    {event.link && (
-                      <a
-                        href={event.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 py-2 -my-2 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity mt-auto group/link w-fit"
-                      >
-                        {event.linkLabel}{" "}
-                        <ArrowRight
-                          size={13}
-                          className="group-hover/link:translate-x-1 transition-transform"
-                          aria-hidden="true"
-                        />
-                      </a>
-                    )}
+                    <div className="mt-auto flex flex-col items-start gap-2">
+                      {event.link && (
+                        <a
+                          href={event.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 py-2 -my-2 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity group/link w-fit"
+                        >
+                          {event.linkLabel}{" "}
+                          <ArrowRight
+                            size={13}
+                            className="group-hover/link:translate-x-1 transition-transform"
+                            aria-hidden="true"
+                          />
+                        </a>
+                      )}
+                      <ShareActions
+                        title={event.name}
+                        anchor={`event-${event.id}`}
+                        caption={[event.name, event.date].filter(Boolean).join(" — ")}
+                        image={event.image}
+                      />
+                    </div>
                   </div>
                 </div>
               </StaggerItem>

@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
+import { ShareActions } from "@/components/shared/share-actions";
+import { slugify } from "@/lib/share";
 
 export interface ResearchProject {
   title: string;
@@ -24,8 +26,13 @@ export function ResearchTracker({ projects }: { projects: ResearchProject[] }) {
     <div className="space-y-6">
       {projects.map((p) => {
         const pct = computeProgress(p.startDate, p.endDate);
+        const anchor = `project-${slugify(p.title)}`;
         return (
-          <div key={p.title} className="p-6 border-[1px] border-border bg-card">
+          <div
+            key={p.title}
+            id={anchor}
+            className="scroll-mt-32 p-6 border-[1px] border-border bg-card"
+          >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div>
                 <h3 className="font-semibold text-base">{p.title}</h3>
@@ -40,6 +47,12 @@ export function ResearchTracker({ projects }: { projects: ResearchProject[] }) {
               <span>Started {format(new Date(p.startDate), "MMM d")}</span>
               <span>Expected {format(new Date(p.endDate), "MMM d")}</span>
             </div>
+            <ShareActions
+              title={p.title}
+              anchor={anchor}
+              caption={`${p.title} — led by ${p.lead}`}
+              className="pt-4"
+            />
           </div>
         );
       })}

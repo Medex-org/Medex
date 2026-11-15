@@ -1,6 +1,7 @@
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { HierarchyCard } from "@/components/shared/hierarchy-card";
 import { buildDepartmentLevels } from "@/data/department-roster";
+import { DEPARTMENTS } from "@/data/departments";
 import { useSiteContent } from "@/hooks/use-site-content";
 
 export function DepartmentTeam({
@@ -17,6 +18,8 @@ export function DepartmentTeam({
   const { globalOfficers, departmentsSynced } = useSiteContent();
   const levels = buildDepartmentLevels(departmentSlug, globalOfficers, departmentsSynced)
     .filter((level) => level.people.length > 0);
+  const departmentName =
+    DEPARTMENTS.find((department) => department.slug === departmentSlug)?.shortName || departmentSlug;
 
   if (!levels.length) return null;
 
@@ -44,7 +47,7 @@ export function DepartmentTeam({
               <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {level.people.map((person) => (
                   <StaggerItem key={`${person.name}|${person.role}`}>
-                    <HierarchyCard person={person} featured={level.key === "chief"} />
+                    <HierarchyCard person={person} featured={level.key === "chief"} applicationDepartment={departmentName} />
                   </StaggerItem>
                 ))}
               </StaggerContainer>

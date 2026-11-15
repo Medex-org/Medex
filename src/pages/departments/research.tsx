@@ -11,6 +11,7 @@ import { DonationDashboard } from "@/components/shared/donation-dashboard";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { SectionNav } from "@/components/shared/section-nav";
+import { RESEARCH_PROJECTS } from "@/data/research-projects";
 import { LINKS } from "@/config/links";
 
 const SECTIONS = [
@@ -101,16 +102,7 @@ export default function DepartmentResearch() {
             <div className="section-rule" />
           </FadeIn>
           <FadeIn>
-            <ResearchTracker
-              projects={[
-                {
-                  title: "SRMA Project-1",
-                  lead: "Tarooba Khan",
-                  startDate: "2026-07-08",
-                  endDate: "2026-09-08",
-                },
-              ]}
-            />
+            <ResearchTracker projects={RESEARCH_PROJECTS} />
           </FadeIn>
         </div>
       </section>
@@ -134,7 +126,7 @@ export default function DepartmentResearch() {
           <FadeIn className="mb-6">
             <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-1">Other Cohorts</p>
             <p className="font-sans text-sm text-muted-foreground">
-              Apply for any of MEDX's other research tracks via the Mentee Application Form.
+              Apply for any of MEDX's other research tracks by emailing the team.
             </p>
           </FadeIn>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -145,10 +137,8 @@ export default function DepartmentResearch() {
               >
                 <span className="font-semibold text-sm">{program}</span>
                 <a
-                  href={LINKS.menteeForm}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Apply for ${program} via the Mentee Application Form`}
+                  href={`mailto:${LINKS.email}?subject=${encodeURIComponent(`Cohort Application - ${program}`)}&body=${encodeURIComponent(`Name:\nEmail:\nProgram: ${program}\n\nI would like to apply for this cohort.`)}`}
+                  aria-label={`Apply for ${program} by email`}
                   className="inline-flex items-center gap-1 py-2 -my-2 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity flex-shrink-0"
                 >
                   Apply <ArrowRight size={12} aria-hidden="true" />

@@ -5,6 +5,7 @@ import {
   CalendarDays,
   ExternalLink,
   Images,
+  Inbox,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -13,10 +14,10 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { mediaUrl } from "@/lib/media-url";
+import { MEDX_LOGO, MEDX_LOGO_WEBP } from "@/lib/brand";
 
-const medxLogo = mediaUrl("medx-logo.png");
-const medxLogoWebp = mediaUrl("medx-logo.webp");
+const medxLogo = MEDX_LOGO;
+const medxLogoWebp = MEDX_LOGO_WEBP;
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { AdminSection } from "./admin-types";
 import { useAdminStore } from "./use-admin-store";
@@ -41,6 +42,7 @@ const NAV_ITEMS: {
   { id: "partners", label: "Partners", icon: ShieldCheck },
   { id: "officers", label: "Global Officers", icon: Users },
   { id: "departments", label: "Department Teams", icon: Users },
+  { id: "applications", label: "Applications", icon: Inbox },
   { id: "preferences", label: "Preferences & Access", icon: ShieldCheck },
 ];
 
@@ -57,6 +59,7 @@ const SECTION_LABELS: Record<AdminSection, string> = {
   partners: "Partners",
   officers: "Global Officers",
   departments: "Department Teams",
+  applications: "Applications",
   preferences: "Preferences & Access",
 };
 
@@ -78,6 +81,7 @@ export function AdminLayout({
     news: store.news.length,
     events: store.events.length,
     media: store.media.length,
+    applications: store.applications.filter((application) => application.status === "new").length,
   };
 
   useEffect(() => {
@@ -116,7 +120,13 @@ export function AdminLayout({
               <span className="truncate">{label}</span>
             </span>
             {typeof counts[id] === "number" ? (
-              <span className="font-mono text-[10px] text-muted-foreground">
+              <span
+                className={`font-mono text-[10px] ${
+                  id === "applications" && (counts[id] || 0) > 0
+                    ? "bg-accent px-1.5 py-0.5 text-accent-foreground"
+                    : "text-muted-foreground"
+                }`}
+              >
                 {counts[id]}
               </span>
             ) : null}
@@ -139,7 +149,7 @@ export function AdminLayout({
                   alt="MEDX R&Ed"
                   width={512}
                   height={512}
-                  className="h-9 w-auto object-contain"
+                  className="h-11 w-auto object-contain"
                   decoding="async"
                 />
               </picture>
@@ -242,14 +252,14 @@ export function AdminLayout({
           aria-label="Dashboard navigation"
           className="fixed inset-0 z-50 bg-background flex flex-col lg:hidden"
         >
-          <div className="h-16 flex items-center justify-between px-4 border-b-[1px] border-border">
+          <div className="h-20 flex items-center justify-between px-4 border-b-[1px] border-border">
             <div className="flex items-center gap-2">
               <img
                 src={medxLogo}
                 alt="MEDX R&Ed"
                 width={512}
                 height={512}
-                className="h-8 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
               <span className="font-mono text-[10px] uppercase tracking-widest text-secondary">
                 Admin preview

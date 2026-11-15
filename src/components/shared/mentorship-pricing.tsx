@@ -55,9 +55,7 @@ export function MentorshipPricing() {
               Pricing shared during application review
             </p>
             <a
-              href={LINKS.menteeForm}
-              target="_blank"
-              rel="noreferrer"
+              href={`mailto:${LINKS.email}?subject=${encodeURIComponent(`Mentorship Application - ${tier.name}`)}&body=${encodeURIComponent(`Name:\nEmail:\nSelected tier: ${tier.name}\n\nI would like to apply for this tier.`)}`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors w-fit"
             >
               Apply for This Tier <ArrowRight size={13} aria-hidden="true" />

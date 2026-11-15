@@ -15,6 +15,7 @@ import { PreferencesPanel } from "./components/PreferencesPanel";
 import { ManagedContentManager } from "./components/ManagedContentManager";
 import { OfficersManager } from "./components/OfficersManager";
 import { DepartmentTeamsManager } from "./components/DepartmentTeamsManager";
+import { ApplicationsManager } from "./components/ApplicationsManager";
 
 const SECTIONS: AdminSection[] = [
   "overview",
@@ -29,6 +30,7 @@ const SECTIONS: AdminSection[] = [
   "partners",
   "officers",
   "departments",
+  "applications",
   "preferences",
 ];
 
@@ -127,6 +129,7 @@ function DashboardShell() {
       {section === "partners" ? <ManagedContentManager type="partners" request={request?.section === "partners" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "officers" ? <OfficersManager request={request?.section === "officers" ? request : undefined} clearRequest={clearRequest} /> : null}
       {section === "departments" ? <DepartmentTeamsManager /> : null}
+      {section === "applications" ? <ApplicationsManager /> : null}
       {section === "preferences" ? <PreferencesPanel /> : null}
     </AdminLayout>
   );

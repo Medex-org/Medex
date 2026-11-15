@@ -5,10 +5,13 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animation
 import { ArrowRight, Mic } from "lucide-react";
 import { Link } from "wouter";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { LightboxImage } from "@/components/shared/lightbox-image";
 import { PartnerCard } from "@/components/shared/partner-card";
+import { ResearchTracker } from "@/components/shared/research-tracker";
 import { SimpleApplicationModal } from "@/components/shared/simple-application-modal";
 import { PARTNERS } from "@/data/partners";
 import { DEPARTMENTS } from "@/data/departments";
+import { RESEARCH_PROJECTS } from "@/data/research-projects";
 import { LINKS, BRAND } from "@/config/links";
 import { useSiteContent } from "@/hooks/use-site-content";
 
@@ -65,6 +68,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Weekly News & Research Highlights ─────────────────────────── */}
+      <section className="border-b-[1px] border-border bg-card py-16 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn className="mb-10">
+            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">This Week</p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
+              Weekly News &amp; Research Highlights
+            </h2>
+            <div className="section-rule" />
+          </FadeIn>
+          <StaggerContainer className="space-y-4">
+            {newsHighlights.map((n) => (
+              <StaggerItem key={n.title} className="p-6 border-[1px] border-border bg-background">
+                <h3 className="font-semibold text-base mb-1.5">{n.title}</h3>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{n.description}</p>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+          <Link
+            href="/updates/"
+            className="inline-flex items-center gap-2 mt-8 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
+          >
+            View all updates
+            <ArrowRight size={13} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
       {/* ── MEDX at a Glance ─────────────────────────────────────────── */}
       <section className="border-y-[1px] border-border bg-card py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
@@ -78,7 +109,15 @@ export default function Home() {
             {achievements.map((a) => (
               <StaggerItem key={a.title} className="border-[1px] border-border bg-background overflow-hidden group">
                 <div className="aspect-[4/3] overflow-hidden bg-muted">
-                  <img src={a.image} alt={a.title} className="w-full h-full object-cover img-scholarly" loading="lazy" decoding="async" />
+                  {a.image ? (
+                    <LightboxImage
+                      src={a.image}
+                      alt={a.title}
+                      caption={a.title}
+                      className="h-full"
+                      imageClassName="object-contain"
+                    />
+                  ) : null}
                 </div>
                 <div className="p-5">
                   <span
@@ -114,6 +153,28 @@ export default function Home() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </section>
+
+      {/* ── Recent Projects ──────────────────────────────────────────── */}
+      <section className="py-24 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          <FadeIn className="mb-12 flex items-end justify-between flex-wrap gap-4">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">Research</p>
+              <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4">Recent Projects</h2>
+              <div className="section-rule" />
+            </div>
+            <Link
+              href="/research/#tracker"
+              className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity"
+            >
+              View All Projects <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </FadeIn>
+          <FadeIn>
+            <ResearchTracker projects={RESEARCH_PROJECTS.slice(0, 3)} />
+          </FadeIn>
         </div>
       </section>
 
@@ -186,14 +247,22 @@ export default function Home() {
               <CarouselContent>
                 {eventBanners.map((b) => (
                   <CarouselItem key={b.label} className="basis-[85%] sm:basis-1/2">
-                    <Link href={b.href} className="block border-[1px] border-border overflow-hidden group">
+                    <div className="border-[1px] border-border overflow-hidden group">
                       <div className="aspect-[16/10] overflow-hidden bg-muted">
-                        {b.image ? <img src={b.image} alt={b.label} className="w-full h-full object-cover img-scholarly" loading="lazy" decoding="async" /> : null}
+                        {b.image ? (
+                          <LightboxImage
+                            src={b.image}
+                            alt={b.label}
+                            caption={b.label}
+                            className="h-full"
+                            imageClassName="object-contain"
+                          />
+                        ) : null}
                       </div>
-                      <div className="p-4 bg-card">
+                      <Link href={b.href} className="block p-4 bg-card">
                         <p className="text-sm font-semibold group-hover:text-accent transition-colors">{b.label}</p>
-                      </div>
-                    </Link>
+                      </Link>
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
@@ -201,36 +270,6 @@ export default function Home() {
               <CarouselNext />
             </Carousel>
           </FadeIn>
-        </div>
-      </section>
-
-      <div className="max-w-7xl mx-auto h-[1px] w-full bg-border" />
-
-      {/* ── Weekly News & Research Highlights ─────────────────────────── */}
-      <section className="py-24 px-4 sm:px-6 bg-card">
-        <div className="max-w-4xl mx-auto">
-          <FadeIn className="mb-12">
-            <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">This Week</p>
-            <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
-              Weekly News &amp; Research Highlights
-            </h2>
-            <div className="section-rule" />
-          </FadeIn>
-          <StaggerContainer className="space-y-4">
-            {newsHighlights.map((n) => (
-              <StaggerItem key={n.title} className="p-6 border-[1px] border-border bg-background">
-                <h3 className="font-semibold text-base mb-1.5">{n.title}</h3>
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{n.description}</p>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-          <Link
-            href="/updates/"
-            className="inline-flex items-center gap-2 mt-8 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
-          >
-            View all updates
-            <ArrowRight size={13} aria-hidden="true" />
-          </Link>
         </div>
       </section>
 

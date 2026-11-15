@@ -11,6 +11,8 @@ import type {
   NewsUpdateInput,
   ManagedContentItem,
   ManagedContentType,
+  JobApplication,
+  ApplicationStatus,
 } from "./admin-types";
 import { formatFileSize } from "./admin-utils";
 import { resolveMimeType, validateUpload } from "./media-utils";
@@ -29,6 +31,7 @@ interface AdminStoreValue {
   news: NewsUpdate[];
   events: EventItem[];
   media: MediaAsset[];
+  applications: JobApplication[];
   loading: boolean;
   createCourse: (input: CourseInput) => Promise<void>;
   updateCourse: (id: string, patch: CourseInput) => Promise<void>;
@@ -42,6 +45,8 @@ interface AdminStoreValue {
   updateEvent: (id: string, patch: EventInput) => Promise<void>;
   deleteEvent: (id: string) => Promise<void>;
   toggleEventStatus: (id: string) => Promise<void>;
+  updateApplicationStatus: (id: string, status: ApplicationStatus) => Promise<void>;
+  deleteApplication: (id: string) => Promise<void>;
   addMedia: (input: MediaInput) => Promise<void>;
   removeMedia: (id: string) => Promise<void>;
   uploadMedia: (file: File) => Promise<MediaAsset>;
@@ -78,6 +83,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   const [news, setNews] = useState<NewsUpdate[]>([]);
   const [events, setEvents] = useState<EventItem[]>([]);
   const [media, setMedia] = useState<MediaAsset[]>([]);
+  const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [managedContent, setManagedContent] = useState<Record<ManagedContentType, ManagedContentItem[]>>({
     achievements: [], "news-highlights": [], webinars: [], banners: [], partners: [], officers: [],
@@ -152,11 +158,12 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [coursesRes, newsRes, eventsRes, mediaRes, ...managedResults] = await Promise.all([
+    const [coursesRes, newsRes, eventsRes, mediaRes, applicationsRes, ...managedResults] = await Promise.all([
       supabase.from('courses').select('*').order('created_at', { ascending: false }),
       supabase.from('news_updates').select('*').order('created_at', { ascending: false }),
       supabase.from('events').select('*').order('date', { ascending: true }),
       supabase.from('media').select('*').order('created_at', { ascending: false }),
+      supabase.from('applications').select('*').order('created_at', { ascending: false }),
       ...Object.values(managedTables).map((table) => supabase.from(table).select('*').order('sort_order')),
     ]);
 
@@ -218,6 +225,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       title: e.title,
       category: e.category || '',
       date: e.date || '',
+      endDate: e.end_date || '',
       time: e.time || '',
       timezone: e.timezone || '',
       locationType: e.location_type,
@@ -227,6 +235,19 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       lastUpdated: e.updated_at || e.created_at,
       registrationUrl: e.registration_url || '',
       imageId: mediaIdForPath(e.image_path),
+    })));
+
+    setApplications((applicationsRes.data || []).map((a: any) => ({
+      id: a.id,
+      name: a.name,
+      email: a.email,
+      position: a.position,
+      department: a.department || null,
+      message: a.message || null,
+      portfolio_url: a.portfolio_url || null,
+      status: a.status || 'new',
+      created_at: a.created_at,
+      updated_at: a.updated_at || a.created_at,
     })));
     const managedTypes = Object.keys(managedTables) as ManagedContentType[];
     const officerIndex = managedTypes.indexOf("officers");
@@ -558,6 +579,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       title: input.title,
       category: input.category,
       date: input.date || null,
+      end_date: input.endDate || null,
       time: input.time || null,
       timezone: input.timezone,
       location_type: input.locationType,
@@ -578,6 +600,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       title: patch.title,
       category: patch.category,
       date: patch.date || null,
+      end_date: patch.endDate || null,
       time: patch.time || null,
       timezone: patch.timezone,
       location_type: patch.locationType,
@@ -606,6 +629,18 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     await fetchAll();
   };
 
+  const updateApplicationStatus = async (id: string, status: ApplicationStatus) => {
+    const { error } = await supabase.from('applications').update({ status, updated_at: timestamp() }).eq('id', id);
+    throwIfError(error);
+    await fetchAll();
+  };
+
+  const deleteApplication = async (id: string) => {
+    const { error } = await supabase.from('applications').delete().eq('id', id);
+    throwIfError(error);
+    await fetchAll();
+  };
+
   const addMedia = async (input: MediaInput) => {
     // For now just refresh - actual upload handled separately
     await fetchAll();
@@ -623,14 +658,15 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const value = useMemo<AdminStoreValue>(() => ({
-    courses, news, events, media, loading,
+    courses, news, events, media, applications, loading,
     createCourse, updateCourse, deleteCourse, toggleCourseStatus,
     createNews, updateNews, deleteNews, toggleNewsStatus,
     createEvent, updateEvent, deleteEvent, toggleEventStatus,
+    updateApplicationStatus, deleteApplication,
     addMedia, removeMedia, refresh: fetchAll, managedContent, leadershipSynced, departmentsSynced,
     createManagedContent, updateManagedContent, reorderManagedContent, deleteManagedContent,
     uploadMedia, uploadMediaFiles, syncLeadershipRoster,
-  }), [courses, news, events, media, loading, managedContent, leadershipSynced, departmentsSynced]);
+  }), [courses, news, events, media, applications, loading, managedContent, leadershipSynced, departmentsSynced]);
 
   return <AdminStoreContext.Provider value={value}>{children}</AdminStoreContext.Provider>;
 }

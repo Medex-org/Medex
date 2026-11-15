@@ -1,5 +1,6 @@
 import { Layout } from "@/components/layout";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
+import { LightboxImage } from "@/components/shared/lightbox-image";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
@@ -221,12 +222,12 @@ export default function Join() {
             <FadeIn delay={0.15} direction="left">
               <div className="relative">
                 <div className="absolute -top-4 -right-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
-                <img
+                <LightboxImage
                   src={memberBenefitsImg}
                   alt="Become a MEDX Member - Benefits & Global Community"
-                  className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
-                  loading="lazy"
-                  decoding="async"
+                  caption="Become a MEDX Member - Benefits & Global Community"
+                  className="border-[1px] border-border relative z-10"
+                  imageClassName="w-full h-auto object-contain"
                 />
               </div>
             </FadeIn>
@@ -241,12 +242,12 @@ export default function Join() {
             <FadeIn direction="right">
               <div className="relative">
                 <div className="absolute -top-4 -left-4 w-full h-full border-[1px] border-border pointer-events-none" aria-hidden="true" />
-                <img
+                <LightboxImage
                   src={campusAmbImg}
                   alt="Join MEDX as Campus Ambassador - Be the Voice. Be the Change."
-                  className="w-full h-auto object-cover img-scholarly border-[1px] border-border relative z-10"
-                  loading="lazy"
-                  decoding="async"
+                  caption="Join MEDX as Campus Ambassador - Be the Voice. Be the Change."
+                  className="border-[1px] border-border relative z-10"
+                  imageClassName="w-full h-auto object-contain"
                 />
               </div>
             </FadeIn>

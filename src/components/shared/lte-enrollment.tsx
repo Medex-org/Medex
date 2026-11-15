@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { LINKS } from "@/config/links";
-import { CheckCircle2, Mail, ArrowRight } from "lucide-react";
+import { CheckCircle2, Mail } from "lucide-react";
 
 const TIERS = ["Only LTE Mentorship", "LTE Lectures + Mentorship"] as const;
 
@@ -91,14 +91,6 @@ export function LteEnrollment() {
             >
               <Mail size={13} aria-hidden="true" /> Request Enrollment
             </button>
-            <a
-              href={LINKS.menteeForm}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 border-[1px] border-border font-semibold tracking-widest uppercase text-xs hover:bg-muted transition-colors"
-            >
-              Or Apply via Mentee Form <ArrowRight size={13} aria-hidden="true" />
-            </a>
           </div>
           <p className="text-xs font-sans italic text-muted-foreground">
             No online payment is processed on this site. Requesting enrollment sends MEDX a pre-filled email;

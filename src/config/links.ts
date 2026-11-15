@@ -10,13 +10,9 @@
 const MEMBERSHIP_FORM =
   "https://forms.gle/yJzGnk4DwmWysygv9";
 
-const MENTEE_FORM =
-  "https://docs.google.com/forms/d/e/1FAIpQLSe-BjOnNLFh69zvHYdOU9rfRtm7AJhjn_cbgXL9qg2GGQQ6LA/viewform?usp=header";
-
 export const LINKS = {
   /** Applications */
   membershipForm: MEMBERSHIP_FORM,
-  menteeForm: MENTEE_FORM,
   // NEEDS REAL LINK - fallback to the membership form until MEDX supplies a
   // dedicated City Representative application form.
   cityRepForm: MEMBERSHIP_FORM,

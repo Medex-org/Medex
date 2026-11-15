@@ -1,21 +1,17 @@
+import { useMemo } from "react";
 import { Layout } from "@/components/layout";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
-import { HierarchyCard, type HierarchyPerson } from "@/components/shared/hierarchy-card";
+import { ApplicationDialog } from "@/components/shared/application-dialog";
+import { HierarchyCard } from "@/components/shared/hierarchy-card";
 import { buildLeadershipLevels } from "@/data/leadership";
-import { DEPARTMENTS } from "@/data/departments";
-import { LINKS } from "@/config/links";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
 import { SectionNav } from "@/components/shared/section-nav";
 import { useSiteContent } from "@/hooks/use-site-content";
-
-const SUPPORT_TEAM_VACANCIES: HierarchyPerson[] = DEPARTMENTS.flatMap((dept) => [
-  { name: "Open Position", role: `${dept.shortName} Associate`, image: null, vacant: true as const },
-  { name: "Open Position", role: `${dept.shortName} Assistant`, image: null, vacant: true as const },
-]);
+import { buildOpenPositions, type OpenPosition } from "@/lib/open-positions";
 
 /** Picks a large-screen column count that keeps rows even, capped at 4 for readability, 3 for featured (larger) cards. */
 function lgColsForCount(count: number, featured: boolean): string {
@@ -36,6 +32,16 @@ const SECTIONS = [
 export default function Team() {
   const { globalOfficers, leadershipSynced } = useSiteContent();
   const governance = buildLeadershipLevels(globalOfficers, leadershipSynced);
+  const openPositions = useMemo(() => buildOpenPositions(globalOfficers), [globalOfficers]);
+  const groupedPositions = useMemo(() => {
+    const groups = new Map<string, OpenPosition[]>();
+    openPositions.forEach((position) => {
+      const existing = groups.get(position.department) || [];
+      existing.push(position);
+      groups.set(position.department, existing);
+    });
+    return Array.from(groups.entries());
+  }, [openPositions]);
 
   return (
     <Layout>
@@ -84,7 +90,7 @@ export default function Team() {
             >
               {level.people.map((person) => (
                 <StaggerItem key={`${person.name}|${person.role}`}>
-                  <HierarchyCard person={person} featured={i === 0} />
+                  <HierarchyCard person={person} featured={i === 0} applicationDepartment={level.title} />
                 </StaggerItem>
               ))}
             </StaggerContainer>
@@ -103,13 +109,68 @@ export default function Team() {
             <div className="section-rule" />
           </FadeIn>
 
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {SUPPORT_TEAM_VACANCIES.map((person) => (
-              <StaggerItem key={`${person.name}|${person.role}`}>
-                <HierarchyCard person={person} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+          <FadeIn className="mb-12 border-[1px] border-dashed border-accent/30 bg-accent/5 p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-accent mb-2">
+                  Open Positions
+                </p>
+                <h3 className="text-xl font-semibold mb-2">Join the MEDX team</h3>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-xl">
+                  Every current vacancy is listed here, from global roles to department teams.
+                  Applications are reviewed on a rolling basis.
+                </p>
+              </div>
+              <ApplicationDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center gap-1.5 px-5 py-3 bg-accent text-accent-foreground text-xs font-semibold uppercase tracking-widest hover:bg-accent/90 transition-colors flex-shrink-0"
+                  >
+                    Apply Now <ArrowRight size={12} aria-hidden="true" />
+                  </button>
+                }
+                positions={openPositions}
+                title="Apply to MEDX"
+                description="Choose any open role across MEDX. Applications are reviewed on a rolling basis."
+              />
+            </div>
+
+            <div className="mt-8 border-t-[1px] border-border divide-y-[1px] divide-border">
+              {groupedPositions.map(([department, positions]) => (
+                <div
+                  key={department}
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 py-4"
+                >
+                  <p className="font-semibold text-sm sm:w-40 flex-shrink-0">{department}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {positions.map((position) => (
+                      <ApplicationDialog
+                        key={position.id}
+                        trigger={
+                          <button
+                            type="button"
+                            className="inline-block px-3 py-1 border-[1px] border-border bg-background font-mono text-[10px] uppercase tracking-widest text-secondary transition-colors hover:border-accent/40 hover:text-accent"
+                          >
+                            {position.title}
+                          </button>
+                        }
+                        defaultPosition={position.title}
+                        defaultDepartment={position.department}
+                        title={`Apply for ${position.title}`}
+                        description="Submit your application directly to the MEDX admin dashboard."
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {!openPositions.length && (
+                <p className="py-4 font-sans text-sm text-muted-foreground">
+                  No specific vacancies are open right now. Volunteer applications are always welcome.
+                </p>
+              )}
+            </div>
+          </FadeIn>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FadeIn className="p-8 border-[1px] border-border bg-background flex flex-col items-center text-center">
@@ -118,14 +179,20 @@ export default function Team() {
                 Volunteer selection is interest-based - apply and MEDX will reach out about open
                 opportunities.
               </p>
-              <a
-                href={LINKS.membershipForm}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-auto inline-flex items-center gap-1.5 px-5 py-3 border-[1px] border-primary text-primary text-xs font-semibold uppercase tracking-widest hover:bg-primary/5 transition-colors"
-              >
-                Apply to Volunteer <ArrowRight size={12} aria-hidden="true" />
-              </a>
+              <ApplicationDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="mt-auto inline-flex items-center gap-1.5 px-5 py-3 border-[1px] border-primary text-primary text-xs font-semibold uppercase tracking-widest hover:bg-primary/5 transition-colors"
+                  >
+                    Apply to Volunteer <ArrowRight size={12} aria-hidden="true" />
+                  </button>
+                }
+                defaultPosition="Volunteer"
+                defaultDepartment="MEDX"
+                title="Apply to volunteer"
+                description="Tell MEDX about your interests and availability. The team will reach out about open opportunities."
+              />
             </FadeIn>
             <FadeIn delay={0.1} className="p-8 border-[1px] border-border bg-background flex flex-col items-center text-center">
               <h3 className="text-lg font-semibold mb-2">Regional Leadership</h3>

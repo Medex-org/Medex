@@ -68,6 +68,9 @@ export interface SiteEvent {
   type: string;
   status: string;
   date: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  progress?: number | null;
   desc: string;
   location?: string;
   image: string | null;

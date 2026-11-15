@@ -44,6 +44,7 @@ function emptyEvent(): EventInput {
     title: "",
     category: "",
     date: "",
+    endDate: "",
     time: "",
     timezone: "PKT",
     locationType: "Virtual",
@@ -141,6 +142,7 @@ export function EventsManager({
       title: event.title,
       category: event.category,
       date: event.date,
+      endDate: event.endDate,
       time: event.time,
       timezone: event.timezone,
       locationType: event.locationType,
@@ -189,6 +191,8 @@ export function EventsManager({
     if (!form.title.trim()) next.title = "An event title is required.";
     if (!form.category) next.category = "Select a category.";
     if (!form.date) next.date = "Choose an event date.";
+    if (form.endDate && form.date && form.endDate < form.date)
+      next.endDate = "End date cannot be before the start date.";
     if (!form.time) next.time = "Choose a start time.";
     if (form.locationType !== "Virtual" && !form.location.trim())
       next.location = "Add a venue or location.";
@@ -367,6 +371,7 @@ export function EventsManager({
                     </TableCell>
                     <TableCell className="font-mono text-xs whitespace-nowrap">
                       {formatDemoDate(event.date)}
+                      {event.endDate ? ` – ${formatDemoDate(event.endDate)}` : ""}
                       <br />
                       <span className="text-muted-foreground">
                         {event.time} {event.timezone}
@@ -444,7 +449,9 @@ export function EventsManager({
                   {event.description}
                 </p>
                 <p className="font-mono text-[10px] text-muted-foreground mt-2">
-                  {formatDemoDate(event.date)} · {event.time} {event.timezone}
+                  {formatDemoDate(event.date)}
+                  {event.endDate ? ` – ${formatDemoDate(event.endDate)}` : ""} · {event.time}{" "}
+                  {event.timezone}
                   <br />
                   {event.locationType} · {displayLocation(event)}
                   {mapUrlForLocation(event.location) ? (
@@ -564,6 +571,26 @@ export function EventsManager({
             />
           </AdminField>
         </div>
+
+        <AdminField
+          label="End date"
+          htmlFor="event-end-date"
+          error={errors.endDate}
+          hint="Optional. For multi-day events; powers the ongoing progress bar."
+        >
+          <Input
+            id="event-end-date"
+            type="date"
+            value={form.endDate}
+            min={form.date || undefined}
+            onChange={(event) =>
+              setForm((current) => ({
+                ...current,
+                endDate: event.target.value,
+              }))
+            }
+          />
+        </AdminField>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <AdminField

@@ -2,6 +2,7 @@ import {
   BookOpen,
   CalendarDays,
   Images,
+  Inbox,
   Newspaper,
   Pencil,
   Plus,
@@ -35,13 +36,14 @@ export function AdminOverview({
   onRequestCreate: (section: AdminSection) => void;
   onRequestEdit: (section: AdminSection, id: string) => void;
 }) {
-  const { courses, news, events, media } = useAdminStore();
+  const { courses, news, events, media, applications } = useAdminStore();
   const { profile } = useAuth();
   const role = profile?.role;
 
   const publishedCourses = courses.filter((c) => c.status === "published").length;
   const publishedNews = news.filter((n) => n.status === "published").length;
   const publishedEvents = events.filter((e) => e.status === "published").length;
+  const newApplications = applications.filter((a) => a.status === "new").length;
 
   const summary = [
     {
@@ -71,6 +73,13 @@ export function AdminOverview({
       count: media.length,
       detail: "Bundled sample files",
       icon: Images,
+    },
+    {
+      section: "applications" as const,
+      label: "Applications",
+      count: applications.length,
+      detail: `${newApplications} new`,
+      icon: Inbox,
     },
   ].filter((item) => canAccessSection(role, item.section));
 

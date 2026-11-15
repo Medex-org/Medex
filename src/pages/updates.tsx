@@ -1,5 +1,7 @@
 import { Layout } from "@/components/layout";
 import { BreadcrumbNav } from "@/components/shared/breadcrumb-nav";
+import { LightboxImage } from "@/components/shared/lightbox-image";
+import { ShareActions } from "@/components/shared/share-actions";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/animations";
@@ -63,17 +65,18 @@ export default function Updates() {
               {updates.map((update) => (
                 <StaggerItem
                   key={update.id}
-                  className="border-[1px] border-border bg-background hover:bg-card transition-colors group overflow-hidden"
+                  id={`update-${update.id}`}
+                  className="scroll-mt-32 border-[1px] border-border bg-background hover:bg-card transition-colors group overflow-hidden"
                 >
                   <div className="flex flex-col md:flex-row">
                     <div className="md:w-52 flex-shrink-0 overflow-hidden bg-muted">
                       {update.image ? (
-                        <img
+                        <LightboxImage
                           src={update.image}
                           alt={update.title}
-                          className="w-full h-56 sm:h-64 md:h-full object-cover img-scholarly"
-                          loading="lazy"
-                          decoding="async"
+                          caption={update.title}
+                          className="h-56 sm:h-64 md:h-full"
+                          imageClassName="object-contain"
                         />
                       ) : (
                         <div className="w-full h-2 md:h-full md:w-52" aria-hidden="true" />
@@ -103,6 +106,13 @@ export default function Updates() {
                           {update.body}
                         </p>
                       </div>
+                      <ShareActions
+                        title={update.title}
+                        anchor={`update-${update.id}`}
+                        caption={[update.title, update.date ? formatUpdateDate(update.date) : ""].filter(Boolean).join(" — ")}
+                        image={update.image}
+                        className="pt-2 mt-auto"
+                      />
                     </div>
                   </div>
                 </StaggerItem>

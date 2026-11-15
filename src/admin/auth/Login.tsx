@@ -3,10 +3,10 @@ import { supabase, supabaseConfigured } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mediaUrl } from '@/lib/media-url';
+import { MEDX_LOGO, MEDX_LOGO_WEBP } from '@/lib/brand';
 
-const medxLogo = mediaUrl("medx-logo.png");
-const medxLogoWebp = mediaUrl("medx-logo.webp");
+const medxLogo = MEDX_LOGO;
+const medxLogoWebp = MEDX_LOGO_WEBP;
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -43,7 +43,7 @@ export default function Login() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <picture>
               <source srcSet={medxLogoWebp} type="image/webp" />
-              <img src={medxLogo} alt="MEDX R&Ed" className="h-10 w-auto" />
+              <img src={medxLogo} alt="MEDX R&Ed" className="h-12 w-auto" />
             </picture>
             <span className="font-bold tracking-wider text-lg uppercase text-primary">
               MEDX R&amp;Ed
