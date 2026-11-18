@@ -1,11 +1,12 @@
 import { useMemo, useRef, useState } from "react";
-import { FileText, Images, Search, Trash2, Upload } from "lucide-react";
+import { ExternalLink, FileText, Images, Link2, Search, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import type { MediaAsset } from "../admin-types";
 import { useAdminStore } from "../use-admin-store";
-import { ACCEPTED_FILE_TYPES, mediaKind, validateUpload } from "../media-utils";
+import { copyText } from "@/lib/share";
+import { ACCEPTED_FILE_TYPES, formatUploadError, mediaKind, validateUpload } from "../media-utils";
 import { AdminPageHeader } from "./AdminPageHeader";
 import { AdminEmptyState } from "./AdminEmptyState";
 import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
@@ -65,6 +66,15 @@ export function MediaLibrary() {
     );
   }, [media, search]);
 
+  const copyAssetLink = async (asset: MediaAsset) => {
+    const copied = await copyText(asset.src);
+    toast(
+      copied
+        ? { title: "Link copied", description: asset.fileName }
+        : { title: "Could not copy the link", description: asset.fileName, variant: "destructive" },
+    );
+  };
+
   const handleFiles = async (files: FileList | File[] | null | undefined) => {
     if (uploading) return;
     const list = Array.from(files || []);
@@ -79,9 +89,10 @@ export function MediaLibrary() {
     });
 
     if (invalid.length) {
+      const preview = invalid.slice(0, 3).join(" · ");
       toast({
         title: invalid.length === 1 ? "One file was skipped" : `${invalid.length} files were skipped`,
-        description: invalid[0],
+        description: invalid.length > 3 ? `${preview} · +${invalid.length - 3} more` : preview,
         variant: "destructive",
       });
     }
@@ -97,7 +108,7 @@ export function MediaLibrary() {
     } catch (error) {
       toast({
         title: "Some uploads failed",
-        description: error instanceof Error ? error.message : "Could not upload files.",
+        description: formatUploadError(error),
         variant: "destructive",
       });
     } finally {
@@ -117,7 +128,7 @@ export function MediaLibrary() {
     } catch (error) {
       toast({
         title: "Could not remove media asset",
-        description: error instanceof Error ? error.message : "Unknown error.",
+        description: formatUploadError(error),
         variant: "destructive",
       });
     }
@@ -186,9 +197,9 @@ export function MediaLibrary() {
       >
         <p className="font-sans text-xs text-muted-foreground leading-relaxed">
           Upload images, PDFs, Word documents, or videos here, then select them
-          from the content editors. You can select several files at once or drop
-          them here. Files are stored in the Supabase <code>media</code> bucket
-          and previewed here.
+          from the content editors. Files can be up to 25 MB; videos up to 50 MB.
+          You can select several files at once or drop them here. Files are stored
+          in the Supabase <code>media</code> bucket and previewed here.
         </p>
       </div>
 
@@ -250,7 +261,31 @@ export function MediaLibrary() {
                   )}
                 </div>
 
-                <div className="flex justify-end pt-2 border-t-[1px] border-border">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t-[1px] border-border">
+                  <div className="flex flex-wrap items-center gap-1">
+                    {asset.src && !asset.isLocal ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => void copyAssetLink(asset)}
+                        aria-label={`Copy link to ${asset.fileName}`}
+                      >
+                        <Link2 size={14} /> Copy link
+                      </Button>
+                    ) : null}
+                    {asset.src ? (
+                      <Button asChild variant="ghost" size="sm">
+                        <a
+                          href={asset.src}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${asset.fileName} in a new tab`}
+                        >
+                          <ExternalLink size={14} /> Open
+                        </a>
+                      </Button>
+                    ) : null}
+                  </div>
                   <Button
                     variant="ghost"
                     size="sm"

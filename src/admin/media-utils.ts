@@ -1,6 +1,8 @@
 import type { MediaAsset } from "./admin-types";
+import { formatFileSize, formatSupabaseError } from "./admin-utils";
 
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+export const MAX_VIDEO_BYTES = 50 * 1024 * 1024;
 
 export const ACCEPTED_MIME_TYPES = [
   "image/jpeg",
@@ -40,11 +42,17 @@ const MIME_BY_EXTENSION: Record<string, string> = {
 
 export type MediaKind = "image" | "video" | "pdf" | "document" | "other";
 
+function normalizeMimeType(type: string): string {
+  const mime = type.toLowerCase();
+  if (mime === "image/jpg" || mime === "image/pjpeg") return "image/jpeg";
+  return mime;
+}
+
 export function resolveMimeType(file: Pick<File, "type" | "name">): string {
-  const type = (file.type || "").toLowerCase();
+  const type = normalizeMimeType(file.type || "");
   if (type && type !== "application/octet-stream") return type;
   const extension = file.name.split(".").pop()?.toLowerCase() || "";
-  return MIME_BY_EXTENSION[extension] || type;
+  return normalizeMimeType(MIME_BY_EXTENSION[extension] || type);
 }
 
 export function isHeic(file: Pick<File, "type" | "name">): boolean {
@@ -78,11 +86,37 @@ export function validateUpload(file: File): string | null {
   if (isHeic(file)) {
     return "HEIC/HEIF photos are not supported by browsers. On iPhone, use Settings → Camera → Formats → Most Compatible, or export the photo as JPEG before uploading.";
   }
-  if (!ACCEPTED_MIME_TYPES.includes(resolveMimeType(file))) {
+  const mimeType = resolveMimeType(file);
+  if (!ACCEPTED_MIME_TYPES.includes(mimeType)) {
     return "Choose an image, PDF, Word document, or video file.";
   }
-  if (file.size > MAX_UPLOAD_BYTES) {
-    return "Files must be 25 MB or smaller.";
+  const kind = mediaKind(mimeType, file.name);
+  const limit = kind === "video" ? MAX_VIDEO_BYTES : MAX_UPLOAD_BYTES;
+  if (file.size > limit) {
+    const label = kind === "video" ? "Videos" : "Files";
+    return `${label} must be ${formatFileSize(limit)} or smaller (this file is ${formatFileSize(file.size)}).`;
   }
   return null;
+}
+
+export function formatUploadError(error: unknown): string {
+  const message = formatSupabaseError(error);
+  const lower = message.toLowerCase();
+
+  if (lower.includes("bucket not found")) {
+    return `${message} — run supabase/schema.sql to create the media bucket.`;
+  }
+  if (lower.includes("mime type") || lower.includes("not supported")) {
+    return `${message} — supported types: JPEG, PNG, WebP, GIF, SVG, PDF, Word, MP4, WebM, MOV.`;
+  }
+  if (lower.includes("row-level security") || lower.includes("permission") || lower.includes("not authorized") || lower.includes("403")) {
+    return `${message} — check that your account has an admin/editor role and is signed in.`;
+  }
+  if (lower.includes("jwt") || lower.includes("token") || lower.includes("401")) {
+    return `${message} — your session may have expired; sign out and back in.`;
+  }
+  if (lower.includes("maximum allowed size") || lower.includes("payload too large") || lower.includes("too large") || lower.includes("413") || lower.includes("exceeded")) {
+    return `${message} — the limit is ${formatFileSize(MAX_VIDEO_BYTES)} for videos and ${formatFileSize(MAX_UPLOAD_BYTES)} for other files.`;
+  }
+  return message;
 }

@@ -161,8 +161,9 @@ There is no lint script or test suite in this repository, so none can be run.
 
 Risks and limitations:
 
-- **Database setup:** run `supabase/migrations/001_site_content.sql` in the
-  Supabase SQL editor before using the five migrated homepage sections.
+- **Database setup:** run the consolidated `supabase/schema.sql` in the
+  Supabase SQL editor before using the admin dashboard. It is idempotent and
+  replaces the earlier numbered migrations.
 - **Media migration:** existing uploaded media records need to be mapped to
   `image_path` values when their bucket paths are known.
 - **Security:** enable RLS and review policies before treating the admin as

@@ -42,6 +42,7 @@ export function PreferencesPanel() {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("") || "AD";
+  const build = __BUILD_VERSION__ === "dev" ? "dev" : __BUILD_VERSION__.slice(0, 7);
 
   return (
     <>
@@ -103,6 +104,12 @@ export function PreferencesPanel() {
               <dd className="text-muted-foreground">
                 Supabase-backed — persists across sessions
               </dd>
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <dt className="font-mono text-[10px] uppercase tracking-widest text-secondary">
+                Build
+              </dt>
+              <dd className="text-muted-foreground font-mono text-xs">{build}</dd>
             </div>
           </dl>
 

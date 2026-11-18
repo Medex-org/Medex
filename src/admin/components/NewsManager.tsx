@@ -231,7 +231,7 @@ export function NewsManager({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="published">Published (demo)</SelectItem>
+            <SelectItem value="published">Published</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
           </SelectContent>
         </Select>
@@ -413,7 +413,7 @@ export function NewsManager({
             onChange={(event) =>
               setForm((current) => ({ ...current, title: event.target.value }))
             }
-            placeholder="e.g. Sample announcement title"
+            placeholder="e.g. New research collaboration announced"
           />
         </AdminField>
 
@@ -497,7 +497,7 @@ export function NewsManager({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published (demo)</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
               </SelectContent>
             </Select>
           </AdminField>

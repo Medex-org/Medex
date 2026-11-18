@@ -71,7 +71,7 @@ export function AdminOverview({
       section: "media" as const,
       label: "Media assets",
       count: media.length,
-      detail: "Bundled sample files",
+      detail: "Stored in Supabase",
       icon: Images,
     },
     {
@@ -137,9 +137,8 @@ export function AdminOverview({
         </h1>
         <div className="section-rule mb-3" />
         <p className="font-sans text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Manage content stored in Supabase. Published records are used by the
-          public website; empty migrated sections continue to use the existing
-          public fallback until their seed data is loaded.
+          Manage the content shown on the public website. Drafts stay hidden;
+          publish a record to make it live.
         </p>
       </div>
 
@@ -223,7 +222,7 @@ export function AdminOverview({
               <AdminEmptyState
                 icon={<BookOpen size={24} strokeWidth={1.2} />}
                 title="Nothing here yet"
-                description="Create sample content to see it appear in this list."
+                description="Use the quick actions above to add your first item."
               />
             </div>
           ) : (
@@ -284,8 +283,8 @@ export function AdminOverview({
             <div className="p-4">
               <AdminEmptyState
                 icon={<CalendarDays size={24} strokeWidth={1.2} />}
-                title="No upcoming sample events"
-                description="Add an event with a future date to preview this section."
+                title="No upcoming events"
+                description="Add an event with a future date to see it here."
               />
             </div>
           ) : (

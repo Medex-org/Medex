@@ -521,7 +521,7 @@ export function EventsManager({
             onChange={(event) =>
               setForm((current) => ({ ...current, title: event.target.value }))
             }
-            placeholder="e.g. Sample research workshop"
+            placeholder="e.g. Research methods workshop"
           />
         </AdminField>
 
@@ -676,7 +676,7 @@ export function EventsManager({
               placeholder={
                 form.locationType === "Virtual"
                   ? "Online"
-                  : "e.g. Sample University Auditorium"
+                  : "e.g. University Auditorium"
               }
             />
             {form.locationType !== "Virtual" ? (

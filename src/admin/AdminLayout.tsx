@@ -158,7 +158,7 @@ export function AdminLayout({
                   MEDX R&amp;Ed
                 </p>
                 <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mt-1">
-                  Admin preview
+                  Admin dashboard
                 </p>
               </div>
             </Link>
@@ -262,7 +262,7 @@ export function AdminLayout({
                 className="h-10 w-auto object-contain"
               />
               <span className="font-mono text-[10px] uppercase tracking-widest text-secondary">
-                Admin preview
+                Admin dashboard
               </span>
             </div>
             <button

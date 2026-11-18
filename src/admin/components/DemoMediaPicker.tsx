@@ -8,6 +8,7 @@ import { useAdminStore } from "../use-admin-store";
 import {
   ACCEPTED_FILE_TYPES,
   ACCEPTED_IMAGE_TYPES,
+  formatUploadError,
   isImageAsset,
   mediaKind,
 } from "../media-utils";
@@ -82,8 +83,7 @@ export function DemoMediaPicker({
     } catch (error) {
       toast({
         title: "Upload failed",
-        description:
-          error instanceof Error ? error.message : "Could not upload files.",
+        description: formatUploadError(error),
         variant: "destructive",
       });
     } finally {

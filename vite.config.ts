@@ -5,9 +5,13 @@ import { defineConfig } from 'vite';
 
 const port = Number(process.env.PORT ?? 5173);
 const basePath = process.env.BASE_PATH ?? '/';
+const buildVersion = process.env.VITE_BUILD_SHA ?? 'dev';
 
 export default defineConfig({
   base: basePath,
+  define: {
+    __BUILD_VERSION__: JSON.stringify(buildVersion),
+  },
   plugins: [
     react(),
     tailwindcss(),

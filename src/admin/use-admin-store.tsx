@@ -14,8 +14,8 @@ import type {
   JobApplication,
   ApplicationStatus,
 } from "./admin-types";
-import { formatFileSize } from "./admin-utils";
-import { resolveMimeType, validateUpload } from "./media-utils";
+import { formatFileSize, formatSupabaseError } from "./admin-utils";
+import { formatUploadError, resolveMimeType, validateUpload } from "./media-utils";
 import {
   DEPARTMENT_SYNC_MARKER,
   ROSTER_SYNC_MARKER,
@@ -111,7 +111,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       contentType: mimeType,
       upsert: false,
     });
-    if (upload.error) throw upload.error;
+    if (upload.error) throw new Error(formatUploadError(upload.error));
     const { data, error } = await supabase.from("media").insert({
       file_name: file.name,
       bucket_path: bucketPath,
@@ -122,7 +122,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     }).select("id").single();
     if (error) {
       await supabase.storage.from("media").remove([bucketPath]);
-      throw error;
+      throw new Error(formatUploadError(error));
     }
     return {
       id: data.id,
@@ -143,7 +143,7 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
       try {
         uploaded.push(await uploadOne(file));
       } catch (error) {
-        failures.push(`${file.name}: ${error instanceof Error ? error.message : "upload failed"}`);
+        failures.push(`${file.name}: ${formatUploadError(error)}`);
       }
     }
     if (uploaded.length) await fetchAll();
@@ -334,8 +334,8 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     return { sort_order: sortOrder, image_path: imagePath, title: item.title, description: item.description };
   };
 
-  const throwIfError = (error: { message: string } | null) => {
-    if (error) throw new Error(error.message);
+  const throwIfError = (error: unknown) => {
+    if (error) throw new Error(formatSupabaseError(error));
   };
 
   const timestamp = () => new Date().toISOString();
@@ -650,10 +650,10 @@ export function AdminStoreProvider({ children }: { children: ReactNode }) {
     const asset = media.find((item) => item.id === id);
     if (asset?.bucketPath) {
       const { error } = await supabase.storage.from("media").remove([asset.bucketPath]);
-      if (error) throw error;
+      if (error) throw new Error(formatUploadError(error));
     }
     const { error } = await supabase.from('media').delete().eq('id', id);
-    if (error) throw error;
+    if (error) throw new Error(formatSupabaseError(error));
     await fetchAll();
   };
 

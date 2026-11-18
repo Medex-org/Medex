@@ -235,7 +235,7 @@ export function CoursesManager({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="published">Published (demo)</SelectItem>
+            <SelectItem value="published">Published</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
           </SelectContent>
         </Select>
@@ -417,7 +417,7 @@ export function CoursesManager({
             onChange={(event) =>
               setForm((current) => ({ ...current, title: event.target.value }))
             }
-            placeholder="e.g. Sample research methods course"
+            placeholder="e.g. Introduction to Clinical Research"
           />
         </AdminField>
 
@@ -507,7 +507,7 @@ export function CoursesManager({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published (demo)</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
               </SelectContent>
             </Select>
           </AdminField>
@@ -516,7 +516,7 @@ export function CoursesManager({
             label="Registration URL"
             htmlFor="course-url"
             error={errors.registrationUrl}
-            hint="Optional. Demo only — no link is published."
+            hint="Optional. Shown as a Register link on the public site."
           >
             <Input
               id="course-url"
