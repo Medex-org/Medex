@@ -81,6 +81,11 @@ export default function MedicalExchangeGuide() {
       ]}
       related={[
         {
+          label: "MEDX Research Compass",
+          href: "/education/research-compass/",
+          description: "Follow a step-by-step route from first question to publication.",
+        },
+        {
           label: "What Is Clinical Research?",
           href: "/education/what-is-clinical-research/",
           description: "Learn how studies are designed and how students can contribute.",

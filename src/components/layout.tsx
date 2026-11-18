@@ -352,6 +352,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </li>
                 <li>
                   <Link
+                    href="/education/research-compass/"
+                    className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
+                  >
+                    Research Compass
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/updates/"
                     className="block py-1.5 -my-1.5 text-sm text-footer-foreground/60 hover:text-footer-foreground transition-colors"
                   >

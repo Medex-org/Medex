@@ -165,12 +165,20 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4">Recent Projects</h2>
               <div className="section-rule" />
             </div>
-            <Link
-              href="/research/#tracker"
-              className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity"
-            >
-              View All Projects <ArrowRight size={14} aria-hidden="true" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href="/education/research-compass/"
+                className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity"
+              >
+                Start the Research Compass <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/research/#tracker"
+                className="text-xs font-semibold uppercase tracking-widest text-accent flex items-center gap-2 hover:opacity-70 transition-opacity"
+              >
+                View All Projects <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            </div>
           </FadeIn>
           <FadeIn>
             <ResearchTracker projects={RESEARCH_PROJECTS.slice(0, 3)} />

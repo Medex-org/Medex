@@ -35,6 +35,31 @@
     "description": "Free guides on clinical research methods, definition, and global health research. Learn with MedX R&ED's education hub."
   },
   {
+    "key": "researchCompass",
+    "path": "/education/research-compass/",
+    "crumb": "Research Compass",
+    "title": "How to Start Medical Research | MEDX Research Compass",
+    "description": "A step-by-step research roadmap for medical and health-science students: find a question, review the literature, design a study, handle ethics, analyse data, and publish.",
+    "faq": [
+      {
+        "question": "Do I need previous research experience to start?",
+        "answer": "No. Most students begin with literature searches, data checking, recruitment support, or ethics documentation. The important things are supervision, reliability, and a clear understanding of your role."
+      },
+      {
+        "question": "How long does a first research project take?",
+        "answer": "It depends on the design. A secondary analysis or review may take a few months; a prospective study with recruitment and follow-up can take much longer. Plan backwards from your deadline and choose a feasible scope."
+      },
+      {
+        "question": "Can I publish without a lab?",
+        "answer": "Yes. Systematic reviews, secondary analyses, case reports, qualitative work, and health services research can be done without a bench lab. You still need mentorship, ethics review where required, and a credible reporting plan."
+      },
+      {
+        "question": "What should I do first?",
+        "answer": "Choose one focused question, read recent literature, and speak to a mentor about a small, realistic contribution. Use the six-step Research Compass to decide what to do next."
+      }
+    ]
+  },
+  {
     "key": "medicalExchange",
     "path": "/medical-exchange/",
     "crumb": "Medical Exchange",

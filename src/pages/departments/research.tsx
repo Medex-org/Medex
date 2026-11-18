@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Layout } from "@/components/layout";
 import { PageMeta } from "@/components/ui/page-meta";
 import { SEO } from "@/data/seo";
@@ -64,6 +65,13 @@ export default function DepartmentResearch() {
               From first protocol to published manuscript - structured mentorship for
               aspiring physician-scientists.
             </p>
+            <Link
+              href="/education/research-compass/"
+              className="inline-flex items-center gap-2 mt-6 text-xs font-semibold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
+            >
+              New to research? Start with the Research Compass
+              <ArrowRight size={13} aria-hidden="true" />
+            </Link>
           </FadeIn>
         </div>
       </section>

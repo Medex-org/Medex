@@ -81,6 +81,11 @@ export default function GlobalHealthResearch() {
       ]}
       related={[
         {
+          label: "MEDX Research Compass",
+          href: "/education/research-compass/",
+          description: "Follow a step-by-step route from first question to publication.",
+        },
+        {
           label: "What Is Clinical Research?",
           href: "/education/what-is-clinical-research/",
           description: "A practical introduction to study design, ethics, and student involvement.",

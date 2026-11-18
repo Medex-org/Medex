@@ -92,6 +92,23 @@ export default function DepartmentEducation() {
             <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">Guides &amp; Resources</h2>
             <div className="section-rule" />
           </FadeIn>
+          <FadeIn className="mb-8">
+            <Link
+              href="/education/research-compass/"
+              className="group flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-8 border-[1px] border-accent/30 bg-background hover:border-accent transition-colors"
+            >
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-accent mb-2">Start Here</p>
+                <h3 className="text-xl font-semibold mb-2">MEDX Research Compass</h3>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                  A visual, step-by-step route from first question to publication.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent whitespace-nowrap">
+                Open the Compass <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              </span>
+            </Link>
+          </FadeIn>
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {

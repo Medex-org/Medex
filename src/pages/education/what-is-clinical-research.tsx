@@ -81,6 +81,11 @@ export default function WhatIsClinicalResearch() {
       ]}
       related={[
         {
+          label: "MEDX Research Compass",
+          href: "/education/research-compass/",
+          description: "Follow a step-by-step route from first question to publication.",
+        },
+        {
           label: "Medical Exchange Guide",
           href: "/education/medical-exchange-guide/",
           description: "Understand global clinical rotations, eligibility, and how to apply.",
